@@ -27,6 +27,9 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Fag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Fag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
