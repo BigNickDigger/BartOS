@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fag.h" />
+    <ClInclude Include="KomunikacjaProcesowa.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadManager.h" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="BartOS.cpp" />
     <ClCompile Include="Fag.cpp" />
+    <ClCompile Include="KomunikacjaProcesowa.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
