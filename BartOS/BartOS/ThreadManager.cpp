@@ -4,7 +4,7 @@
 
 CThreadManager::CThreadManager()
 {
-}
+}//pootis
 
 
 CThreadManager::~CThreadManager()
