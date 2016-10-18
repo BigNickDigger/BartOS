@@ -11,7 +11,7 @@ Adam	= ASSembler interpreter
 System Windowso-niepodobny
 Wpisujcie tutaj propozycje nazw:
 BartOS
-
+kabanOS
 
 
 
