@@ -6,7 +6,6 @@ CThreadManager::CThreadManager()
 {
 	Proc_Control_block->Process_State = PCB::Proc_New;
 	Proc_Control_block->Process_ID = IdentGen; IdentGen++;
-
 }
 
 
