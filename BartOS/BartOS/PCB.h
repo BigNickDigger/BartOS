@@ -1,9 +1,12 @@
 #pragma once
+
+#include <stdio.h>
 class PCB
 {
 public:
 	PCB();
 	~PCB();
+	char* nazwa;
 	int Process_State,
 		Process_ID, Process_Child_ID;
 	short int Priority,
@@ -17,5 +20,6 @@ public:
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Halted
 	};
+	FILE* plik;
 };
 

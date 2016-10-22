@@ -1,14 +1,17 @@
 #pragma once
 #include "PCB.h"
+#include "PamiecOperiWirt.h"
+#define Average_Priority 7
 class CThreadManager
 {
 public:
-	CThreadManager();
+	CThreadManager(PamiecOperiWirt* Memory, char *name);
 	~CThreadManager();
 	PCB * Proc_Control_block;
+	void fork(char*name);
 	static int IdentGen;
 private:
-	char * pootis;
+	
 
 };
 
