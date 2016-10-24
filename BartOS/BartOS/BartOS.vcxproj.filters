@@ -62,9 +62,6 @@
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Fag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KomunikacjaProcesowa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SystemPlikowFAT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InterPeter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
