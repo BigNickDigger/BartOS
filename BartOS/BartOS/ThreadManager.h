@@ -9,6 +9,7 @@ public:
 	~CThreadManager();
 	PCB * Proc_Control_block;
 	void fork(char*name);
+	void request_memory();
 	static int IdentGen;
 private:
 	
