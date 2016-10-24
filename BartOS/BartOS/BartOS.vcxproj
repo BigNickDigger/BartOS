@@ -141,7 +141,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Fag.h" />
+    <ClInclude Include="InterPeter.h" />
     <ClInclude Include="KomunikacjaProcesowa.h" />
     <ClInclude Include="MechSynch.h" />
     <ClInclude Include="PamiecOperiWirt.h" />

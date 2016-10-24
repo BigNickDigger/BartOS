@@ -27,9 +27,6 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Fag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="KomunikacjaProcesowa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,6 +46,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SystemPlikowFAT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InterPeter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

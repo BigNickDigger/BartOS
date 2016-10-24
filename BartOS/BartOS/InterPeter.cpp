@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "Fag.h"
+#include "InterPeter.h"
 
 
-Fag::Fag()
+InterPeter::InterPeter()
 {
 }
 
 
-Fag::~Fag()
+InterPeter::~InterPeter()
 {
 }
