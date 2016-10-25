@@ -4,9 +4,12 @@
 
 PamiecOperiWirt::PamiecOperiWirt()
 {
+	
 }
 
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
 }
+
+

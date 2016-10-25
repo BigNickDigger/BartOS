@@ -16,7 +16,7 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, char *tresc)
 {
 	/*szukanie odbiorcy
-	if(Lista->Prcoes.ID==Odbiorca)
+	if(Lista->Proces.ID==Odbiorca)
 	Mess x;
 	x.nadawca=Nadawca;
 	x.odbiorca=odbiorca;
