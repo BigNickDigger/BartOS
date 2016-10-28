@@ -3,7 +3,7 @@
 #include "PCB.h"
 #include <queue>
 //Help
-
+//KRZYSIU TO PIZDA H3H3 
 KomunikacjaProcesowa::KomunikacjaProcesowa()
 {
 }
@@ -33,9 +33,9 @@ void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, char *tresc)
 
 }
 
-Mess KomunikacjaProcesowa::Odbierz(int Odbiorca)
+/*Mess KomunikacjaProcesowa::Odbierz(int Odbiorca)
 {
-	/*szukanie skrzynki
+	szukanie skrzynki
 	if(Lista->Prcoes.ID==Odbiorca)
 	{
 	Lista->Proces.queue.;
@@ -52,8 +52,8 @@ Mess KomunikacjaProcesowa::Odbierz(int Odbiorca)
 
 	return x;
 	Jak nie znajdzie error (pytanie jak errora wyjebac?)
-	*/
-}
+	
+}*/
 
 
 /*    push - umieszczenie nowego elementu na koñcu kolejki;

@@ -10,6 +10,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
+
 }
 
 
