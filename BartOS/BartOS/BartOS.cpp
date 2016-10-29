@@ -36,14 +36,14 @@ int main()
 	proces.pages[0].cell = 0;
 	proces.pages[5].cell = 5;
 	proces.pages[0].Valid = true;//ramka nr 0 znajduje sie w pamieci
-	proces.pages[5].Valid = true;//ramka nr 1 znajduje sie w pamieci. usuniecie procesu = usuniecie ramek 0 i 1
+	proces.pages[5].Valid = true;//ramka nr 5 znajduje sie w pamieci. usuniecie procesu = usuniecie ramek 0 i 5
 
 	proces.nazwa = "cienias";//supermega proces
 
 	PAM.iter = PAM.POper.begin();
 	PAM.iter->data = "ADD A,8 MOV B,";//zawartosc pierwszej ramki pamieci
 	advance(PAM.iter,5);
-	PAM.iter->data = "ADD B,4 MOV A,";//zawartosc drugiej ramki pamieci
+	PAM.iter->data = "ADD B,4 MOV A,";//zawartosc piatej ramki pamieci
 
 	PAM.iter = PAM.POper.begin();
 	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
