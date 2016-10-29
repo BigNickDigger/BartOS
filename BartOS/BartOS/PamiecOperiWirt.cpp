@@ -43,8 +43,10 @@ void PamiecOperiWirt::DeleteProcess(PCB blok)
 		
 		if (blok.pages[i].Valid == true)//gdy iter najedzie na ramke dla ktorej w tablicy stronic bit valid jest rowny TRUE
 		{
-			
 			POper.erase(iter++);
+			singlepage = new page;
+			singlepage->nr = i;
+			POper.insert(iter,*singlepage);
 		}
 		else
 		{
