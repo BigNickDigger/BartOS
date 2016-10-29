@@ -46,9 +46,9 @@ int main()
 	PAM.iter->data = "ADD B,4 MOV A,";//zawartosc drugiej ramki pamieci
 
 	PAM.iter = PAM.POper.begin();
-	cout << "Pierwsza ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
-	PAM.iter++;
-	cout << "Druga ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
+	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
+	advance(PAM.iter, 5);
+	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
 
 	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
 	{
