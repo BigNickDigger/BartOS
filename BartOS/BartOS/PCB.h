@@ -25,6 +25,6 @@ public:
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Halted
 	};
-	std::vector<char[8]>messages;
+	//std::vector<char[8]>messages;
 };
 

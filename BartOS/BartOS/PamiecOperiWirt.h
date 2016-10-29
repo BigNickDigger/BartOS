@@ -7,7 +7,7 @@ using namespace std;
 
 const int framesize = 16;//rozmiar ramki/strony
 const int framecount = 8;//operacyjna sklada sie z 8 ramek, czyli 8*16 bajtów = 128 bajtów pamiêci
-const int adreslength = 8;//2^8 = 256  /hex(FF)/  limit adresu dla stron ( (dec)1111_1111 = 255), istnieje 256 stron na pamieci wirtualnej, beda one sciagane do ramek
+const int adreslength = 8;//2^8 = 256  /hex(FF)/  limit adresu dla stron ( (dec)1111_1111 = 255), istnieje 256 stron w pamieci wirtualnej, beda one sciagane do ramek
 
 struct page {
 	unsigned short nr;
@@ -19,17 +19,23 @@ class PamiecOperiWirt
 public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
+	unsigned short LicznikDoStron;
+	unsigned short AktualnyRozmiarOP;//zlicza ile ramek jest zajetych
+	unsigned short AktualnyRozmiarWIRT;//zlicza ile stron jest zajetych
 
-	int AktualnyRozmiarOP;//zlicza ile razy u¿yta zostanie operacja push_back
-	int AktualnyRozmiarWIRT;//zlicza ile razy u¿yta zostanie operacja push_back
 	page *singlepage;
 	list <page> POper;
 	list <page> PWirt;
+	list <page>::iterator iter;
 
-	int WhichPage(short int);//MMU do przeliczania adresu logicznego na fizyczny
-	int WhatOffset(short int);//MMU
+	//PCB blok; //jeszcze nie jestem tego pewien
 
-	void AktualizujPamiecWirtualna();//kontrowersyjna procedura, musze mieæ swój bank (pamiêc wirt.) z której bêdê przepisywa³ do operacyjnej pojedyncze bloki danych. Tym bankiem nie mo¿e byæ sam dysk (s³owa bartoszka) wiêc trzeba dokonywaæ jakiegoœ przepisywania dysku do mojego banku, tym bêdzie siê zajmowaæ ta procedura
+	//int WhichPage(short int); //MMU do przeliczania adresu logicznego na fizyczny, nie wiem czy sie przydadz¹ na ten moment
+	//int WhatOffset(short int);  //MMU -||-
+
+	void StworzPamiecWirtualna();//kontrowersyjna procedura, musze mieæ swój bank (pamiêc wirt.) z której bêdê przepisywa³ do operacyjnej pojedyncze bloki danych. Tym bankiem NIE mo¿e byæ sam dysk (s³owa bartoszka) wiêc trzeba dokonywaæ jakiegoœ przepisywania dysku do mojego banku, tym bêdzie siê zajmowaæ ta procedura
+
+	void DeleteProcess(PCB);
 
 };
 

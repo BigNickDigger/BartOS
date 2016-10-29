@@ -10,7 +10,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, char*name)
 	Proc_Control_block->Process_ID = IdentGen; IdentGen++;
 	Proc_Control_block->Priority = rand()%8;
 	int size = 9; Proc_Control_block->pages = new stronice[size]; // Wielkoœæ Pliku / Rozmiar Stronicy 
-	Proc_Control_block->messages.push_back("eatshit");
+	//Proc_Control_block->messages.push_back("eatshit");
 }
 
 

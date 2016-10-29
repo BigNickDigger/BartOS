@@ -4,35 +4,52 @@
 
 PamiecOperiWirt::PamiecOperiWirt()
 {
-	for (int i = 0; i < 255; i++)//utworzenie pamieci wirtualnej, 256 pustych stron
+	for (int i = 0; i < framecount; i++)
 	{
 		singlepage = new page;
-		PWirt.push_back(*singlepage);
+		singlepage->data.reserve(14);
+		singlepage->nr = i;//numeruje ramki od 0 do 7
+		POper.push_back(*singlepage);//utworzenie pamieci operacyjnej, 8 pustych ramek, po iteratorze mo¿na wpisywaæ
 	}
-	for (int i = 0; i < 8; i++)
-	{
-		singlepage = new page;
-		POper.push_back(*singlepage);//utworzenie pamieci operacyjnej, 8 pustych ramek
-	}
+	LicznikDoStron = 0;
 }
 
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
-	
+	delete singlepage;
 }
 
-int PamiecOperiWirt::WhichPage(short int x)
+//int PamiecOperiWirt::WhichPage(short int x)
+//{
+//	return (x / 16);
+//}
+//
+//int PamiecOperiWirt::WhatOffset(short int x)
+//{
+//	return (x % 16);
+//}
+
+void PamiecOperiWirt::StworzPamiecWirtualna()
 {
-	return (x / 16);
+	//tworzy strone, wpisuje 14 charow i pushuje do listy stron. Powtarza az do wyczerpania charow na dysku
 }
 
-int PamiecOperiWirt::WhatOffset(short int x)
+void PamiecOperiWirt::DeleteProcess(PCB blok)
 {
-	return (x % 16);
-}
-
-void PamiecOperiWirt::AktualizujPamiecWirtualna()
-{
+	int i = 0;
+	for (iter = POper.begin(); iter != POper.end(); i++)
+	{
+		
+		if (blok.pages[i].Valid == true)//gdy iter najedzie na ramke dla ktorej w tablicy stronic bit valid jest rowny TRUE
+		{
+			
+			POper.erase(iter++);
+		}
+		else
+		{
+			iter++;
+		}
+	}
 	
 }
