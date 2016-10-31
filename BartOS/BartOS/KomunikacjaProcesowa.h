@@ -1,9 +1,11 @@
 #pragma once
+#include <iostream>
+using namespace std;
+
 struct Mess
 {
 	int nadawca;
-	int odbiorca;
-	char *tresc;
+	string tresc;
 };
 
 class KomunikacjaProcesowa
@@ -11,7 +13,7 @@ class KomunikacjaProcesowa
 public:
 	KomunikacjaProcesowa();
 	~KomunikacjaProcesowa();
-	void Nadaj(int, int, char*);
+	void Nadaj(int, int, string);
 	Mess Odbierz(int);
 
 };

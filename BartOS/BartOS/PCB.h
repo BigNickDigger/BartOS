@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <vector>
 #include <time.h>
+#include <queue>
+#include "KomunikacjaProcesowa.h"
 struct stronice {
 	bool Valid;
 	short int cell;
@@ -25,6 +27,6 @@ public:
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Halted
 	};
-	//std::vector<char[8]>messages;
+	std::queue<Mess>messages;
 };
 

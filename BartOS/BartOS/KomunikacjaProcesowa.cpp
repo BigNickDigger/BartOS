@@ -13,7 +13,7 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 {
 }
 
-void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, char *tresc)
+void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 {
 	/*szukanie odbiorcy
 	if(Lista->Proces.ID==Odbiorca)
