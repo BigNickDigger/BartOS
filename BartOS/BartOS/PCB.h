@@ -17,9 +17,10 @@ public:
 	~PCB();
 	char* nazwa;
 	int Process_State,
-		Process_ID, Process_Child_ID;
+		Process_ID;
 	short int Priority,
 		ProgramCounter;
+	int RegA, RegB, RegC, RegD;
 	stronice *pages;
 	void RequestMemoryBegin(int &Memory_Begin);
 	void RequestMemoryLimit(int &Memory_Limit);
