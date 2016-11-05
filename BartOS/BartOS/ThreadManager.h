@@ -9,14 +9,15 @@ std::vector<PCB*>AllProc;
 class CThreadManager
 {
 public:
-	CThreadManager(PamiecOperiWirt* Memory, char *name);
+	CThreadManager(PamiecOperiWirt* Memory);
 	~CThreadManager();
 	PCB * Proc_Control_block;
 	void CreateProcess(char*name);
 	void request_memory();
 	static int IdentGen;
 private:
-	
+	PamiecOperiWirt* Memory;
+	std::vector<PCB*>::iterator ElementAt;
 
 };
 
