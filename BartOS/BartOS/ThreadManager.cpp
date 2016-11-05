@@ -8,7 +8,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, char*name)
 	Proc_Control_block->nazwa = name;
 	Proc_Control_block->Process_State = PCB::Proc_New;
 	Proc_Control_block->Process_ID = IdentGen; IdentGen++;
-	Proc_Control_block->Priority = rand()%8;
+	Proc_Control_block->Priority = rand() % 7 + 1;
 	int size = 9; Proc_Control_block->pages = new stronice[size]; // Wielkoœæ Pliku / Rozmiar Stronicy 
 	//Proc_Control_block->messages.push_back("eatshit");
 }
@@ -17,6 +17,6 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, char*name)
 CThreadManager::~CThreadManager()
 {
 }
-void CThreadManager::fork(char*name) {
+void CThreadManager::CreateProcess(char*name) {
 
 }
