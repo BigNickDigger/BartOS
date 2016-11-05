@@ -4,7 +4,7 @@
 
 PCB::PCB()
 {
-	Process_ID = Proc_New;
+	
 }
 
 
