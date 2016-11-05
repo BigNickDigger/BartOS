@@ -34,7 +34,7 @@ public:
 	//int WhatOffset(short int);  //MMU -||-
 
 	void StworzPamiecWirtualna();//kontrowersyjna procedura, musze mieæ swój bank (pamiêc wirt.) z której bêdê przepisywa³ do operacyjnej pojedyncze bloki danych. Tym bankiem NIE mo¿e byæ sam dysk (s³owa bartoszka) wiêc trzeba dokonywaæ jakiegoœ przepisywania dysku do mojego banku, tym bêdzie siê zajmowaæ ta procedura
-
+	stronice MemRequest();
 	void DeleteProcess(PCB);
 
 };
