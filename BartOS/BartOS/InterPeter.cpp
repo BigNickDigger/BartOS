@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "InterPeter.h"
+#include <string>
 
 
 InterPeter::InterPeter()
@@ -36,7 +37,7 @@ void InterPeter::Command()
 		switch (line.at(3))
 		{
 		case 'A':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'B':
 				rejA += rejB;
@@ -45,24 +46,31 @@ void InterPeter::Command()
 			case 'C':
 				rejA += rejC;
 				break;
+			default:
+				rejA += std::stoi(line.substr(5));
+				break;
 			}
 			break;
 
 		case 'B':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'A':
 				rejB += rejA;
 				break;
 
 			case 'C':
-				rejC += rejA;
+				rejB += rejA;
+				break;
+			default:
+				rejB += std::stoi(line.substr(5));
 				break;
 			}
+		
 			break;
 
 		case 'C':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'A':
 				rejC += rejA;
@@ -72,6 +80,8 @@ void InterPeter::Command()
 				rejC += rejB;
 				break;
 			}
+		default:
+			rejC += std::stoi(line.substr(5));
 			break;
 		}
 	}
@@ -80,7 +90,7 @@ void InterPeter::Command()
 		switch (line.at(3))
 		{
 		case 'A':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'B':
 				rejA -= rejB;
@@ -89,24 +99,30 @@ void InterPeter::Command()
 			case 'C':
 				rejA -= rejC;
 				break;
+			default:
+				rejA -= std::stoi(line.substr(5));
+				break;
 			}
 			break;
 
 		case 'B':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'A':
 				rejB -= rejA;
 				break;
 
 			case 'C':
-				rejC -= rejA;
+				rejB -= rejA;
+				break;
+			default:
+				rejB -= std::stoi(line.substr(5));
 				break;
 			}
 			break;
 
 		case 'C':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'A':
 				rejC -= rejA;
@@ -114,6 +130,9 @@ void InterPeter::Command()
 
 			case 'B':
 				rejC -= rejB;
+				break;
+			default:
+				rejC -= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -124,7 +143,7 @@ void InterPeter::Command()
 		switch (line.at(3))
 		{
 		case 'A':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'B':
 				rejA *= rejB;
@@ -133,24 +152,30 @@ void InterPeter::Command()
 			case 'C':
 				rejA *= rejC;
 				break;
+			default:
+				rejA *= std::stoi(line.substr(5));
+				break;
 			}
 			break;
 
 		case 'B':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'A':
 				rejB *= rejA;
 				break;
 
 			case 'C':
-				rejC *= rejA;
+				rejB *= rejA;
+				break;
+			default:
+				rejB *= std::stoi(line.substr(5));
 				break;
 			}
 			break;
 
 		case 'C':
-			switch (line.at(6))
+			switch (line.at(5))
 			{
 			case 'A':
 				rejC *= rejA;
@@ -158,6 +183,9 @@ void InterPeter::Command()
 
 			case 'B':
 				rejC *= rejB;
+				break;
+			default:
+				rejC *= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -199,7 +227,7 @@ void InterPeter::Command()
 	}
 	else if (n == "JP")
 	{
-
+		PC = std::stoi(line.substr(3));
 	}
 	else if (n == "JZ")
 	{
@@ -215,8 +243,56 @@ void InterPeter::Command()
 	}
 	else if (n == "MV")
 	{
+		switch (line.at(3))
+		{
+		case 'A':
+			switch (line.at(5))
+			{
+			case 'B':
+				rejA = rejB;
+				break;
 
+			case 'C':
+				rejA = rejC;
+				break;
+			default:
+				rejA = std::stoi(line.substr(5));
+				break;
+			}
+			break;
 
+		case 'B':
+			switch (line.at(5))
+			{
+			case 'A':
+				rejB = rejA;
+				break;
+
+			case 'C':
+				rejB = rejA;
+				break;
+			default:
+				rejB = std::stoi(line.substr(5));
+				break;
+			}
+			break;
+
+		case 'C':
+			switch (line.at(5))
+			{
+			case 'A':
+				rejC = rejA;
+				break;
+
+			case 'B':
+				rejC = rejB;
+				break;
+			default:
+				rejC = std::stoi(line.substr(5));
+				break;
+			}
+			break;
+		}
 	}
 	else if (n == "SB")
 	{
@@ -232,15 +308,15 @@ void InterPeter::Command()
 
 	//SYS
 
-	else if (n == "NF") //plik
+	else if (n == "NF") //nowy plik
 	{
-//nowy plik
+
 	}
 	else if (n == "LD")
 	{
 
 	}
-	else if (n == "SV")
+	else if (n == "SV") 
 	{
 		
 	}
