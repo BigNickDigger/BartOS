@@ -203,6 +203,23 @@ void InterPeter::Command()
 	}
 	else if (n == "JZ")
 	{
+		if (rejA == 0)
+		{
+			PC++;
+		}
+		else
+		{
+
+		}
+
+	}
+	else if (n == "MV")
+	{
+
+
+	}
+	else if (n == "SB")
+	{
 
 
 	}
@@ -225,9 +242,9 @@ void InterPeter::Command()
 	}
 	else if (n == "SV")
 	{
-
+		
 	}
-	else if (n == "SB")
+	else if (n == "MV")
 	{
 
 	}
