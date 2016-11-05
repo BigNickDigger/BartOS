@@ -11,12 +11,13 @@ class CThreadManager
 public:
 	CThreadManager(PamiecOperiWirt* Memory);
 	~CThreadManager();
-	PCB * Proc_Control_block;	
+	PCB * Proc_Control_block;
 	void CreateProcess(char*name);
-	
+	void request_memory();
 	static int IdentGen;
 private:
 	PamiecOperiWirt* Memory;
 	std::vector<PCB*>::iterator ElementAt;
+
 };
 
