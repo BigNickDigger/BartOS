@@ -13,7 +13,6 @@ public:
 	~CThreadManager();
 	PCB * Proc_Control_block;
 	void CreateProcess(char*name);
-	void request_memory();
 	static int IdentGen;
 private:
 	PamiecOperiWirt* Memory;
