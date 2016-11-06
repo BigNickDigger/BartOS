@@ -30,9 +30,6 @@
     <ClInclude Include="KomunikacjaProcesowa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MechSynch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ProcesoPriorytet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KomunikacjaProcesowa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MechSynch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProcesoPriorytet.cpp">

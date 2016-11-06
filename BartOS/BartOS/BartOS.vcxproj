@@ -143,7 +143,6 @@
   <ItemGroup>
     <ClInclude Include="InterPeter.h" />
     <ClInclude Include="KomunikacjaProcesowa.h" />
-    <ClInclude Include="MechSynch.h" />
     <ClInclude Include="PamiecOperiWirt.h" />
     <ClInclude Include="PCB.h" />
     <ClInclude Include="ProcesoPriorytet.h" />
@@ -160,7 +159,6 @@
     <ClCompile Include="BartOS.cpp" />
     <ClCompile Include="InterPeter.cpp" />
     <ClCompile Include="KomunikacjaProcesowa.cpp" />
-    <ClCompile Include="MechSynch.cpp" />
     <ClCompile Include="PamiecOperiWirt.cpp" />
     <ClCompile Include="PCB.cpp" />
     <ClCompile Include="ProcesoPriorytet.cpp" />
