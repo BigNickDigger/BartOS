@@ -3,7 +3,7 @@
 #include "PCB.h"
 #include <queue>
 //Help
-//KRZYSIU TO PIZDA H3H3 
+//KRZYSIU TO PIZDA Hx3H3 
 KomunikacjaProcesowa::KomunikacjaProcesowa()
 {
 }
