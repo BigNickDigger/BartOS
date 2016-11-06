@@ -24,7 +24,7 @@ PornOS
 #include <iostream>
 #include <string>
 #include "PamiecOperiWirt.h"
-#include "PCB.h"
+#include "ThreadManager.h"
 
 using namespace std;
 const float SystemVer = 1.337;
@@ -32,14 +32,15 @@ int main()
 {
 	//bawie sie tutaj, mo¿ecie to wszystko wywaliæ w piŸdziet//////////////////////////////
 	PamiecOperiWirt PAM;
-	PCB proces;
-	proces.pages = new stronice[8];
+	CThreadManager tm(&PAM); //<- z tego tworzy sê procesy
+	//tm.createprocess(...);
+	/*proces.pages = new stronice[8];
 	proces.pages[0].cell = 0;
 	proces.pages[5].cell = 5;
 	proces.pages[0].Valid = true;//ramka nr 0 znajduje sie w pamieci
-	proces.pages[5].Valid = true;//ramka nr 5 znajduje sie w pamieci. usuniecie procesu = usuniecie ramek 0 i 5
+	proces.pages[5].Valid = true;//ramka nr 5 znajduje sie w pamieci. usuniecie procesu = usuniecie ramek 0 i 5*/
 
-	proces.nazwa = "cienias";//supermega proces
+	//proces.nazwa = "cienias";//supermega proces
 
 	PAM.iter = PAM.POper.begin();
 	PAM.iter->data = "ADD A,8 MOV B,";//zawartosc pierwszej ramki pamieci
