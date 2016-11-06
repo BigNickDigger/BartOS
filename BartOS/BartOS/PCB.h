@@ -22,11 +22,10 @@ public:
 		ProgramCounter;
 	int RegA, RegB, RegC, RegD;
 	stronice *pages;
-	void RequestMemoryBegin(int &Memory_Begin);
-	void RequestMemoryLimit(int &Memory_Limit);
+	
 	typedef enum//Stany Procesora
 	{
-		Proc_New, Proc_Waiting, Proc_Ready, Proc_Halted
+		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous
 	};
 	std::queue<Mess>messages;
 };

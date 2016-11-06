@@ -54,4 +54,13 @@ void PamiecOperiWirt::DeleteProcess(PCB blok)
 		}
 	}
 	
+}//Dodalem Ci funkcje hehe XD
+// Wez ja wypelnij jakos ladnie
+stronice PamiecOperiWirt::MemRequest() {
+	int ErrCode;
+	if (true)//Jest wolne miejsce dla alokacji pliku w 
+		throw ErrCode = 1; //podmien true na wypelniona stronice
+	else //Nie ma miejsca na plik
+		throw ErrCode = 0;
+
 }
