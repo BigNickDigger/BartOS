@@ -8,8 +8,8 @@ using namespace std;
 const int framesize = 16;//rozmiar ramki/strony
 
 class page {
+public:
 	char tab[framesize];//framesize = 16
-
 	page()
 	{
 		for (int i = 0; i < framesize; i++)
@@ -34,11 +34,9 @@ class PamiecOperiWirt
 public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
-	unsigned short LicznikDoStron;
-	unsigned short AktualnyRozmiarOP;//zlicza ile ramek jest zajetych
-	unsigned short AktualnyRozmiarWIRT;//zlicza ile stron jest zajetych
 
 	page *singlepage;
+
 	page POper[16];//pamiec op 126byte
 	page PWirt[126];//pamiec wirtualna 2016byte
 
