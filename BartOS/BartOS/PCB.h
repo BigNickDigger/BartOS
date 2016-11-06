@@ -28,5 +28,6 @@ public:
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous
 	};
 	std::queue<Mess>messages;
+	std::vector<PCB*>::iterator ElementAt;
 };
 

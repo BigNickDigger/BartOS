@@ -14,7 +14,7 @@ CThreadManager::~CThreadManager()
 {
 	if (Proc_Control_block->Process_State == PCB::Proc_Terminated) {
 		Memory->DeleteProcess(*this->Proc_Control_block);
-		AllProc.erase(ElementAt);
+		//AllProc.erase(ElementAt);
 	}
 	else(Proc_Control_block->Process_State = PCB::Proc_Erroneous);
 }
@@ -33,4 +33,5 @@ void CThreadManager::CreateProcess(char*name) {
 	}
 	Proc_Control_block->Process_ID = IdentGen; IdentGen++;
 	Proc_Control_block->Priority = rand() % 7 + 1;
+
 }
