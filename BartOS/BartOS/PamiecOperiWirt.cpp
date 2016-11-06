@@ -13,7 +13,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 	}
 	LicznikDoStron = 0;
 }
-
+//sss
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
