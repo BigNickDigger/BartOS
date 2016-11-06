@@ -30,7 +30,13 @@ using namespace std;
 const float SystemVer = 1.337;
 int main()
 {
+	PamiecOperiWirt PAM;
 	
+	
+	for (int i = 0; i < framesize; i++)
+		PAM.POper[0].tab[i] = ('a'+i);
+	PAM.PrintOM();
+	cout << PAM.ReturnLineOf16Chars(0);
     return 0;
 }
 

@@ -6,10 +6,13 @@ using namespace std;
 //proszê siê nie sugerowac moimi rozwi¹zaniami, tu jeszcze wszystko mo¿e siê zmieniæ
 
 const int framesize = 16;//rozmiar ramki/strony
+const int OMsize = 16;
+const int WMsize = 64;
 
 class page {
 public:
 	char tab[framesize];//framesize = 16
+	int nr;
 	page()
 	{
 		for (int i = 0; i < framesize; i++)
@@ -35,10 +38,12 @@ public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
 
-	page *singlepage;
+	int NrforOM;
+	int NrforWM;
+	page POper[OMsize];//16 czyli pamiec op 126byte
+	page PWirt[WMsize];//64 pamiec wirtualna 2048byte
 
-	page POper[16];//pamiec op 126byte
-	page PWirt[126];//pamiec wirtualna 2016byte
+	char *ReturnLineOf16Chars(int);//udostepnia zawartosc ramki
 
 	
 
@@ -47,6 +52,8 @@ public:
 
 	stronice MemRequest();
 	void DeleteProcess(PCB);
+	void PrintOM();
+	void PrintWM();
 
 };
 
