@@ -57,7 +57,7 @@ int main()
 		cout << "RAMKA nr " << PAM.iter->nr << " z zawartoscia " << PAM.iter->data << endl;
 	}
 	cout << "usuwanie procesu z pamieci..." << endl;
-	PAM.DeleteProcess(proces);//funkcja usuwajaca proces z pamieci
+	//PAM.DeleteProcess(proces);//funkcja usuwajaca proces z pamieci
 	cout << endl;
 	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
 	{
