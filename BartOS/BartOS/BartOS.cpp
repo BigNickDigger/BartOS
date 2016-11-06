@@ -34,6 +34,7 @@ int main()
 	PamiecOperiWirt PAM;
 	CThreadManager tm(&PAM); //<- z tego tworzy sê procesy
 	//tm.createprocess(...);
+	
 	/*proces.pages = new stronice[8];
 	proces.pages[0].cell = 0;
 	proces.pages[5].cell = 5;
@@ -57,7 +58,7 @@ int main()
 		cout << "RAMKA nr " << PAM.iter->nr << " z zawartoscia " << PAM.iter->data << endl;
 	}
 	cout << "usuwanie procesu z pamieci..." << endl;
-	PAM.DeleteProcess(proces);//funkcja usuwajaca proces z pamieci
+	//PAM.DeleteProcess();//funkcja usuwajaca proces z pamieci
 	cout << endl;
 	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
 	{
