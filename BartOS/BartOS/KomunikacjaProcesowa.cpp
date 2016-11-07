@@ -19,45 +19,45 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 
 void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 {
-	int counter = 0;
-	Mess x;
-	x.nadawca = Nadawca;
-	x.tresc = tresc;
-	//szukanie odbiorcy
-	//Magiczny for ktory przeszukuje liste prockow
-	for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
-	{
-		if (X->AllProc[counter]->Process_ID == Odbiorca)
-		{
-			X->AllProc[counter]->messages.push(x);
-		}
-		else
-		counter++;
-	}
+	//int counter = 0;
+	//Mess x;
+	//x.nadawca = Nadawca;
+	//x.tresc = tresc;
+	////szukanie odbiorcy
+	////Magiczny for ktory przeszukuje liste prockow
+	//for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
+	//{
+	//	if (X->AllProc[counter]->Process_ID == Odbiorca)
+	//	{
+	//		X->AllProc[counter]->messages.push(x);
+	//	}
+	//	else
+	//	counter++;
+	//}
 }
 
 string KomunikacjaProcesowa::Odbierz(int Odbiorca)
 {
 	//szukanie skrzynki
-	int counter = 0;
-	for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
-	{
-		if (X->AllProc[counter]->Process_ID == Odbiorca)
-		{
-			Mess x;
-			x = X->AllProc[counter]->messages.front;
-			X->AllProc[counter]->messages.pop;
-		}
-		else
-		{
-			//Lista = Lista->next;
-			counter++;
-		}
+	//int counter = 0;
+	//for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
+	//{
+	//	if (X->AllProc[counter]->Process_ID == Odbiorca)
+	//	{
+	//		Mess x;
+	//		x = X->AllProc[counter]->messages.front;
+	//		X->AllProc[counter]->messages.pop;
+	//	}
+	//	else
+	//	{
+	//		//Lista = Lista->next;
+	//		counter++;
+	//	}
 
 
 		//return x;
 		//Jak nie znajdzie error(pytanie jak errora wyjebac ? )
-	}
+	//}
 	
 }
 
