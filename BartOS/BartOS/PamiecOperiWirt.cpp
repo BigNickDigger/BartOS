@@ -4,20 +4,21 @@
 
 PamiecOperiWirt::PamiecOperiWirt()
 {
-	for (int i = 0; i < framecount; i++)
+	NrforOM = 0;
+	NrforWM = 0;
+	for (int i = 0; i < OMsize;i++)
 	{
-		singlepage = new page;
-		singlepage->data.reserve(14);
-		singlepage->nr = i;//numeruje ramki od 0 do 7
-		POper.push_back(*singlepage);//utworzenie pamieci operacyjnej, 8 pustych ramek, po iteratorze mo¿na wpisywaæ
+		POper[i].nr = i;
 	}
-	LicznikDoStron = 0;
+	for (int i = 0; i < WMsize; i++)
+	{
+		PWirt[i].nr = i;
+	}
 }
-
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
-	delete singlepage;
+	
 }
 
 //int PamiecOperiWirt::WhichPage(short int x)
@@ -30,31 +31,12 @@ PamiecOperiWirt::~PamiecOperiWirt()
 //	return (x % 16);
 //}
 
-void PamiecOperiWirt::StworzPamiecWirtualna()
-{
-	//tworzy strone, wpisuje 14 charow i pushuje do listy stron. Powtarza az do wyczerpania charow na dysku
-}
 
 void PamiecOperiWirt::DeleteProcess(PCB blok)
 {
-	int i = 0;
-	for (iter = POper.begin(); iter != POper.end(); i++)
-	{
-		
-		if (blok.pages[i].Valid == true)//gdy iter najedzie na ramke dla ktorej w tablicy stronic bit valid jest rowny TRUE
-		{
-			POper.erase(iter++);
-			singlepage = new page;
-			singlepage->nr = i;
-			POper.insert(iter,*singlepage);
-		}
-		else
-		{
-			iter++;
-		}
-	}
 	
-}//Dodalem Ci funkcje hehe XD
+}
+//Dodalem Ci funkcje hehe XD
 // Wez ja wypelnij jakos ladnie
 stronice PamiecOperiWirt::MemRequest() {
 	int ErrCode;
@@ -63,4 +45,29 @@ stronice PamiecOperiWirt::MemRequest() {
 	else //Nie ma miejsca na plik
 		throw ErrCode = 0;
 
+}
+
+char *PamiecOperiWirt::ReturnLineOf16Chars(int NrOfTheFrame)//NrOfTheFrame nale¿y do <0,15>
+{
+	return POper[NrOfTheFrame].tab;
+}
+
+void PamiecOperiWirt::PrintOM()
+{
+	cout << "AKTUALNY STAN PAMIECI OPERACYJNEJ" << endl;
+	for (int i = 0; i < OMsize; i++)
+	{
+		POper[i].PrintPage();
+	}
+}
+
+void PamiecOperiWirt::PrintWM()
+{
+	cout << "AKTUALNY STAN PAMIECI WIRTUALNEJ" << endl;
+	for (int i = 0; i < WMsize; i++)
+	{
+		if (i % 16 == 0 && i!=0)
+			cout << endl;
+		PWirt[i].PrintPage();
+	}
 }

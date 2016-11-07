@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "KomunikacjaProcesowa.h"
+#include <iostream>
 #include "PCB.h"
+#include "ThreadManager.h"
 #include <queue>
 //Help
-//KRZYSIU TO PIZDA H3H3 
-KomunikacjaProcesowa::KomunikacjaProcesowa()
+using namespace std;
+//KRZYSIU TO PIZDA Hx3H3 
+KomunikacjaProcesowa::KomunikacjaProcesowa(CThreadManager &Y)
 {
+	X = &Y;
 }
 
 
@@ -15,45 +19,47 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 
 void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 {
-	/*szukanie odbiorcy
-	if(Lista->Proces.ID==Odbiorca)
+	int counter = 0;
 	Mess x;
-	x.nadawca=Nadawca;
-	x.odbiorca=odbiorca;
-	x.tresc=tresc;
-	Lista->Proces.queue.push<x>;
-	else
-	   Lista=Lista->next;
-
-
-
-
-	   Jak nie znajdzie error (pytanie jak errora wyjebac?)
-	*/
-
+	x.nadawca = Nadawca;
+	x.tresc = tresc;
+	//szukanie odbiorcy
+	//Magiczny for ktory przeszukuje liste prockow
+	for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
+	{
+		if (X->AllProc[counter]->Process_ID == Odbiorca)
+		{
+			X->AllProc[counter]->messages.push(x);
+		}
+		else
+		counter++;
+	}
 }
 
-/*Mess KomunikacjaProcesowa::Odbierz(int Odbiorca)
+string KomunikacjaProcesowa::Odbierz(int Odbiorca)
 {
-	szukanie skrzynki
-	if(Lista->Prcoes.ID==Odbiorca)
+	//szukanie skrzynki
+	int counter = 0;
+	for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
 	{
-	Lista->Proces.queue.;
-	Mess x;
+		if (X->AllProc[counter]->Process_ID == Odbiorca)
+		{
+			Mess x;
+			x = X->AllProc[counter]->messages.front;
+			X->AllProc[counter]->messages.pop;
+		}
+		else
+		{
+			//Lista = Lista->next;
+			counter++;
+		}
 
-	x.nadawca=Lista->Proces.queue.front.nadawca;
-	x.odbiorca=Lista->Proces.queue.front.odbiorca;
-	x.tresc=Lista->Proces.queue.front.tresc;
+
+		//return x;
+		//Jak nie znajdzie error(pytanie jak errora wyjebac ? )
 	}
-	else
-	Lista=Lista->next;
-
-
-
-	return x;
-	Jak nie znajdzie error (pytanie jak errora wyjebac?)
 	
-}*/
+}
 
 
 /*    push - umieszczenie nowego elementu na koñcu kolejki;

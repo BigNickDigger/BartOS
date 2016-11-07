@@ -229,15 +229,11 @@ void InterPeter::Command()
 	{
 		PC = std::stoi(line.substr(3));
 	}
-	else if (n == "JZ")
+	else if (n == "JN")
 	{
-		if (rejA == 0)
+		if (rejA != 0)
 		{
-			PC++;
-		}
-		else
-		{
-
+			PC = std::stoi(line.substr(3));
 		}
 
 	}
@@ -335,7 +331,7 @@ void InterPeter::Command()
 
 	
 
-
+	PC++;
 }
 
 void InterPeter::LoadProg()
