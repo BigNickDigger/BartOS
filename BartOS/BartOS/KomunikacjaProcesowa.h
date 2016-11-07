@@ -6,18 +6,19 @@ using namespace std;
 
 struct Mess
 {
+	int Nadawca;
 	string tresc;
 };
 
 class KomunikacjaProcesowa
 {
 public:
-	KomunikacjaProcesowa(CThreadManager &Y);
+	KomunikacjaProcesowa(/*CThreadManager &Y*/);
 	~KomunikacjaProcesowa();
-	CThreadManager *X;
+	//CThreadManager *X;
 	void Nadaj(int, int, string);
 	string Odbierz(int);
-	vector<PCB*>::const_iterator xD;
+	//vector<PCB*>::const_iterator xD;
 
 };
 
