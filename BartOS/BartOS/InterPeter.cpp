@@ -225,11 +225,11 @@ void InterPeter::Command()
 			break;
 		}
 	}
-	else if (n == "JP")
+	else if (n == "JP") // jump
 	{
 		PC = std::stoi(line.substr(3));
 	}
-	else if (n == "JN")
+	else if (n == "JN") //jump not zero
 	{
 		if (rejA != 0)
 		{
@@ -292,7 +292,6 @@ void InterPeter::Command()
 	}
 	else if (n == "SW") //swap
 	{
-		int p;
 
 		switch (line.at(3))
 		{
@@ -353,11 +352,11 @@ void InterPeter::Command()
 	{
 
 	}
-	else if (n == "LD")
+	else if (n == "LD") //meme load
 	{
-
+		
 	}
-	else if (n == "SV") 
+	else if (n == "SV") //meme save
 	{
 		
 	}
@@ -366,6 +365,14 @@ void InterPeter::Command()
 
 	}
 	else if (n == "SB")
+	{
+
+	}
+	else if (n == "KL") //kill process
+	{
+
+	}
+	else if (n == "HT") //halt - hammer Zeit
 	{
 
 	}
