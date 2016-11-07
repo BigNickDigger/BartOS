@@ -36,7 +36,7 @@ void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 	//}
 }
 
-string KomunikacjaProcesowa::Odbierz(int Odbiorca)
+void KomunikacjaProcesowa::Odbierz(int Odbiorca)
 {
 	//szukanie skrzynki
 	//int counter = 0;
@@ -58,8 +58,6 @@ string KomunikacjaProcesowa::Odbierz(int Odbiorca)
 		//return x;
 		//Jak nie znajdzie error(pytanie jak errora wyjebac ? )
 	//}
-	string ded = "pootis";
-	return ded;
 }
 
 
