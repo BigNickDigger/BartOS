@@ -54,7 +54,8 @@ stronice PamiecOperiWirt::MemRequest()
 
 char *PamiecOperiWirt::ReturnLineOf16Chars()
 {
-	return "aaa";
+	char* eatshit = "eat shit for real, nigga";
+	return eatshit;
 }
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory()
