@@ -4,7 +4,7 @@
 
 PamiecOperiWirt::PamiecOperiWirt()
 {
-	IndexforOM = 0;
+	OM_Next_Frame_Victim = 0;
 	IndexforWM = 0;
 	for (int i = 0; i < OMsize; i++)
 	{
@@ -62,7 +62,7 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory()
 {
 
 }
-
+// ta funkcja ponizej to chyba siê nie przyda xdxdxd, prêdzej ta pod ni¹
 char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej funkcji rozpocznie proces zwracania wszystkich charow sk³adaj¹cych siê na program do P_Oper
 {
 	for (int i = 0; i < 4; i++)//przebiega po wszystkich stronach procesu (za³ó¿my ¿e 4)
@@ -81,7 +81,7 @@ char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej fun
 		if (blok.pages[i].Valid == false)                                 //wejdŸ tu jeœli ramki NIE MA w PAM OP
 		{
 			//strony nie ma w pamieci OP, sciagnij ja
-			//GetPageFromWM(i);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwracaj z niej chary
+			Get_Page_From_WM(i);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwracaj z niej chary USTAW ROWNIEZ BIT NA VALID
 			for (int j = 0; j < framesize; j++)
 			{
 				//strona znajduje sie w pamieci OP wiec zwracamy z niej chary... jest ich nie wiêcej ni¿ framesize=16
@@ -93,6 +93,33 @@ char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej fun
 		}
 	}
 
+}
+
+char PamiecOperiWirt::Get_Char_From_Process(PCB blok, int LogicAdr)
+{
+	int page = WhichPage(LogicAdr);
+	int offset = WhatOffset(LogicAdr);
+	if (blok.pages[page].Valid == true)      //wejdŸ tu jeœli ramka JEST w PAM OP
+	{
+		return POper[page].tab[offset]; //ez zwróæ chara
+	}
+	if (blok.pages[page].Valid == false)      //wejdŸ tu jeœli ramki NIE MA w PAM OP
+	{
+		Get_Page_From_WM(page);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwroc char USTAW ROWNIEZ BIT NA VALID
+		return POper[page].tab[offset];//i ³adnie zwróæ chara
+	}
+}
+
+void PamiecOperiWirt::Get_Page_From_WM(int page)
+{
+	for (int i = 0; i < framesize; i++)
+	{
+		POper[OM_Next_Frame_Victim].tab[i] = PWirt[page].tab[i];
+	}
+	OM_Next_Frame_Victim++;
+	if (OM_Next_Frame_Victim == 16)
+		OM_Next_Frame_Victim = 0;
+	
 }
 
 
