@@ -118,7 +118,7 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB blok, int page)
 	}
 
 	//blok.pages[brakujacy index].cell = OM_Next_Frame_Victim;
-	blok.pages[IndexforWM].Valid = true; IndexforWM++;//pomocniczy index tymczasowo
+	blok.pages[IndexforWM].Valid = true; IndexforWM++;//pomocniczy index tymczasowo trzeba zrobic poprawny
 	OM_Next_Frame_Victim++;
 	if (OM_Next_Frame_Victim == 16)
 		OM_Next_Frame_Victim = 0;
@@ -132,6 +132,7 @@ void PamiecOperiWirt::PrintOM()
 	cout << "AKTUALNY STAN PAMIECI OPERACYJNEJ" << endl;
 	for (int i = 0; i < OMsize; i++)
 	{
+		cout << "FRAME "; cout.width(2); cout << POper[i].nr << " -> ";
 		POper[i].PrintPage();
 	}
 }
@@ -143,6 +144,9 @@ void PamiecOperiWirt::PrintWM()
 	{
 		if (i % 16 == 0 && i != 0)
 			cout << endl;
+		cout.width(2);
+		cout << "PAGE "; cout.width(2); cout << PWirt[i].nr << " -> ";
 		PWirt[i].PrintPage();
+		
 	}
 }

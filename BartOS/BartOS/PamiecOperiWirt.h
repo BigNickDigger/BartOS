@@ -25,7 +25,7 @@ public:
 	{
 		for (int i = 0; i < framesize; i++)
 		{
-			cout << tab[i] << " ";
+			cout <<tab[i] << " ";
 		}
 		cout << endl;
 	}
