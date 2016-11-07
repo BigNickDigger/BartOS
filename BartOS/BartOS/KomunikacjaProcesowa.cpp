@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "KomunikacjaProcesowa.h"
 #include <iostream>
-//#include "PCB.h"
-#include "ThreadManager.h"
 #include <queue>
 //Help
 using namespace std;
