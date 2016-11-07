@@ -81,7 +81,7 @@ char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej fun
 		if (blok.pages[i].Valid == false)                                 //wejdü tu jeúli ramki NIE MA w PAM OP
 		{
 			//strony nie ma w pamieci OP, sciagnij ja
-			Get_Page_From_WM(i);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwracaj z niej chary USTAW ROWNIEZ BIT NA VALID
+			Get_Page_From_WM(blok,i);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwracaj z niej chary USTAW ROWNIEZ BIT NA VALID
 			for (int j = 0; j < framesize; j++)
 			{
 				//strona znajduje sie w pamieci OP wiec zwracamy z niej chary... jest ich nie wiÍcej niø framesize=16
@@ -95,7 +95,7 @@ char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej fun
 
 }
 
-char PamiecOperiWirt::Get_Char_From_Process(PCB blok, int LogicAdr)
+char PamiecOperiWirt::Get_Char_From_OM(PCB blok, int LogicAdr)
 {
 	int page = WhichPage(LogicAdr);
 	int offset = WhatOffset(LogicAdr);
@@ -105,20 +105,24 @@ char PamiecOperiWirt::Get_Char_From_Process(PCB blok, int LogicAdr)
 	}
 	if (blok.pages[page].Valid == false)      //wejdü tu jeúli ramki NIE MA w PAM OP
 	{
-		Get_Page_From_WM(page);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwroc char USTAW ROWNIEZ BIT NA VALID
+		Get_Page_From_WM(blok,page);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwroc char USTAW ROWNIEZ BIT NA VALID
 		return POper[page].tab[offset];//i ≥adnie zwrÛÊ chara
 	}
 }
 
-void PamiecOperiWirt::Get_Page_From_WM(int page)
+void PamiecOperiWirt::Get_Page_From_WM(PCB blok, int page)
 {
 	for (int i = 0; i < framesize; i++)
 	{
 		POper[OM_Next_Frame_Victim].tab[i] = PWirt[page].tab[i];
 	}
+
+	//blok.pages[brakujacy index].cell = OM_Next_Frame_Victim;
+	blok.pages[IndexforWM].Valid = true; IndexforWM++;//pomocniczy index tymczasowo
 	OM_Next_Frame_Victim++;
 	if (OM_Next_Frame_Victim == 16)
 		OM_Next_Frame_Victim = 0;
+	
 	
 }
 

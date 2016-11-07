@@ -46,8 +46,8 @@ public:
 	char *ReturnLineOf16Chars();//udostepnia zawartosc ramki, kinda useless propably
 
 	char Get_Whole_Process_From_Memory(PCB blok);//mechanizm obs³ugi stronicowania na ¿¹danie ale dziki bo zwraca ca³y kod programu LUL
-	char Get_Char_From_Process(PCB blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
-	void Get_Page_From_WM(int);
+	char Get_Char_From_OM(PCB blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
+	void Get_Page_From_WM(PCB,int);
 	void Insert_To_Virtual_Memory();//wrzuc do pamieci wirtualnej
 
 	int WhichPage(short int); //MMU do przeliczania adresu logicznego na fizyczny, nie wiem czy sie przydadz¹ na ten moment
