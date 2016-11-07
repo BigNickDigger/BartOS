@@ -15,7 +15,6 @@ class KomunikacjaProcesowa
 public:
 	KomunikacjaProcesowa(/*CThreadManager &Y*/);
 	~KomunikacjaProcesowa();
-	//CThreadManager *X;
 	void Nadaj(int, int, string);
 	void Odbierz(int);
 //	vector<PCB*>::const_iterator xD;

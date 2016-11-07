@@ -38,7 +38,8 @@ int main()
 	PamiecOperiWirt PAM;
 	CThreadManager EatShit(&PAM);
 	KomunikacjaProcesowa EatMoreShit();
-	std::vector<PCB*>MoreShit = EatShit.AllProc; PCB BLOK; BLOK.pages = new stronice[3]; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
+	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
+	PCB BLOK; BLOK.pages = new stronice[3]; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
 	EatShit.AllProc.push_back(&BLOK);
 	//END
 	char bufor[48];
@@ -59,6 +60,8 @@ int main()
 	{
 		cout << bufor[i]<<" ";
 	}cout << endl;
+	cout << EatShit.AllProc.capacity();
+	cout << MoreShit->capacity();
     return 0;
 }
 
