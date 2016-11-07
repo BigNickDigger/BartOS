@@ -2,6 +2,8 @@
 #include "KomunikacjaProcesowa.h"
 #include <iostream>
 #include <queue>
+#include "ThreadManager.h"
+#include "PCB.h"
 //Help
 using namespace std;
 //KRZYSIU TO PIZDA Hx3H3 
