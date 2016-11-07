@@ -13,6 +13,7 @@ Wpisujcie tutaj propozycje nazw:
 BartOS
 kabanOS
 PornOS
+Cyborg
 
 
 
@@ -24,45 +25,43 @@ PornOS
 #include <iostream>
 #include <string>
 #include "PamiecOperiWirt.h"
-#include "PCB.h"
+#include "ThreadManager.h"
 
 using namespace std;
 const float SystemVer = 1.337;
 int main()
 {
-	//bawie sie tutaj, mo¿ecie to wszystko wywaliæ w piŸdziet//////////////////////////////
+	//K$R*A
+	//KRZYSIU MASZ
+	//NIE WK^R%^AJ MNIE:
+	//ZABAWA NIE ZNA GRANIC, ZNOWU TO ROBIE IKS DE DE DE, MemoryGuy2016~
 	PamiecOperiWirt PAM;
-	PCB proces;
-	proces.pages = new stronice[8];
-	proces.pages[0].cell = 0;
-	proces.pages[5].cell = 5;
-	proces.pages[0].Valid = true;//ramka nr 0 znajduje sie w pamieci
-	proces.pages[5].Valid = true;//ramka nr 5 znajduje sie w pamieci. usuniecie procesu = usuniecie ramek 0 i 5
-
-	proces.nazwa = "cienias";//supermega proces
-
-	PAM.iter = PAM.POper.begin();
-	PAM.iter->data = "ADD A,8 MOV B,";//zawartosc pierwszej ramki pamieci
-	advance(PAM.iter,5);
-	PAM.iter->data = "ADD B,4 MOV A,";//zawartosc piatej ramki pamieci
-
-	PAM.iter = PAM.POper.begin();
-	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
-	advance(PAM.iter, 5);
-	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
-
-	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
+	CThreadManager EatShit(&PAM);
+	KomunikacjaProcesowa EatMoreShit();
+	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
+	PCB BLOK; BLOK.pages = new stronice[3]; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
+	EatShit.AllProc.push_back(&BLOK);
+	//END
+	char bufor[48];
+	for (int i = 0; i < framesize; i++)
 	{
-		cout << "RAMKA nr " << PAM.iter->nr << " z zawartoscia " << PAM.iter->data << endl;
+		PAM.PWirt[0].tab[i] = 'a' + i;
+		PAM.PWirt[1].tab[i] = '1' + i;
+		PAM.PWirt[2].tab[i] = 'd' + i;
 	}
-	cout << "usuwanie procesu z pamieci..." << endl;
-	PAM.DeleteProcess(proces);//funkcja usuwajaca proces z pamieci
-	cout << endl;
-	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
+	PAM.PrintWM();
+	PAM.PrintOM();
+	cout << "Sciagam do pomocniczego bufora 3 pelne ramki z pamieci operacyjnej, ktora jest pusta, wiec nastapi obsluga bledu strony\nz wykorzystaniem pamieci wirtualnej" << endl;
+	for (int i = 0; i < framesize*3; i++)
+		bufor[i] = PAM.Get_Char_From_OM(BLOK, i);//sciagam komorki (adres logiczny) od 0 do 47
+	PAM.PrintOM();
+	cout << "Co udalo sie sciagnac z pamieci operacyjnej? Wypisz bufor..." << endl;
+	for (int i = 0; i < framesize*3; i++)
 	{
-		cout << "RAMKA nr " << PAM.iter->nr << " z zawartoscia " << PAM.iter->data << endl;
-	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+		cout << bufor[i]<<" ";
+	}cout << endl;
+	cout << EatShit.AllProc.capacity();
+	cout << MoreShit->capacity();
     return 0;
 }
 

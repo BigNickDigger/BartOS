@@ -6,12 +6,30 @@ using namespace std;
 //proszê siê nie sugerowac moimi rozwi¹zaniami, tu jeszcze wszystko mo¿e siê zmieniæ
 
 const int framesize = 16;//rozmiar ramki/strony
-const int framecount = 8;//operacyjna sklada sie z 8 ramek, czyli 8*16 bajtów = 128 bajtów pamiêci
-const int adreslength = 8;//2^8 = 256  /hex(FF)/  limit adresu dla stron ( (dec)1111_1111 = 255), istnieje 256 stron w pamieci wirtualnej, beda one sciagane do ramek
+const int OMsize = 16;
+const int WMsize = 64;
 
-struct page {
-	unsigned short nr;
-	string data; //Nie wiem jaki typ tu daæ. Jak zostanie string, to bedzie to string na 14charów/bajtów, bo 2 bajty id¹ na NR, a ca³y page=16 bajtów
+class page {
+public:
+	char tab[framesize];//framesize = 16
+	int nr;
+	page()
+	{
+		for (int i = 0; i < framesize; i++)
+		{
+			tab[i] = '-';
+		}
+	}
+
+	void PrintPage()
+	{
+		for (int i = 0; i < framesize; i++)
+		{
+			cout << tab[i] << " ";
+		}
+		cout << endl;
+	}
+
 };
 
 class PamiecOperiWirt
@@ -19,23 +37,26 @@ class PamiecOperiWirt
 public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
-	unsigned short LicznikDoStron;
-	unsigned short AktualnyRozmiarOP;//zlicza ile ramek jest zajetych
-	unsigned short AktualnyRozmiarWIRT;//zlicza ile stron jest zajetych
 
-	page *singlepage;
-	list <page> POper;
-	list <page> PWirt;
-	list <page>::iterator iter;
+	int OM_Next_Frame_Victim;
+	int IndexforWM;
+	page POper[OMsize];//16 czyli pamiec op 126byte
+	page PWirt[WMsize];//64 pamiec wirtualna 2048byte
 
-	//PCB blok; //jeszcze nie jestem tego pewien
+	char *ReturnLineOf16Chars();//udostepnia zawartosc ramki, kinda useless propably
 
-	//int WhichPage(short int); //MMU do przeliczania adresu logicznego na fizyczny, nie wiem czy sie przydadz¹ na ten moment
-	//int WhatOffset(short int);  //MMU -||-
+	char Get_Whole_Process_From_Memory(PCB blok);//mechanizm obs³ugi stronicowania na ¿¹danie ale dziki bo zwraca ca³y kod programu LUL
+	char Get_Char_From_OM(PCB blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
+	void Get_Page_From_WM(PCB,int);
+	void Insert_To_Virtual_Memory();//wrzuc do pamieci wirtualnej
 
-	void StworzPamiecWirtualna();//kontrowersyjna procedura, musze mieæ swój bank (pamiêc wirt.) z której bêdê przepisywa³ do operacyjnej pojedyncze bloki danych. Tym bankiem NIE mo¿e byæ sam dysk (s³owa bartoszka) wiêc trzeba dokonywaæ jakiegoœ przepisywania dysku do mojego banku, tym bêdzie siê zajmowaæ ta procedura
-	stronice MemRequest();
+	int WhichPage(short int); //MMU do przeliczania adresu logicznego na fizyczny, nie wiem czy sie przydadz¹ na ten moment
+	int WhatOffset(short int);  //MMU -||-
+
+	stronice MemRequest();//do obgadania
 	void DeleteProcess(PCB);
+	void PrintOM();
+	void PrintWM();
 
 };
 
