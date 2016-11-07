@@ -54,7 +54,7 @@ stronice PamiecOperiWirt::MemRequest()
 
 char *PamiecOperiWirt::ReturnLineOf16Chars()
 {
-
+	return "aaa";
 }
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory()
