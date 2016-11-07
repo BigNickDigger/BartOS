@@ -20,7 +20,7 @@ void Zamek::lock()
 	}
 	else
 	{
-		//zmieniam stan w¹tku na oczekuj¹cy i umieszam go w kolejsce
+		//zmieniam stan w¹tku na oczekuj¹cy i umieszam go w kolejsce "queue < TYP_DANYCH > nazwa_kolejki;"
 	}
 }
 
