@@ -1,12 +1,12 @@
 #pragma once
 #include <iostream>
 //#include "ThreadManager.h"
-//#include "PCB.h"
+#include "PCB.h"
 using namespace std;
 
 struct Mess
 {
-	int Nadawca;
+	int nadawca;
 	string tresc;
 };
 
@@ -18,7 +18,7 @@ public:
 	//CThreadManager *X;
 	void Nadaj(int, int, string);
 	string Odbierz(int);
-	//vector<PCB*>::const_iterator xD;
+//	vector<PCB*>::const_iterator xD;
 
 };
 
