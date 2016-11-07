@@ -7,9 +7,9 @@
 //Help
 using namespace std;
 //KRZYSIU TO PIZDA Hx3H3 
-KomunikacjaProcesowa::KomunikacjaProcesowa(CThreadManager &Y)
+KomunikacjaProcesowa::KomunikacjaProcesowa(/*CThreadManager &Y*/)
 {
-	X = &Y;
+	//X = &Y;
 }
 
 
@@ -58,7 +58,8 @@ string KomunikacjaProcesowa::Odbierz(int Odbiorca)
 		//return x;
 		//Jak nie znajdzie error(pytanie jak errora wyjebac ? )
 	//}
-	
+	string ded = "pootis";
+	return ded;
 }
 
 

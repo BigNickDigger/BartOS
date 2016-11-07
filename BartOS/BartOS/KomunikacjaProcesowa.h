@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include "ThreadManager.h"
-#include "PCB.h"
+//#include "ThreadManager.h"
+//#include "PCB.h"
 using namespace std;
 
 struct Mess
@@ -13,12 +13,12 @@ struct Mess
 class KomunikacjaProcesowa
 {
 public:
-	KomunikacjaProcesowa(CThreadManager &Y);
+	KomunikacjaProcesowa(/*CThreadManager &Y*/);
 	~KomunikacjaProcesowa();
-	CThreadManager *X;
+	//CThreadManager *X;
 	void Nadaj(int, int, string);
 	string Odbierz(int);
-	std::vector<PCB*>::const_iterator xD;
+//	vector<PCB*>::const_iterator xD;
 
 };
 

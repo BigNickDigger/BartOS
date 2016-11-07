@@ -5,7 +5,7 @@
 #define Average_Priority 4
 
 
-
+//typedef int PamiecOperiWirt;
 class CThreadManager
 {
 public:
