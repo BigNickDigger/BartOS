@@ -37,14 +37,19 @@ int PamiecOperiWirt::WhatOffset(short int x)
 void PamiecOperiWirt::DeleteProcess(PCB *blok)
 {
 	int index;
-	for (int i = 0 ; i < blok->sopic / 16 + 1; i++)//obiegnij tyle razy ile jest stron dla pcb //sopic = 30 = 3 strony
+	for (int i = 0 ; i < WMsize; i++)//obiegnij tyle razy ile jest stron dla pcb //sopic = 30 = 3 strony
 	{
-		if (blok->pages[i].Valid == true)
-		index = blok->pages[i].cell;// daj indeksowi adres kolejnej strony w PO do usuniecia
-		
-		if (blok->pages[i].Valid == false)
-			PWirt[index].Clear();
-
+		if (blok->pages[i].Valid == false)//tylko strona do czyszczenia
+		{
+			PWirt[i].Clear();
+		}
+		if (blok->pages[i].Valid == true)//strona i ramka do czyszczenia
+		{
+			PWirt[i].Clear();
+			POper[i].Clear();
+			blok->pages[i].Valid = false;
+			blok->pages[i].cell = NULL;
+		}
 	}
 }
 //Dodalem Ci funkcje hehe XD
@@ -127,7 +132,7 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 	}
 
 	//blok.pages[brakujacy index].cell = OM_Next_Frame_Victim;
-	blok->pages[IndexforWM2].Valid = true; IndexforWM++;// !!! pomocniczy index tymczasowo trzeba zrobic poprawny
+	blok->pages[IndexforWM2].Valid = true; IndexforWM2++;// !!! pomocniczy index tymczasowo trzeba zrobic poprawny
 	OM_Next_Frame_Victim++;
 	if (OM_Next_Frame_Victim == 16)
 		OM_Next_Frame_Victim = 0;
