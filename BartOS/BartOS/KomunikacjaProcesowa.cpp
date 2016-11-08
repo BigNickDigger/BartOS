@@ -7,9 +7,9 @@
 //#include <vector>
 using namespace std;
 
-KomunikacjaProcesowa::KomunikacjaProcesowa()
+KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
 {
-	//AllProc = AlllProc;
+	AllProc = AllProcc;
 }
 
 
@@ -20,49 +20,48 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 
 void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 {
-	//int counter = 0;
-	//Mess x;
-	//x.nadawca = Nadawca;
-	//x.tresc = tresc;
-	////szukanie odbiorcy
-	////Magiczny for ktory przeszukuje liste prockow
-	//for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
-	//{
-	//	if (X->AllProc[counter]->Process_ID == Odbiorca)
-	//	{
-
-	//		X->AllProc[counter]->messages.push(x);
-	//	}
-	//	else
-	//	counter++;
-	//}
+	//szukanie skrzynki
+	int counter = 0;
+	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	{
+		if (ElementAt[counter]->Process_ID == Odbiorca)
+		{
+			string S="";
+			S += to_string(Nadawca) + " " + tresc;
+			ElementAt[counter]->messages.push(S);
+//TUTAJ SIGNAL JAKBY SOBIE SPAL TAMTEN (CZEKAL NA WIADOMOSC)signal(odbiorca)
+		}
+		else
+		{
+			counter++;
+		}
+	}
+	//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
 }
 
-void KomunikacjaProcesowa::Odbierz(int Odbiorca)
+string KomunikacjaProcesowa::Odbierz(int Odbiorca)
 {
-
-	//Semafor::wait();
 	//szukanie skrzynki
-	//int counter = 0;
-	//for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
-	//{
-	//	if (X->AllProc[counter]->Process_ID == Odbiorca)
-	//	{
-	//		Mess x;
-	//		x = X->AllProc[counter]->messages.front;
-	//		X->AllProc[counter]->messages.pop;
-	//
-	//	}
-	//	else
-	//	{
-	//		//Lista = Lista->next;
-	//		counter++;
-	//	}
-
-
-		//return x;
-		//Jak nie znajdzie error(pytanie jak errora wyjebac ? )
-	//}
+	int counter = 0;
+	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	{
+		if (ElementAt[counter]->Process_ID == Odbiorca)
+		{
+			if (ElementAt[counter]->messages.empty())
+			{
+				//SEMAFOR wait(Odbiorca);
+			}
+			string x;
+			x = ElementAt[counter]->messages.front();
+			ElementAt[counter]->messages.pop();
+			return x;
+		}
+		else
+		{
+			counter++;
+		}
+	}
+	//SEMAFOR wait(Odbiorca);
 }
 
 
