@@ -29,14 +29,14 @@ void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 			string S="";
 			S += to_string(Nadawca) + " " + tresc;
 			ElementAt[counter]->messages.push(S);
-//TUTAJ SIGNAL JAKBY SOBIE SPAL TAMTEN (CZEKAL NA WIADOMOSC)
+//TUTAJ SIGNAL JAKBY SOBIE SPAL TAMTEN (CZEKAL NA WIADOMOSC)signal(odbiorca)
 		}
 		else
 		{
 			counter++;
 		}
 	}
-	//no tutaj to niszczymy pana procesa
+	//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
 }
 
 string KomunikacjaProcesowa::Odbierz(int Odbiorca)
@@ -47,6 +47,10 @@ string KomunikacjaProcesowa::Odbierz(int Odbiorca)
 	{
 		if (ElementAt[counter]->Process_ID == Odbiorca)
 		{
+			if (ElementAt[counter]->messages.empty())
+			{
+				//SEMAFOR wait(Odbiorca);
+			}
 			string x;
 			x = ElementAt[counter]->messages.front();
 			ElementAt[counter]->messages.pop();
