@@ -1,15 +1,15 @@
 #pragma once
 
 #include <stdio.h>
-#include <vector>
+#include <string>
 #include <time.h>
 #include <queue>
-#include "KomunikacjaProcesowa.h"
+
 struct stronice {
 	bool Valid;
 	short int cell;
 };
-typedef int eMess;
+
 class PCB
 {
 public:
@@ -21,13 +21,17 @@ public:
 	short int Priority,
 		ProgramCounter;
 	int RegA, RegB, RegC, RegD;
+	int sopic;//size of program in chars
+
+	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
+
 	stronice *pages;
 	
 	typedef enum//Stany Procesora
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous
 	};
-	std::queue<eMess>messages;
+	std::queue<std::string>messages;
 	std::vector<PCB*>::iterator ElementAt;
 };
 

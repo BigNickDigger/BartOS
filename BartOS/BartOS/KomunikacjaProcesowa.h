@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
-//#include "ThreadManager.h"
 #include "PCB.h"
+#include <vector>
+#include <queue>
 using namespace std;
 
 struct Mess
@@ -10,16 +11,17 @@ struct Mess
 	string tresc;
 };
 
+
 class KomunikacjaProcesowa
 {
 public:
-	KomunikacjaProcesowa(/*CThreadManager &Y*/);
+	KomunikacjaProcesowa();
 	~KomunikacjaProcesowa();
 	void Nadaj(int, int, string);
-	void Odbierz(int);
-//	vector<PCB*>::const_iterator xD;
-	//CThreadManager * TM;
-
+	void Odbierz(int x);
+private:
+	vector<PCB*>*AllProc;
+	vector<PCB*>::iterator ElementAt;
 };
 
 /*    push - umieszczenie nowego elementu na koñcu kolejki;
