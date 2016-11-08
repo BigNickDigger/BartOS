@@ -29,7 +29,7 @@ Cyborg
 #include "KomunikacjaProcesowa.h"
 using namespace std;
 const float SystemVer = 1.337;
-int main2()
+int main()
 {
 	//K$R*A
 	//KRZYSIU MASZ

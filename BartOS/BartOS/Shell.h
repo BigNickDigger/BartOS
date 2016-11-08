@@ -11,8 +11,10 @@ public:
 	std::vector <ZmiennaSrodowiskowa> vector_zmiennych_srodowiskowych;
 	Shell();
 	~Shell();
-	void WykonujRozkaz(std::string rozkaz);
+	void WykonujRozkaz(std::string rozkaz, std::vector<std::string> komendy);
 	void UtworzZmiennaSrodowiskowa(std::string nazwa, std::string sciezka);
+	std::vector<std::string> ZczytajRozkaz();
+	void ObsluzLinie(std::vector<std::string> &komendy);
 };
 
 
