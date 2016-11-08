@@ -14,6 +14,7 @@ public:
 	PCB * Proc_Control_block;
 	void CreateProcess(char*name, int sopic);
 	static int IdentGen;
+	void RemoveProcess(int id);
 	std::vector<PCB*>AllProc;
 private:
 	PamiecOperiWirt* Memory;
