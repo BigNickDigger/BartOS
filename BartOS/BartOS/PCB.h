@@ -22,6 +22,9 @@ public:
 		ProgramCounter;
 	int RegA, RegB, RegC, RegD;
 	int sopic;//size of program in chars
+
+	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
+
 	stronice *pages;
 	
 	typedef enum//Stany Procesora

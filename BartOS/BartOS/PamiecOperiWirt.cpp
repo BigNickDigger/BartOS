@@ -66,7 +66,7 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory()
 // ta funkcja ponizej to chyba siê nie przyda xdxdxd, prêdzej ta pod ni¹ ///////////////////////////////////////////////////////////////////
 char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej funkcji rozpocznie proces zwracania wszystkich charow sk³adaj¹cych siê na program do P_Oper
 {
-	for (int i = 0; i < 4; i++)//przebiega po wszystkich stronach procesu (za³ó¿my ¿e 4)
+	for (int i = 0; i < blok.sopic; i++)//przebiega po wszystkich stronach procesu 
 	{
 		if (blok.pages[i].Valid == true)      //wejdŸ tu jeœli ramka JEST w PAM OP
 		{
@@ -129,14 +129,7 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB blok, int page)
 
 string PamiecOperiWirt::Return_A_Formed_Order(PCB blok)
 {
-	string order;
-	int iterator = 0;
-	do
-	{
-
-
-	} while (order[iterator] != ';');
-
+	//prawdopodobnie sie nie przyda / problem z implementacja
 }
 
 
