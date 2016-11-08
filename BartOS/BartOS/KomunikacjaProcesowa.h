@@ -21,6 +21,7 @@ public:
 	void Odbierz(int x);
 private:
 	vector<PCB*>*AllProc;
+	vector<PCB*>::iterator ElementAt;
 };
 
 /*    push - umieszczenie nowego elementu na koñcu kolejki;
