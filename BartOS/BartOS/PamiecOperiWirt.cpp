@@ -37,10 +37,14 @@ int PamiecOperiWirt::WhatOffset(short int x)
 void PamiecOperiWirt::DeleteProcess(PCB *blok)
 {
 	int index;
-	for (int i = 0 ; i < blok->sopic / 16 + 1; i++)//obiegnij tyle razy ile jest stron dla pcb
+	for (int i = 0 ; i < blok->sopic / 16 + 1; i++)//obiegnij tyle razy ile jest stron dla pcb //sopic = 30 = 3 strony
 	{
-		index = blok->pages[i].cell;// daj indeksowi adres kolejnej strony w PW do usuniecia
-		PWirt[index].Clear();
+		if (blok->pages[i].Valid == true)
+		index = blok->pages[i].cell;// daj indeksowi adres kolejnej strony w PO do usuniecia
+		
+		if (blok->pages[i].Valid == false)
+			PWirt[index].Clear();
+
 	}
 }
 //Dodalem Ci funkcje hehe XD
@@ -59,11 +63,6 @@ stronice PamiecOperiWirt::MemRequest()
 
 }
 
-char *PamiecOperiWirt::ReturnLineOf16Chars()
-{
-	char* eatshit = "eat shit for real, nigga";
-	return eatshit;
-}
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok)
 {
@@ -134,11 +133,11 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 		OM_Next_Frame_Victim = 0;
 }
 
-string PamiecOperiWirt::Return_A_Formed_Order(PCB blok)
-{
-	//prawdopodobnie sie nie przyda / problem z implementacja
-	return "xD";
-}
+//string PamiecOperiWirt::Return_A_Formed_Order(PCB blok)
+//{
+//	//prawdopodobnie sie nie przyda / problem z implementacja
+//	return "xD";
+//}
 
 
 void PamiecOperiWirt::PrintOM()
