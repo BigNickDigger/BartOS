@@ -2,11 +2,13 @@
 class Semafor
 {
 private:
-	int svalue;
+	int SValue;
+	std::vector <PCB*>*AllProc;
+	std::vector<PCB*>::iterator ElementAt;
 public:
 	std::queue < int > KPS; //Przechowuje ID procesu
-	void wait(int ID_procesu);	// operacja P
-	void signal();	// operacja  V
+	void Wait(int ID_procesu);	// operacja P
+	void Signal();	// operacja  V
 	Semafor();
 	~Semafor();
 };
