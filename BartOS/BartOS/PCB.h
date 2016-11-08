@@ -25,7 +25,8 @@ public:
 
 	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
 
-	stronice *pages;
+	//stronice *pages; UWAGA WBIJAM NA KWADRAT ZE ZMIANAMI
+	stronice pages[WMsize];//uwa¿am ¿e musi tak byæ
 	
 	typedef enum//Stany Procesora
 	{

@@ -29,7 +29,7 @@ Cyborg
 #include "KomunikacjaProcesowa.h"
 using namespace std;
 const float SystemVer = 1.337;
-int main2()
+int main()
 {
 	//K$R*A
 	//KRZYSIU MASZ
@@ -54,7 +54,7 @@ int main2()
 	PAM.PrintOM();
 	cout << "Sciagam do pomocniczego bufora 3 pelne ramki z pamieci operacyjnej, ktora jest pusta, wiec nastapi obsluga bledu strony\nz wykorzystaniem pamieci wirtualnej" << endl;
 	for (int i = 0; i < framesize*3; i++)
-		bufor[i] = PAM.Get_Char_From_OM(BLOK, i);//sciagam komorki (adres logiczny) od 0 do 47
+		bufor[i] = PAM.Get_Char_From_OM(&BLOK, i);//sciagam komorki (adres logiczny) od 0 do 47
 	PAM.PrintOM();
 	cout << "Co udalo sie sciagnac z pamieci operacyjnej? Wypisz bufor..." << endl;
 	for (int i = 0; i < framesize*3; i++)

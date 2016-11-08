@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <direct.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -20,37 +21,45 @@ Shell::~Shell()
 {
 	
 }
-void Shell::UtworzZmiennaSrodowiskowa(string nazwa, string sciezka)
-{
-	ZmiennaSrodowiskowa *tmp = new ZmiennaSrodowiskowa(nazwa, sciezka);
-	vector_zmiennych_srodowiskowych.push_back(*tmp);
-}
+//void Shell::UtworzZmiennaSrodowiskowa(string nazwa, string sciezka)
+//{
+//	ZmiennaSrodowiskowa *tmp = new ZmiennaSrodowiskowa(nazwa, sciezka);
+//	vector_zmiennych_srodowiskowych.push_back(*tmp);
+//}
 void PokazKursor(string znak_kursora=">>> ")
 {
 	cout << znak_kursora;
 }
-vector<string> ZczytajRozkaz()
+vector<string> Shell::ZczytajRozkaz()
 {
-	vector<string> komenda;
-	string slowo;
-	while (cin >> slowo)
+	string linia="lallala";
+	string rozkaz;
+	vector<string> komendy;
+	getline(cin, linia);
+	
+	string delimiter = " ";
+	size_t pozycja = 0;
+	//cout << linia;
+	//cout.flush();
+	while ((pozycja = linia.find(delimiter)) != string::npos) 
 	{
-		komenda.push_back(slowo);
+		rozkaz = linia.substr(0, pozycja);
+		komendy.push_back(rozkaz);
+		linia.erase(0, pozycja + delimiter.length());
 	}
-	return komenda;
+	komendy.push_back(linia);
+	return komendy;
 }
-void ObsluzLinie()
+void Shell::ObsluzLinie(vector<string> &komendy)
 {
-	vector<string> komenda;
 	PokazKursor();
-	komenda=ZczytajRozkaz();
-	for (vector<string>::iterator it = komenda.begin(); it != komenda.end(); ++it)
-	{
-		cout << *it;
-	}
-	cout << endl;
+	
+	komendy=ZczytajRozkaz();
+	WykonujRozkaz(komendy[0],komendy);
+
+	
 }
-void Shell::WykonujRozkaz(string rozkaz)
+void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 {
 	
 	if (rozkaz == "CL")			// clear - okienko shella sie czysci
@@ -101,7 +110,11 @@ void Shell::WykonujRozkaz(string rozkaz)
 	}
 	else if (rozkaz == "EX")	// execute
 	{
-
+		cout << "dziala";
+		if (komendy[1] == "plik.txt")
+		{
+			cout << "dziala";
+		}
 	}
 	else if (rozkaz == "EV")	// enviroment variable
 	{
@@ -111,16 +124,19 @@ void Shell::WykonujRozkaz(string rozkaz)
 	{
 		
 	}
+
 	else
 	{
 		cout << "nieznana komenda, wpisz poprawna" << endl;
 	}
 	
 }
-int main()
+
+int main2()
 {
-	Shell shell();
-	ObsluzLinie();
-	system("pause");
+	vector<string>komendy;
+	Shell *shell= new Shell();
+	shell->ObsluzLinie(komendy);
+
 	return 0;
 }

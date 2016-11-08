@@ -13,11 +13,11 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory)
 
 CThreadManager::~CThreadManager()
 {
-	if (Proc_Control_block->Process_State == PCB::Proc_Terminated) {
-		Memory->DeleteProcess(*this->Proc_Control_block);
+	//if (Proc_Control_block->Process_State == PCB::Proc_Terminated) {
+		//Memory->DeleteProcess(*this->Proc_Control_block);
 		//AllProc.erase(ElementAt);
-	}
-	else(Proc_Control_block->Process_State = PCB::Proc_Erroneous);
+//	}
+	//else(Proc_Control_block->Process_State = PCB::Proc_Erroneous);
 }
 void CThreadManager::CreateProcess(char*name, int sopic) {
 	Proc_Control_block->nazwa = name;
