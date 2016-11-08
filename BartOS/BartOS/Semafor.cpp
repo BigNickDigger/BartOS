@@ -45,7 +45,7 @@ void Semafor::Signal()
 	SValue++;
 	if (SValue <= 0)
 	{
-		//KPS.front(); // wznawiam pierwszy oczekuj¹cy (nie mam jeszcze funkcji do tego czekam a¿ ktoœ zrobi, tylko kto?????)
+		//KPS.front(); // wznawiam pierwszy oczekuj¹cy 
 		int Licznik=0;
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
