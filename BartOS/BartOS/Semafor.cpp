@@ -1,26 +1,24 @@
 #include "stdafx.h"
 #include "Semafor.h"
-
+#include <queue>
 
 Semafor::Semafor()
 {
 	svalue = 1;
 }
 
-
 Semafor::~Semafor()
 {
 }
 
-void Semafor::wait()
+void Semafor::wait(int ID_procesu)
 {
 	svalue--;
 	if (svalue < 0)
 	{
-		//wstrzymuje proces block();
-		//Dodaje w¹tek do kolejki FIFO w¹tków oczekuj¹cych na podniesienie semafora 
+		KPS.push(ID_procesu); //Dodaje w¹tek do kolejki FIFO w¹tków oczekuj¹cych na podniesienie semafora 
+		//KPS.back(); //i wstrzymuje ten w¹tek
 	}
-
 }
 
 void Semafor::signal()
@@ -28,8 +26,8 @@ void Semafor::signal()
 	svalue++;
 	if (svalue <= 0)
 	{
-		//Usuwam w¹tek z kolejki w¹tków oczekuj¹cych
-		//Wznawiam stan w¹tku wakeup(P);
+		//KPS.front(); // wznawiam pierwszy oczekuj¹cy
+		KPS.pop(); //i usuwam go z kolejki w¹tków oczekuj¹cych
+		
 	}
-
 }

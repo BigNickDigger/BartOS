@@ -26,7 +26,7 @@ Cyborg
 #include <string>
 #include "PamiecOperiWirt.h"
 #include "ThreadManager.h"
-
+#include "KomunikacjaProcesowa.h"
 using namespace std;
 const float SystemVer = 1.337;
 int main()
@@ -41,6 +41,7 @@ int main()
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
 	PCB BLOK; BLOK.pages = new stronice[3]; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
 	EatShit.AllProc.push_back(&BLOK);
+
 	//END
 	char bufor[48];
 	for (int i = 0; i < framesize; i++)
