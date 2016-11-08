@@ -4,7 +4,6 @@
 #include <string>
 #include <time.h>
 #include <queue>
-
 struct stronice {
 	bool Valid;
 	short int cell;
@@ -26,7 +25,7 @@ public:
 	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
 
 	//stronice *pages; UWAGA WBIJAM NA KWADRAT ZE ZMIANAMI
-	stronice pages[WMsize];//uwa¿am ¿e musi tak byæ
+	stronice pages[48];//uwa¿am ¿e tablica stronic ma rozmiar WMsize = 48
 	
 	typedef enum//Stany Procesora
 	{

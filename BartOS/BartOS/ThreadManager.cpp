@@ -21,7 +21,7 @@ CThreadManager::~CThreadManager()
 }
 void CThreadManager::CreateProcess(char*name, int sopic) {
 	Proc_Control_block->nazwa = name;
-	try { Proc_Control_block->pages = &Memory->MemRequest(); }
+	/*try { Proc_Control_block->pages = &Memory->MemRequest(); }
 	catch (int ErrCode) {
 		switch (ErrCode) {
 			case 1:Proc_Control_block->Process_State = PCB::Proc_Ready;
@@ -31,9 +31,9 @@ void CThreadManager::CreateProcess(char*name, int sopic) {
 			
 		}
 		
-	}
+	}*/
 	Proc_Control_block->Process_ID = IdentGen; IdentGen++;
 	Proc_Control_block->Priority = rand() % 7 + 1;
-	Proc_Control_block->pages = new stronice[(sopic / 16) + 1];
+	//Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
 
 }
