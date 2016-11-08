@@ -39,7 +39,7 @@ int main()
 	CThreadManager EatShit(&PAM);
 	KomunikacjaProcesowa EatMoreShit();
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
-	PCB BLOK; BLOK.pages = new stronice[3]; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
+	PCB BLOK; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
 	EatShit.AllProc.push_back(&BLOK);
 
 	//END

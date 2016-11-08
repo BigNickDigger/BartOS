@@ -62,7 +62,7 @@ public:
 	int WhatOffset(short int);  //MMU -||-
 
 	stronice MemRequest();//do obgadania
-	void DeleteProcess(PCB * blok);
+	void DeleteProcess(PCB *blok);
 	void PrintOM();
 	void PrintWM();
 
