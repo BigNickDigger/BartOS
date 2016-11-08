@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "Zamek.h"
-
+#include <queue>
 
 Zamek::Zamek()
 {
 	zvalue = 0;
 }
-
 
 Zamek::~Zamek()
 {
@@ -20,19 +19,22 @@ void Zamek::lock()
 	}
 	else
 	{
-		//zmieniam stan w¹tku na oczekuj¹cy i umieszam go w kolejsce 
+		KPZ.push(0); // umieszam w¹tek w kolejsce 
+		//KPZ.back(); i zmieniam  jego stan na oczekuj¹cy
 	}
 }
 
 void Zamek::unlock()
 {
-	if (1/*kolejka w¹tków jest pusta*/)
+	if (KPZ.empty())
 	{
 		zvalue = 0;
 	}
 	else
-	{
-		//biorê w¹tek z kolejki w¹tków oczekuj¹cych i zmieniam jego stan na gotowy
+
+	{	//KPZ.front(); // zmieniam stan w¹tku na gotowy
+		KPZ.pop();//i biorê go z kolejki w¹tków oczekuj¹cych
+	
 	}
 }
 

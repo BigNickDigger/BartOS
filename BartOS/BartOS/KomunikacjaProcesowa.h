@@ -18,6 +18,7 @@ public:
 	void Nadaj(int, int, string);
 	void Odbierz(int);
 //	vector<PCB*>::const_iterator xD;
+	//CThreadManager * TM;
 
 };
 
