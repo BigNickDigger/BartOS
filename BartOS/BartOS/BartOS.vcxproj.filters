@@ -30,9 +30,6 @@
     <ClInclude Include="KomunikacjaProcesowa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MechSynch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ProcesoPriorytet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,6 +51,12 @@
     <ClInclude Include="ZmiennaSrodowiskowa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Zamek.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Semafor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -66,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KomunikacjaProcesowa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MechSynch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProcesoPriorytet.cpp">
@@ -90,6 +90,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ZmiennaSrodowiskowa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Zamek.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Semafor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

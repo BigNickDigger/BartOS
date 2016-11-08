@@ -225,19 +225,15 @@ void InterPeter::Command()
 			break;
 		}
 	}
-	else if (n == "JP")
+	else if (n == "JP") // jump
 	{
 		PC = std::stoi(line.substr(3));
 	}
-	else if (n == "JZ")
+	else if (n == "JN") //jump not zero
 	{
-		if (rejA == 0)
+		if (rejA != 0)
 		{
-			PC++;
-		}
-		else
-		{
-
+			PC = std::stoi(line.substr(3));
 		}
 
 	}
@@ -294,9 +290,53 @@ void InterPeter::Command()
 			break;
 		}
 	}
-	else if (n == "SB")
+	else if (n == "SW") //swap
 	{
 
+		switch (line.at(3))
+		{
+		case 'A':
+			switch (line.at(5))
+			{
+			case 'B':
+				swap(rejA, rejB);
+				break;
+
+			case 'C':
+				swap(rejA, rejC);
+				break;
+			
+			}
+			break;
+
+		case 'B':
+			switch (line.at(5))
+			{
+			case 'A':
+				swap(rejB, rejA);
+				break;
+
+			case 'C':
+				swap(rejB, rejC);
+				break;
+			
+			}
+			break;
+
+		case 'C':
+			switch (line.at(5))
+			{
+			case 'A':
+				swap(rejC, rejA);
+				break;
+
+			case 'B':
+				swap(rejC, rejB);
+				break;
+		
+			}
+			break;
+		}
 
 	}
 	else if (n == "SB")
@@ -312,11 +352,11 @@ void InterPeter::Command()
 	{
 
 	}
-	else if (n == "LD")
+	else if (n == "LD") //meme load
 	{
-
+		
 	}
-	else if (n == "SV") 
+	else if (n == "SV") //meme save
 	{
 		
 	}
@@ -328,6 +368,14 @@ void InterPeter::Command()
 	{
 
 	}
+	else if (n == "KL") //kill process
+	{
+
+	}
+	else if (n == "HT") //halt - hammer Zeit
+	{
+
+	}
 	else if (n == "SB")
 	{
 
@@ -335,7 +383,7 @@ void InterPeter::Command()
 
 	
 
-
+	PC++;
 }
 
 void InterPeter::LoadProg()

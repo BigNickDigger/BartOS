@@ -4,8 +4,8 @@
 #include <vector>
 #define Average_Priority 4
 
-std::vector<PCB*>AllProc;
 
+//typedef int PamiecOperiWirt;
 class CThreadManager
 {
 public:
@@ -13,11 +13,11 @@ public:
 	~CThreadManager();
 	PCB * Proc_Control_block;
 	void CreateProcess(char*name);
-	void request_memory();
 	static int IdentGen;
+	std::vector<PCB*>AllProc;
 private:
 	PamiecOperiWirt* Memory;
-	std::vector<PCB*>::iterator ElementAt;
-
+	
+	
 };
 

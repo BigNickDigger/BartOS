@@ -9,7 +9,7 @@ struct stronice {
 	bool Valid;
 	short int cell;
 };
-
+typedef int eMess;
 class PCB
 {
 public:
@@ -27,6 +27,7 @@ public:
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous
 	};
-	std::queue<Mess>messages;
+	std::queue<eMess>messages;
+	std::vector<PCB*>::iterator ElementAt;
 };
 
