@@ -28,7 +28,7 @@ void Zamek::lock(int ID_procesu)
 
 void Zamek::unlock(int ID_procesu)
 {
-	if (this->ID_procesu != ID_procesu)
+	if (this->ID_procesu == ID_procesu)
 	{
 		if (KPZ.empty())
 		{
