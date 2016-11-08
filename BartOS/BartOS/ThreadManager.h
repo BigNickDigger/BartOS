@@ -12,7 +12,7 @@ public:
 	CThreadManager(PamiecOperiWirt* Memory);
 	~CThreadManager();
 	PCB * Proc_Control_block;
-	void CreateProcess(char*name);
+	void CreateProcess(char*name, int sopic);
 	static int IdentGen;
 	std::vector<PCB*>AllProc;
 private:

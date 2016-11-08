@@ -26,7 +26,7 @@ Cyborg
 #include <string>
 #include "PamiecOperiWirt.h"
 #include "ThreadManager.h"
-
+#include "KomunikacjaProcesowa.h"
 using namespace std;
 const float SystemVer = 1.337;
 int main2()

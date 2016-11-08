@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ThreadManager.h"
+
 /*Darek Krajewski - Zarz¹dzanie procesami*/
 int CThreadManager::IdentGen = 0x00000001;
 CThreadManager::CThreadManager(PamiecOperiWirt* Memory)
@@ -18,7 +19,7 @@ CThreadManager::~CThreadManager()
 	}
 	else(Proc_Control_block->Process_State = PCB::Proc_Erroneous);
 }
-void CThreadManager::CreateProcess(char*name) {
+void CThreadManager::CreateProcess(char*name, int sopic) {
 	Proc_Control_block->nazwa = name;
 	try { Proc_Control_block->pages = &Memory->MemRequest(); }
 	catch (int ErrCode) {
@@ -33,5 +34,6 @@ void CThreadManager::CreateProcess(char*name) {
 	}
 	Proc_Control_block->Process_ID = IdentGen; IdentGen++;
 	Proc_Control_block->Priority = rand() % 7 + 1;
+	Proc_Control_block->pages = new stronice[(sopic / 16) + 1];
 
 }

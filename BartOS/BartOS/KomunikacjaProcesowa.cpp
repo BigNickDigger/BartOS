@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "KomunikacjaProcesowa.h"
-#include <iostream>
-#include <queue>
-#include "ThreadManager.h"
-#include "PCB.h"
-//Help
+//#include <iostream>
+
+
+
+//#include <vector>
 using namespace std;
-//KRZYSIU TO PIZDA Hx3H3 
-KomunikacjaProcesowa::KomunikacjaProcesowa(/*CThreadManager &Y*/)
+
+KomunikacjaProcesowa::KomunikacjaProcesowa()
 {
-	//X = &Y;
+	//AllProc = AlllProc;
 }
+
 
 
 KomunikacjaProcesowa::~KomunikacjaProcesowa()
@@ -29,6 +30,7 @@ void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 	//{
 	//	if (X->AllProc[counter]->Process_ID == Odbiorca)
 	//	{
+
 	//		X->AllProc[counter]->messages.push(x);
 	//	}
 	//	else
@@ -38,6 +40,8 @@ void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 
 void KomunikacjaProcesowa::Odbierz(int Odbiorca)
 {
+
+	//Semafor::wait();
 	//szukanie skrzynki
 	//int counter = 0;
 	//for (xD = X->AllProc.begin(); xD != X->AllProc.end(); xD++)
@@ -47,6 +51,7 @@ void KomunikacjaProcesowa::Odbierz(int Odbiorca)
 	//		Mess x;
 	//		x = X->AllProc[counter]->messages.front;
 	//		X->AllProc[counter]->messages.pop;
+	//
 	//	}
 	//	else
 	//	{
