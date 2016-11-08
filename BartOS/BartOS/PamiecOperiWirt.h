@@ -7,7 +7,7 @@ using namespace std;
 
 const int framesize = 16;//rozmiar ramki/strony
 const int OMsize = 16;
-const int WMsize = 64;
+const int WMsize = 48;
 
 class page {
 public:
