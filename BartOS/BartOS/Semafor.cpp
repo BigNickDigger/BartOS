@@ -11,12 +11,12 @@ Semafor::~Semafor()
 {
 }
 
-void Semafor::wait(/*PID*/)
+void Semafor::wait(int ID_procesu)
 {
 	svalue--;
 	if (svalue < 0)
 	{
-		KPS.push(/*PID*/0); //Dodaje w¹tek do kolejki FIFO w¹tków oczekuj¹cych na podniesienie semafora 
+		KPS.push(ID_procesu); //Dodaje w¹tek do kolejki FIFO w¹tków oczekuj¹cych na podniesienie semafora 
 		//KPS.back(); //i wstrzymuje ten w¹tek
 	}
 }

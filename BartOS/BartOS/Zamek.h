@@ -1,4 +1,6 @@
 #pragma once
+#include <queue>
+
 class Zamek
 {
 private:
@@ -7,7 +9,7 @@ public:
 	void lock();
 	void unlock();
 	std::queue < int > KPZ; //kolejka w¹tków oczekuj¹cych
-	//identyfikator(PID) w¹tku który zajmuje zamek
+	int ID_procesu;
 	Zamek();
 	~Zamek();
 };
