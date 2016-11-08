@@ -6,9 +6,8 @@ private:
 public:
 	void lock();
 	void unlock();
-	std::queue < int > KPZ;
+	std::queue < int > KPZ; //kolejka w¹tków oczekuj¹cych
 	//identyfikator(PID) w¹tku który zajmuje zamek
-	//kolejka FIFO w¹tków oczekuj¹cych "queue < TYP_DANYCH > nazwa_kolejki;"
 	Zamek();
 	~Zamek();
 };

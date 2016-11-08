@@ -19,7 +19,7 @@ void Zamek::lock()
 	}
 	else
 	{
-		KPZ.push(0); // umieszam w¹tek w kolejsce 
+		KPZ.push(/*Identyfikator w¹tku PID*/0); // umieszam w¹tek w kolejsce 
 		//KPZ.back(); i zmieniam  jego stan na oczekuj¹cy
 	}
 }
