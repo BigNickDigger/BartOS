@@ -17,7 +17,7 @@ class KomunikacjaProcesowa
 public:
 	KomunikacjaProcesowa(vector<PCB*>*AllProcc);
 	~KomunikacjaProcesowa();
-	void Nadaj(int, int, string);
+	void Nadaj(int, string);
 	string Odbierz(int);
 	vector<PCB*>*AllProc;
 	vector<PCB*>::iterator ElementAt;
