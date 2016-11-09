@@ -39,30 +39,37 @@ int main()
 	CThreadManager EatShit(&PAM);
 	KomunikacjaProcesowa EatMoreShit();
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
-	PCB BLOK; BLOK.pages[0].Valid = false; BLOK.pages[1].Valid = false; BLOK.pages[2].Valid = false;
-	EatShit.AllProc.push_back(&BLOK);
+	
+	EatShit.AllProc.push_back(new PCB);
+	EatShit.AllProc[0]->sopic = 40;
+	EatShit.AllProc.push_back(new PCB);
+	EatShit.AllProc[1]->sopic = 70;
 
-	//END
-	char bufor[48];
-	for (int i = 0; i < framesize; i++)
-	{
-		PAM.PWirt[0].tab[i] = 'a' + i;
-		PAM.PWirt[1].tab[i] = '1' + i;
-		PAM.PWirt[2].tab[i] = 'd' + i;
-	}
-	PAM.PrintWM();
-	PAM.PrintOM();
-	cout << "Sciagam do pomocniczego bufora 3 pelne ramki z pamieci operacyjnej, ktora jest pusta, wiec nastapi obsluga bledu strony\nz wykorzystaniem pamieci wirtualnej" << endl;
-	for (int i = 0; i < framesize*3; i++)
-		bufor[i] = PAM.Get_Char_From_OM(&BLOK, i);//sciagam komorki (adres logiczny) od 0 do 47
-	PAM.PrintOM();
-	cout << "Co udalo sie sciagnac z pamieci operacyjnej? Wypisz bufor..." << endl;
-	for (int i = 0; i < framesize*3; i++)
-	{
-		cout << bufor[i]<<" ";
-	}cout << endl;
-	cout << EatShit.AllProc.capacity();
-	cout << MoreShit->capacity();
+	page kod_procesu[3];
+	for (int i = 0; i < 3; i++)
+		for (int j=0;j<16;j++)
+			kod_procesu[i].tab[j] = 'a' + j;
+
+	page kod_procesu2[5];
+	for (int i = 0; i < 5; i++)
+		for (int j = 0; j < 16; j++)
+		{
+			if (i != 4)
+			kod_procesu2[i].tab[j] = '5' + j;
+			else
+			if (j<5)
+				kod_procesu2[i].tab[j] = '5' + j;
+			
+		}
+
+
+	PAM.PrintWM(EatShit.AllProc);
+	PAM.VM.push_back(kod_procesu);
+	PAM.VM.push_back(kod_procesu2);
+	PAM.PrintWM(EatShit.AllProc);
+	
+
+	
     return 0;
 }
 

@@ -13,7 +13,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 		OM[i].nr = i;
 	}
 	
-	VM[0]->
+	
 }
 
 PamiecOperiWirt::~PamiecOperiWirt()
@@ -132,17 +132,44 @@ void PamiecOperiWirt::PrintOM()
 
 void PamiecOperiWirt::PrintWM(std::vector<PCB*> AllProc)
 {
-	vector<PCB*>::iterator AllProcIter
-	if (VM.capacity == 0)
+	//vector<PCB*>::iterator AllProcIter;
+
+	if (VM.capacity() == 0)
 	{
 		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
 		return;
 	}
-	int i = 0;
 	cout << "AKTUALNY STAN PAMIECI WIRTUALNEJ" << endl;
+
+	int i = 0; // helpful iter :>
+	int capacity = AllProc.capacity();
+	for (i = 0 ; i < capacity ; i++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+	{
+		cout << "PAMIEC WIRTUALNA PROCESU NR " << i << endl;
+		for (int j = 0; j < AllProc[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np 40/16 +1 = 3
+		{
+			VM[i][j].PrintPage();
+		}
+		cout << endl;
+	}
+	//for (AllProcIter = AllProc.begin(); AllProcIter != AllProc.end(); AllProcIter++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+
+
+
+
+
+	//int i = 0;
+	//int x = 0; // x = iloœæ stron dla danego procesu
+	//for (VMiter = VM.begin(); VMiter != VM.end(); VMiter++)
+	//{
+	//	x = 
+	//	for (int j=0;j<AllProc[i]->sopic)
+	//	cout << "VM PAGE "; cout << VMiter ;
+	//}
+	
+	
 	
 
-	}
 }
 
 //cout << "PAGE "; cout.width(2); cout << VMiter[i]->nr << " -> ";
