@@ -16,6 +16,8 @@ public:
 	static int IdentGen;
 	void RemoveProcess(int id);
 	std::vector<PCB*>AllProc;
+	void PrintProcesses();
+	char* getstate(int el);
 private:
 	PamiecOperiWirt* Memory;
 	
