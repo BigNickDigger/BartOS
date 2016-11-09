@@ -43,15 +43,13 @@ class PamiecOperiWirt
 public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
-
 	int OM_Next_Frame_Victim;
-	int IndexforWM;
-	int IndexforWM2;
 	page OM[OMsize];//16 czyli pamiec op 126byte
-	vector <page*> VM;//64 pamiec wirtualna 2048byte
+	vector <page*> VM;          //64 pamiec wirtualna 2048byte
 	vector <page*>::iterator VMiter;
 	
-
+	int IndexforWM;
+	int IndexforWM2;
 	//char Get_Whole_Process_From_Memory(PCB blok);//mechanizm obs³ugi stronicowania na ¿¹danie ale dziki bo zwraca ca³y kod programu
 	char Get_Char_From_OM(PCB *blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
 	void Get_Page_From_WM(PCB* blok, int page);

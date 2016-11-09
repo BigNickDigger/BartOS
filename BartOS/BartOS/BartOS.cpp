@@ -67,6 +67,7 @@ int main()
 	PAM.VM.push_back(kod_procesu);
 	PAM.VM.push_back(kod_procesu2);
 	PAM.PrintWM(EatShit.AllProc);
+	PAM.PrintOM();
 	
 
 	

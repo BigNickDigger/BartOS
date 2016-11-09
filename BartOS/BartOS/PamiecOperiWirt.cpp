@@ -153,24 +153,4 @@ void PamiecOperiWirt::PrintWM(std::vector<PCB*> AllProc)
 		cout << endl;
 	}
 	//for (AllProcIter = AllProc.begin(); AllProcIter != AllProc.end(); AllProcIter++)//przeskocz po wszystkich procesach a wiêc i = dany proces
-
-
-
-
-
-	//int i = 0;
-	//int x = 0; // x = iloœæ stron dla danego procesu
-	//for (VMiter = VM.begin(); VMiter != VM.end(); VMiter++)
-	//{
-	//	x = 
-	//	for (int j=0;j<AllProc[i]->sopic)
-	//	cout << "VM PAGE "; cout << VMiter ;
-	//}
-	
-	
-	
-
 }
-
-//cout << "PAGE "; cout.width(2); cout << VMiter[i]->nr << " -> ";
-//VMiter[i]->PrintPage();
