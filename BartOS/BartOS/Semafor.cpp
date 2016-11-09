@@ -4,10 +4,10 @@
 #include <queue>
 #include <vector>
 
-Semafor::Semafor()
+Semafor::Semafor(std::vector <PCB*>*AllProcc)
 {
 	SValue = 1;
-	std::vector <PCB*>*AllProcc;
+	//std::vector <PCB*>*AllProcc;
 	AllProc = AllProcc;
 }
 

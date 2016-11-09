@@ -9,7 +9,7 @@ public:
 	std::queue < int > KPS; //Przechowuje ID procesu
 	void Wait(int ID_procesu);	// operacja P
 	void Signal();	// operacja  V
-	Semafor();
+	Semafor(std::vector <PCB*>*AllProcc);
 	~Semafor();
 };
 
