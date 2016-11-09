@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ThreadManager.h"
-
+#include "PCB.h"
 /*Darek Krajewski - Zarz¹dzanie procesami*/
 int CThreadManager::IdentGen = 0x00000001;
 CThreadManager::CThreadManager(PamiecOperiWirt* Memory)

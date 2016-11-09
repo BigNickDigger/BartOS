@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef SEMAFOR_H
+#define SEMAFOR_H
+#include "PCB.h"
 class Semafor
 {
 private:
@@ -13,3 +17,4 @@ public:
 	~Semafor();
 };
 
+#endif // !SEMAFOR_H
