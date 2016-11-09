@@ -132,7 +132,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	
 }
 
-int main()
+int main2()
 {
 	vector<string>komendy;
 	Shell *shell= new Shell();
