@@ -15,11 +15,10 @@ struct Mess
 class KomunikacjaProcesowa
 {
 public:
-	KomunikacjaProcesowa();
+	KomunikacjaProcesowa(vector<PCB*>*AllProcc);
 	~KomunikacjaProcesowa();
 	void Nadaj(int, int, string);
-	void Odbierz(int x);
-private:
+	string Odbierz(int);
 	vector<PCB*>*AllProc;
 	vector<PCB*>::iterator ElementAt;
 };

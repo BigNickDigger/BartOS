@@ -10,12 +10,10 @@ PamiecOperiWirt::PamiecOperiWirt()
 	IndexforWM2 = 0;
 	for (int i = 0; i < OMsize; i++)
 	{
-		POper[i].nr = i;
+		OM[i].nr = i;
 	}
-	for (int i = 0; i < WMsize; i++)
-	{
-		PWirt[i].nr = i;
-	}
+	
+	
 }
 
 PamiecOperiWirt::~PamiecOperiWirt()
@@ -36,12 +34,7 @@ int PamiecOperiWirt::WhatOffset(short int x)
 
 void PamiecOperiWirt::DeleteProcess(PCB *blok)
 {
-	int index;
-	for (int i = 0 ; i < blok->sopic / 16 + 1; i++)//obiegnij tyle razy ile jest stron dla pcb
-	{
-		index = blok->pages[i].cell;// daj indeksowi adres kolejnej strony w PW do usuniecia
-		PWirt[index].Clear();
-	}
+	
 }
 //Dodalem Ci funkcje hehe XD
 // Wez ja wypelnij jakos ladnie
@@ -59,15 +52,10 @@ stronice PamiecOperiWirt::MemRequest()
 
 }
 
-char *PamiecOperiWirt::ReturnLineOf16Chars()
-{
-	char* eatshit = "eat shit for real, nigga";
-	return eatshit;
-}
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok)
 {
-	//przeszuuj pamiec wirtualna i wrzucaj do pustych stron po16 charów I USTAWIAJ BITY VALID
+	//laduj do VM[processID] tablice reprezentujaca kod programu
 
 }
 // ta funkcja ponizej to chyba siê nie przyda xdxdxd, prêdzej ta pod ni¹ ///////////////////////////////////////////////////////////////////
@@ -111,34 +99,25 @@ char PamiecOperiWirt::Get_Char_From_OM(PCB *blok, int LogicAdr)
 
 	if (blok->pages[page].Valid == true)      //wejdŸ tu jeœli ramka JEST w PAM OP
 	{
-		return POper[page].tab[offset]; //ez zwróæ chara
+		return OM[page].tab[offset]; //ez zwróæ chara
 	}
 	else      //wejdŸ tu jeœli ramki NIE MA w PAM OP
 	{
 		Get_Page_From_WM(blok, page);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwroc char USTAW ROWNIEZ BIT NA VALID
-		return POper[page].tab[offset]; //ez zwróæ chara
+		return OM[page].tab[offset]; //ez zwróæ chara
 	}
 }
 
 void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 {
-	for (int i = 0; i < framesize; i++)
-	{
-		POper[OM_Next_Frame_Victim].tab[i] = PWirt[page].tab[i];
-	}
-
-	//blok.pages[brakujacy index].cell = OM_Next_Frame_Victim;
-	blok->pages[IndexforWM2].Valid = true; IndexforWM++;// !!! pomocniczy index tymczasowo trzeba zrobic poprawny
-	OM_Next_Frame_Victim++;
-	if (OM_Next_Frame_Victim == 16)
-		OM_Next_Frame_Victim = 0;
+	
 }
 
-string PamiecOperiWirt::Return_A_Formed_Order(PCB blok)
-{
-	//prawdopodobnie sie nie przyda / problem z implementacja
-	return "xD";
-}
+//string PamiecOperiWirt::Return_A_Formed_Order(PCB blok)
+//{
+//	//prawdopodobnie sie nie przyda / problem z implementacja
+//	return "xD";
+//}
 
 
 void PamiecOperiWirt::PrintOM()
@@ -146,21 +125,52 @@ void PamiecOperiWirt::PrintOM()
 	cout << "AKTUALNY STAN PAMIECI OPERACYJNEJ" << endl;
 	for (int i = 0; i < OMsize; i++)
 	{
-		cout << "FRAME "; cout.width(2); cout << POper[i].nr << " -> ";
-		POper[i].PrintPage();
+		cout << "FRAME "; cout.width(2); cout << OM[i].nr << " -> ";
+		OM[i].PrintPage();
 	}
 }
 
-void PamiecOperiWirt::PrintWM()
+void PamiecOperiWirt::PrintWM(std::vector<PCB*> AllProc)
 {
-	cout << "AKTUALNY STAN PAMIECI WIRTUALNEJ" << endl;
-	for (int i = 0; i < WMsize; i++)
-	{
-		if (i % 16 == 0 && i != 0)
-			cout << endl;
-		cout.width(2);
-		cout << "PAGE "; cout.width(2); cout << PWirt[i].nr << " -> ";
-		PWirt[i].PrintPage();
+	//vector<PCB*>::iterator AllProcIter;
 
+	if (VM.capacity() == 0)
+	{
+		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
+		return;
 	}
+	cout << "AKTUALNY STAN PAMIECI WIRTUALNEJ" << endl;
+
+	int i = 0; // helpful iter :>
+	int capacity = AllProc.capacity();
+	for (i = 0 ; i < capacity ; i++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+	{
+		cout << "PAMIEC WIRTUALNA PROCESU NR " << i << endl;
+		for (int j = 0; j < AllProc[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np 40/16 +1 = 3
+		{
+			VM[i][j].PrintPage();
+		}
+		cout << endl;
+	}
+	//for (AllProcIter = AllProc.begin(); AllProcIter != AllProc.end(); AllProcIter++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+
+
+
+
+
+	//int i = 0;
+	//int x = 0; // x = iloœæ stron dla danego procesu
+	//for (VMiter = VM.begin(); VMiter != VM.end(); VMiter++)
+	//{
+	//	x = 
+	//	for (int j=0;j<AllProc[i]->sopic)
+	//	cout << "VM PAGE "; cout << VMiter ;
+	//}
+	
+	
+	
+
 }
+
+//cout << "PAGE "; cout.width(2); cout << VMiter[i]->nr << " -> ";
+//VMiter[i]->PrintPage();

@@ -1,5 +1,5 @@
 #pragma once
-#include "PCB.h"
+
 #include "PamiecOperiWirt.h"
 #include <vector>
 #define Average_Priority 4
@@ -16,6 +16,8 @@ public:
 	static int IdentGen;
 	void RemoveProcess(int id);
 	std::vector<PCB*>AllProc;
+	void PrintProcesses();
+	char* getstate(int el);
 private:
 	PamiecOperiWirt* Memory;
 	
