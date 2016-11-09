@@ -32,7 +32,7 @@ void PokazKursor(string znak_kursora=">>> ")
 }
 vector<string> Shell::ZczytajRozkaz()
 {
-	string linia="lallala";
+	string linia;
 	string rozkaz;
 	vector<string> komendy;
 	getline(cin, linia);
@@ -110,10 +110,10 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "EX")	// execute
 	{
-		cout << "dziala";
+		//
 		if (komendy[1] == "plik.txt")
 		{
-			cout << "dziala";
+			
 		}
 	}
 	else if (rozkaz == "EV")	// enviroment variable
@@ -124,7 +124,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		
 	}
-
+	
 	else
 	{
 		cout << "nieznana komenda, wpisz poprawna" << endl;
@@ -132,11 +132,19 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	
 }
 
-int main2()
+int main()
 {
 	vector<string>komendy;
 	Shell *shell= new Shell();
 	shell->ObsluzLinie(komendy);
+	while (komendy[1]!="QT")
+	{
+		shell->ObsluzLinie(komendy);
 
+
+
+
+	}
+	cout << "dobranoc";
 	return 0;
 }
