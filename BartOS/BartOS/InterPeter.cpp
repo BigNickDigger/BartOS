@@ -390,7 +390,7 @@ void InterPeter::ExecuteCommand()
 
 	else if (n == "XR") //read
 	{
-
+		
 	}
 	else if (n == "XS") //send
 	{
@@ -430,7 +430,7 @@ std::string InterPeter::LoadCommand()
 
 	do
 	{
-		//p = load_memez(PC);
+		//p = load_memez(PC); Get_Char_From_OM(PCB *blok, PC);
 		line += p;
 		PC++;
 	} while (p != ';');
