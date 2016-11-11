@@ -3,6 +3,10 @@
 #include <string>
 
 
+#include "ThreadManager.h"
+#include "PamiecOperiWirt.h"
+#include "KomunikacjaProcesowa.h"
+
 InterPeter::InterPeter()
 {
 	regA = 0;
