@@ -12,26 +12,28 @@ InterPeter::InterPeter()
 }
 
 
-InterPeter::~InterPeter()
+InterPeter::~InterPeter(){}
+
+void InterPeter::SaveState() //Dareg
 {
 
 }
 
-void InterPeter::SaveState()
-{
-
-}
-
-void InterPeter::LoadState()
+void InterPeter::LoadState() //Dareg
 {
 
 }
 
 void InterPeter::ExecuteCommand()
 {
+	LoadState();
+
 	string line = LoadCommand();
 	string n;
 	n = line.at(0) + line.at(1);
+
+	//MATHz
+
 	if (n == "AD")
 	{
 		switch (line.at(3))
@@ -225,6 +227,9 @@ void InterPeter::ExecuteCommand()
 			break;
 		}
 	}
+
+	//TRANSFER
+
 	else if (n == "JP") // jump
 	{
 		PC = std::stoi(line.substr(3));
@@ -292,7 +297,6 @@ void InterPeter::ExecuteCommand()
 	}
 	else if (n == "SW") //swap
 	{
-
 		switch (line.at(3))
 		{
 		case 'A':
@@ -337,57 +341,82 @@ void InterPeter::ExecuteCommand()
 			}
 			break;
 		}
-
 	}
-	else if (n == "SB")
+
+
+
+	//-SYS-
+
+	//FILE #dysk *wink* *wink* Marcin
+
+
+	else if (n == "NF") //new file
 	{
 
-
 	}
-
-
-	//SYS
-
-	else if (n == "NF") //nowy plik
+	else if (n == "OF") //open file
 	{
 
 	}
-	else if (n == "LD") //meme load
+	else if (n == "RF") //read file
+	{
+
+	}
+	else if (n == "WF") //write file
+	{
+
+	}
+	else if (n == "CF") //close file
+	{
+
+	}
+
+	//MEMEory Kuba
+
+	else if (n == "MR") //meme read
 	{
 		
 	}
-	else if (n == "SV") //meme save
+	else if (n == "MW") //meme write
 	{
 		
 	}
-	else if (n == "MV")
+
+	//MESSAGE Krzysiu
+
+	else if (n == "XR") //read
 	{
 
 	}
-	else if (n == "SB")
+	else if (n == "XS") //send
 	{
 
 	}
-	else if (n == "KL") //kill process
-	{
-
-	}
-	else if (n == "HT") //halt - hammer Zeit
-	{
-
-	}
-	else if (n == "EN")
-	{
-
-	}
-	else if (n == "SB")
-	{
-
-	}
-
 	
+	//PROCESS Dareg
 
-	PC++;
+	else if (n == "CP") //create
+	{
+
+	}
+	else if (n == "HP") //halt - hammer Zeit
+	{
+
+	}
+	else if (n == "KP") //kill
+	{
+
+	}
+
+	//END
+	
+	else if (n == "EN") //this is the end, Skyfaaaaaaall
+	{
+		//BarKar
+	}
+	
+	
+	SaveState();
 }
 
 std::string InterPeter::LoadCommand()
