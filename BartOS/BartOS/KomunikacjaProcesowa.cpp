@@ -18,7 +18,7 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 {
 }
 
-void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
+void KomunikacjaProcesowa::Nadaj(int Odbiorca, string tresc)
 {
 	//szukanie skrzynki
 	int counter = 0;
@@ -27,7 +27,7 @@ void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
 		if (ElementAt[counter]->Process_ID == Odbiorca)
 		{
 			string S="";
-			S += to_string(Nadawca) + " " + tresc;
+			S += to_string(/*Nadawca*/4) + " " + tresc;
 			ElementAt[counter]->messages.push(S);
 //TUTAJ SIGNAL JAKBY SOBIE SPAL TAMTEN (CZEKAL NA WIADOMOSC)signal(odbiorca)
 		}

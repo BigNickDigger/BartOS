@@ -29,7 +29,7 @@ public:
 	
 	typedef enum//Stany Procesora
 	{
-		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous
+		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous, Proc_Running
 	};
 	std::queue<std::string>messages;
 	std::vector<PCB*>::iterator ElementAt;

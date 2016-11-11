@@ -1,13 +1,12 @@
 #pragma once
 #include <iostream>
-#include <list>
+#include <vector>
 #include "PCB.h"
 using namespace std;
 //proszê siê nie sugerowac moimi rozwi¹zaniami, tu jeszcze wszystko mo¿e siê zmieniæ
 
 const int framesize = 16;//rozmiar ramki/strony
 const int OMsize = 16;
-const int WMsize = 48;
 
 class page {
 public:
@@ -44,14 +43,13 @@ class PamiecOperiWirt
 public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
-
 	int OM_Next_Frame_Victim;
+	page OM[OMsize];//16 czyli pamiec op 126byte
+	vector <page*> VM;          //64 pamiec wirtualna 2048byte
+	vector <page*>::iterator VMiter;
+	
 	int IndexforWM;
 	int IndexforWM2;
-	page POper[OMsize];//16 czyli pamiec op 126byte
-	page PWirt[WMsize];//64 pamiec wirtualna 2048byte
-
-
 	//char Get_Whole_Process_From_Memory(PCB blok);//mechanizm obs³ugi stronicowania na ¿¹danie ale dziki bo zwraca ca³y kod programu
 	char Get_Char_From_OM(PCB *blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
 	void Get_Page_From_WM(PCB* blok, int page);
@@ -64,7 +62,7 @@ public:
 	stronice MemRequest();//do obgadania
 	void DeleteProcess(PCB *blok);
 	void PrintOM();
-	void PrintWM();
+	void PrintWM(vector<PCB*> AllProc);//do wypisania pamieci wirtualnej potrzebna jest lista przechowujaca wszystkie procesy
 
 };
 

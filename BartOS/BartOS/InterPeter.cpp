@@ -3,35 +3,41 @@
 #include <string>
 
 
+#include "ThreadManager.h"
+#include "PamiecOperiWirt.h"
+#include "KomunikacjaProcesowa.h"
+
 InterPeter::InterPeter()
 {
-	rejA = 0;
-	rejB = 0;
-	rejC = 0;
+	regA = 0;
+	regB = 0;
+	regC = 0;
 	PC = 0;
 }
 
 
-InterPeter::~InterPeter()
+InterPeter::~InterPeter(){}
+
+void InterPeter::SaveState() //Dareg
 {
 
 }
 
-void InterPeter::SaveState()
+void InterPeter::LoadState() //Dareg
 {
 
 }
 
-void InterPeter::LoadState()
+void InterPeter::ExecuteCommand()
 {
+	LoadState();
 
-}
-
-void InterPeter::Command()
-{
-	string line;
+	string line = LoadCommand();
 	string n;
 	n = line.at(0) + line.at(1);
+
+	//MATHz
+
 	if (n == "AD")
 	{
 		switch (line.at(3))
@@ -40,14 +46,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'B':
-				rejA += rejB;
+				regA += regB;
 				break;
 
 			case 'C':
-				rejA += rejC;
+				regA += regC;
 				break;
 			default:
-				rejA += std::stoi(line.substr(5));
+				regA += std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -56,14 +62,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejB += rejA;
+				regB += regA;
 				break;
 
 			case 'C':
-				rejB += rejA;
+				regB += regA;
 				break;
 			default:
-				rejB += std::stoi(line.substr(5));
+				regB += std::stoi(line.substr(5));
 				break;
 			}
 		
@@ -73,15 +79,15 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejC += rejA;
+				regC += regA;
 				break;
 
 			case 'B':
-				rejC += rejB;
+				regC += regB;
 				break;
 			}
 		default:
-			rejC += std::stoi(line.substr(5));
+			regC += std::stoi(line.substr(5));
 			break;
 		}
 	}
@@ -93,14 +99,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'B':
-				rejA -= rejB;
+				regA -= regB;
 				break;
 
 			case 'C':
-				rejA -= rejC;
+				regA -= regC;
 				break;
 			default:
-				rejA -= std::stoi(line.substr(5));
+				regA -= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -109,14 +115,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejB -= rejA;
+				regB -= regA;
 				break;
 
 			case 'C':
-				rejB -= rejA;
+				regB -= regA;
 				break;
 			default:
-				rejB -= std::stoi(line.substr(5));
+				regB -= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -125,14 +131,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejC -= rejA;
+				regC -= regA;
 				break;
 
 			case 'B':
-				rejC -= rejB;
+				regC -= regB;
 				break;
 			default:
-				rejC -= std::stoi(line.substr(5));
+				regC -= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -146,14 +152,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'B':
-				rejA *= rejB;
+				regA *= regB;
 				break;
 
 			case 'C':
-				rejA *= rejC;
+				regA *= regC;
 				break;
 			default:
-				rejA *= std::stoi(line.substr(5));
+				regA *= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -162,14 +168,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejB *= rejA;
+				regB *= regA;
 				break;
 
 			case 'C':
-				rejB *= rejA;
+				regB *= regA;
 				break;
 			default:
-				rejB *= std::stoi(line.substr(5));
+				regB *= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -178,14 +184,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejC *= rejA;
+				regC *= regA;
 				break;
 
 			case 'B':
-				rejC *= rejB;
+				regC *= regB;
 				break;
 			default:
-				rejC *= std::stoi(line.substr(5));
+				regC *= std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -196,15 +202,15 @@ void InterPeter::Command()
 		switch (line.at(3))
 		{
 		case 'A':
-			rejA++;
+			regA++;
 			break;
 
 		case 'B':
-			rejB++;
+			regB++;
 			break;
 
 		case 'C':
-			rejC++;
+			regC++;
 			break;
 		}
 	}
@@ -213,25 +219,28 @@ void InterPeter::Command()
 		switch (line.at(3))
 		{
 		case 'A':
-			rejA--;
+			regA--;
 			break;
 
 		case 'B':
-			rejB--;
+			regB--;
 			break;
 
 		case 'C':
-			rejC--;
+			regC--;
 			break;
 		}
 	}
+
+	//TRANSFER
+
 	else if (n == "JP") // jump
 	{
 		PC = std::stoi(line.substr(3));
 	}
 	else if (n == "JN") //jump not zero
 	{
-		if (rejA != 0)
+		if (regA != 0)
 		{
 			PC = std::stoi(line.substr(3));
 		}
@@ -245,14 +254,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'B':
-				rejA = rejB;
+				regA = regB;
 				break;
 
 			case 'C':
-				rejA = rejC;
+				regA = regC;
 				break;
 			default:
-				rejA = std::stoi(line.substr(5));
+				regA = std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -261,14 +270,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejB = rejA;
+				regB = regA;
 				break;
 
 			case 'C':
-				rejB = rejA;
+				regB = regA;
 				break;
 			default:
-				rejB = std::stoi(line.substr(5));
+				regB = std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -277,14 +286,14 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				rejC = rejA;
+				regC = regA;
 				break;
 
 			case 'B':
-				rejC = rejB;
+				regC = regB;
 				break;
 			default:
-				rejC = std::stoi(line.substr(5));
+				regC = std::stoi(line.substr(5));
 				break;
 			}
 			break;
@@ -292,18 +301,17 @@ void InterPeter::Command()
 	}
 	else if (n == "SW") //swap
 	{
-
 		switch (line.at(3))
 		{
 		case 'A':
 			switch (line.at(5))
 			{
 			case 'B':
-				swap(rejA, rejB);
+				swap(regA, regB);
 				break;
 
 			case 'C':
-				swap(rejA, rejC);
+				swap(regA, regC);
 				break;
 			
 			}
@@ -313,11 +321,11 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				swap(rejB, rejA);
+				swap(regB, regA);
 				break;
 
 			case 'C':
-				swap(rejB, rejC);
+				swap(regB, regC);
 				break;
 			
 			}
@@ -327,68 +335,128 @@ void InterPeter::Command()
 			switch (line.at(5))
 			{
 			case 'A':
-				swap(rejC, rejA);
+				swap(regC, regA);
 				break;
 
 			case 'B':
-				swap(rejC, rejB);
+				swap(regC, regB);
 				break;
 		
 			}
 			break;
 		}
-
 	}
-	else if (n == "SB")
+
+
+
+	//-SYS-
+
+	//FILE #dysk *wink* *wink* Marcin
+
+
+	else if (n == "NF") //new file
 	{
 
-
 	}
-
-
-	//SYS
-
-	else if (n == "NF") //nowy plik
+	else if (n == "OF") //open file
 	{
 
 	}
-	else if (n == "LD") //meme load
+	else if (n == "RF") //read file
+	{
+
+	}
+	else if (n == "WF") //write file
+	{
+
+	}
+	else if (n == "CF") //close file
+	{
+
+	}
+
+	//MEMEory Kuba
+
+	else if (n == "MR") //meme read
 	{
 		
 	}
-	else if (n == "SV") //meme save
+	else if (n == "MW") //meme write
 	{
 		
 	}
-	else if (n == "MV")
+
+	//MESSAGE Krzysiu
+
+	else if (n == "XR") //read
+	{
+		
+	}
+	else if (n == "XS") //send
 	{
 
 	}
-	else if (n == "SB")
-	{
-
-	}
-	else if (n == "KL") //kill process
-	{
-
-	}
-	else if (n == "HT") //halt - hammer Zeit
-	{
-
-	}
-	else if (n == "SB")
-	{
-
-	}
-
 	
+	//PROCESS Dareg
 
-	PC++;
+	else if (n == "CP") //create
+	{
+
+	}
+	else if (n == "HP") //halt - hammer Zeit
+	{
+
+	}
+	else if (n == "KP") //kill
+	{
+
+	}
+
+	//END
+	
+	else if (n == "EN") //this is the end, Skyfaaaaaaall
+	{
+		//BarKar
+	}
+	
+	
+	SaveState();
 }
 
-void InterPeter::LoadProg()
+std::string InterPeter::LoadCommand()
 {
 	string line;
-	//line=load_memez();
+	char p;
 
+	do
+	{
+		//p = load_memez(PC); Get_Char_From_OM(PCB *blok, PC);
+		line += p;
+		PC++;
+	} while (p != ';');
+
+	return line;
+}
+
+void InterPeter::RegisterDisplay()
+{
+	cout << " Register State " << endl;
+	cout << "A  : " << regA << endl;
+	cout << "B  : " << regB << endl;
+	cout << "C  : " << regC << endl;
+	cout << "PC : " << PC << endl;
+}
+
+void InterPeter::CommandDisplay()
+{
+	cout << " Commands" << endl;
+	cout << "PREV : " << endl;
+	cout << "NEXT : " << endl;
+}
+
+void InterPeter::Interface()
+{
+	RegisterDisplay();
+	cout << "-----------" << endl;
+	CommandDisplay();
 }
