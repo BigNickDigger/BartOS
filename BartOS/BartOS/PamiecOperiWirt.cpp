@@ -7,10 +7,9 @@ PamiecOperiWirt::PamiecOperiWirt()
 {
 	OM_Next_Frame_Victim = 0;
 	IndexforWM = 0;
-	IndexforWM2 = 0;
 	for (int i = 0; i < OMsize; i++)
 	{
-		OM[i].nr = i;
+		OM[i] = '-';
 	}
 	
 	
@@ -34,7 +33,24 @@ int PamiecOperiWirt::WhatOffset(short int x)
 
 void PamiecOperiWirt::DeleteProcess(PCB *blok)
 {
-	
+	int i = 0;
+	VMiter = VM.begin();
+	while (i != blok->Process_ID)
+		{
+			VMiter++; i++;
+		}
+		VM.erase(VMiter);
+		VM.insert(VMiter,new page);
+		VM[i]->abandon = true;
+	/////////////////////////////////////////////
+	for (int j = 0; j < blok->sopic / framesize + 1; j++)
+	{
+		if (blok->pages[j].Valid == true)
+		{
+			for (int k = 0; k < framesize; k++)
+				OM[(blok->pages[j].cell) * 16 + k] = '-';
+		}
+	}
 }
 //Dodalem Ci funkcje hehe XD
 // Wez ja wypelnij jakos ladnie
@@ -58,39 +74,7 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok)
 	//laduj do VM[processID] tablice reprezentujaca kod programu
 
 }
-// ta funkcja ponizej to chyba siê nie przyda xdxdxd, prêdzej ta pod ni¹ ///////////////////////////////////////////////////////////////////
-//char PamiecOperiWirt::Get_Whole_Process_From_Memory(PCB blok)//wywolanie tej funkcji rozpocznie proces zwracania wszystkich charow sk³adaj¹cych siê na program do P_Oper
-//{
-//	for (int i = 0; i < blok.sopic; i++)//przebiega po wszystkich stronach procesu 
-//	{
-//		if (blok.pages[i].Valid == true)      //wejdŸ tu jeœli ramka JEST w PAM OP
-//		{
-//			for (int j = 0; j < framesize; j++)
-//			{
-//				//strona znajduje sie w pamieci OP wiec zwracamy z niej chary... jest ich nie wiêcej ni¿ framesize=16
-//				if (POper[i].tab[j] != '-')			 //je¿eli w pamiêci jest COKOLWIEK innego ni¿ puste
-//					return POper[i].tab[j];			 //zwróæ char
-//				else                                 //jeœli jest '-' czyli œmieci
-//					break;                           //break bo w tej ramce nie ma juz nic wiecej, idŸ do kolejnego i, czyli kolejnej ramki
-//			}
-//		}
-//		if (blok.pages[i].Valid == false)                                 //wejdŸ tu jeœli ramki NIE MA w PAM OP
-//		{
-//			//strony nie ma w pamieci OP, sciagnij ja
-//			Get_Page_From_WM(blok, i);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwracaj z niej chary USTAW ROWNIEZ BIT NA VALID
-//			for (int j = 0; j < framesize; j++)
-//			{
-//				//strona znajduje sie w pamieci OP wiec zwracamy z niej chary... jest ich nie wiêcej ni¿ framesize=16
-//				if (POper[i].tab[j] != '-')			 //je¿eli w pamiêci jest COKOLWIEK innego ni¿ puste
-//					return POper[i].tab[j];			 //zwróæ char
-//				else                                 //jeœli jest '-' czyli œmieci
-//					break;                           //break bo w tej ramce nie ma juz nic wiecej, idŸ do kolejnego i, czyli kolejnej ramki
-//			}
-//		}
-//	}
-//
-//}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 char PamiecOperiWirt::Get_Char_From_OM(PCB *blok, int LogicAdr)
 {
 	int page = WhichPage(LogicAdr);
@@ -99,58 +83,103 @@ char PamiecOperiWirt::Get_Char_From_OM(PCB *blok, int LogicAdr)
 
 	if (blok->pages[page].Valid == true)      //wejdŸ tu jeœli ramka JEST w PAM OP
 	{
-		return OM[page].tab[offset]; //ez zwróæ chara
+		return OM[blok->pages[page].cell * 16 + offset];
 	}
 	else      //wejdŸ tu jeœli ramki NIE MA w PAM OP
 	{
 		Get_Page_From_WM(blok, page);//pobierz strone z pam wirt do operacyjnej, jak to zrobisz, to zwroc char USTAW ROWNIEZ BIT NA VALID
-		return OM[page].tab[offset]; //ez zwróæ chara
+		Get_Char_From_OM(blok, LogicAdr);//wywo³aj sie na nowo ¿eby tym razem zwróciæ chara
 	}
 }
 
 void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 {
+	short FrameNr = Get_Free_Frame_Number();//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
+
+	for (int i = 0; i < blok->sopic / 16 + 1; i++)
+	{
+		for (int j = 0; j < framesize ; j++)
+		{
+			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
+		}
+	}
+	blok->pages[page].Valid = true;
+	blok->pages[page].cell = FrameNr;
+	FIFO.push(FrameNr);
+}
+
+int PamiecOperiWirt::Get_Free_Frame_Number()
+{
+	for (int i = 0; i < 128; i=i+16)
+	{
+		if (OM[i] == '-')
+		{
+			return i/16;//zwroc index pierwszej pustej ramki jeœli puste w ogóle s¹
+		}
+	}//bo jak ich nie ma to realizuj wyrzucanie z OM wg FIFO = zwróc index ramki która by³a najd³u¿ej
+	int x = FIFO.front();
+	FIFO.pop();
+	return x;
 	
 }
 
-//string PamiecOperiWirt::Return_A_Formed_Order(PCB blok)
-//{
-//	//prawdopodobnie sie nie przyda / problem z implementacja
-//	return "xD";
-//}
 
 
 void PamiecOperiWirt::PrintOM()
 {
+	int counter = 0;
 	cout << "AKTUALNY STAN PAMIECI OPERACYJNEJ" << endl;
-	for (int i = 0; i < OMsize; i++)
+	for (int i = 0; i < OMsize/framesize; i++)
 	{
-		cout << "FRAME "; cout.width(2); cout << OM[i].nr << " -> ";
-		OM[i].PrintPage();
+		cout << "Frame nr " << i + 1 << "  ";
+		for (int j = 0 ; j < framesize ; j++)
+		{
+			cout << OM[counter] << " ";
+			counter++;
+		}
+		cout << endl;
 	}
 }
 
-void PamiecOperiWirt::PrintWM(std::vector<PCB*> AllProc)
+void PamiecOperiWirt::PrintVM(std::vector<PCB*> AllProc)
 {
-	//vector<PCB*>::iterator AllProcIter;
 
 	if (VM.capacity() == 0)
 	{
 		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
 		return;
 	}
-	cout << "AKTUALNY STAN PAMIECI WIRTUALNEJ" << endl;
 
-	int i = 0; // helpful iter :>
-	int capacity = AllProc.capacity();
-	for (i = 0 ; i < capacity ; i++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+	//int i = 0; // helpful iter :>
+	//int capacity = AllProc.capacity();
+	//for (i = 0 ; i < capacity ; i++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+	//{
+	//	cout << "PAMIEC WIRTUALNA PROCESU NR " << i << endl;
+	//	for (int j = 0; j < AllProc[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+	//	{
+	//		VM[i][j].PrintPage();
+	//	}
+	//	cout << endl;
+	//}
+	int capacity = VM.capacity();
+	for (int i = 0; i < capacity; i++)//skacz po zawartosci VM
 	{
-		cout << "PAMIEC WIRTUALNA PROCESU NR " << i << endl;
-		for (int j = 0; j < AllProc[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np 40/16 +1 = 3
+		if (VM[i]->abandon == true)
+			continue;
+		else
 		{
-			VM[i][j].PrintPage();
+			cout << "PAMIEC WIRTUALNA PROCESU NR " << i << endl;
+			for (int j = 0; j < AllProc[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+			{
+				VM[i][j].PrintPage();
+			}
+			cout << endl;
 		}
-		cout << endl;
 	}
-	//for (AllProcIter = AllProc.begin(); AllProcIter != AllProc.end(); AllProcIter++)//przeskocz po wszystkich procesach a wiêc i = dany proces
+
+	for (int j = 0; j < framesize; j++)
+	{
+
+	}
+
 }
