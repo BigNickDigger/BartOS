@@ -41,7 +41,7 @@ int main()
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
 	PAM.Set_PCB_Vector(&EatShit.AllProc);
 	
-	EatShit.AllProc.push_back(new PCB);
+	/*EatShit.AllProc.push_back(new PCB);
 	EatShit.AllProc[0]->sopic = 40;
 	EatShit.AllProc[0]->Process_ID = 0;
 
@@ -51,8 +51,12 @@ int main()
 
 	EatShit.AllProc.push_back(new PCB);
 	EatShit.AllProc[2]->sopic = 35;
-	EatShit.AllProc[2]->Process_ID = 2;
-
+	EatShit.AllProc[2]->Process_ID = 2;*/
+//ZAMIAST POWYZSZEGO UZYWAC CREATEPROCESS
+	EatShit.CreateProcess("shite1", 40);
+	EatShit.CreateProcess("shite2", 40);
+	EatShit.CreateProcess("shite3", 35);
+	
 	page kod_procesu[3];
 	for (int i = 0; i < 3; i++)
 		for (int j=0;j<16;j++)
@@ -121,7 +125,7 @@ int main()
 	{
 		PAM.Get_Char_From_OM(EatShit.AllProc[1], i);
 	}
-
+	
 	cout << "wydrukuj obie pamieci" << endl;
 
 	PAM.PrintOM();
@@ -132,11 +136,13 @@ int main()
 
 	PAM.PrintOM();
 	PAM.PrintVM(EatShit.AllProc);
-
-
 	
+	EatShit.CreateProcess("poot", 36);
+	//EatShit.PrintProcesses();
+	printf("%d", EatShit.AllProc.size());
+	//EatShit.gethandle(2)->pages;
+	EatShit.PrintProcesses();
 	
-
 	
     return 0;
 }
