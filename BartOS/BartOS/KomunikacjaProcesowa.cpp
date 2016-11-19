@@ -39,28 +39,28 @@ void KomunikacjaProcesowa::Nadaj(int Odbiorca, string tresc)
 	//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
 }
 
-string KomunikacjaProcesowa::Odbierz(int Odbiorca)
+string KomunikacjaProcesowa::Odbierz()
 {
 	//szukanie skrzynki
 	int counter = 0;
-	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
-	{
-		if (ElementAt[counter]->Process_ID == Odbiorca)
-		{
-			if (ElementAt[counter]->messages.empty())
-			{
-				//SEMAFOR wait(Odbiorca);
-			}
-			string x;
-			x = ElementAt[counter]->messages.front();
-			ElementAt[counter]->messages.pop();
-			return x;
-		}
-		else
-		{
-			counter++;
-		}
-	}
+	//for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	//{
+	//	if (ElementAt[counter]->Process_ID == Odbiorca)
+	//	{
+	//		if (ElementAt[counter]->messages.empty())
+	//		{
+	//			//SEMAFOR wait(Odbiorca);
+	//		}
+	//		string x;
+	//		x = ElementAt[counter]->messages.front();
+	//		ElementAt[counter]->messages.pop();
+	//		return x;
+	//	}
+	//	else
+	//	{
+	//		counter++;
+	//	}
+	/*}*/
 	//SEMAFOR wait(Odbiorca);
 }
 

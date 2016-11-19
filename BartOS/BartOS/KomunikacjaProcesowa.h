@@ -18,7 +18,7 @@ public:
 	KomunikacjaProcesowa(vector<PCB*>*AllProcc);
 	~KomunikacjaProcesowa();
 	void Nadaj(int, string);
-	string Odbierz(int);
+	string Odbierz();
 	vector<PCB*>*AllProc;
 	vector<PCB*>::iterator ElementAt;
 };
