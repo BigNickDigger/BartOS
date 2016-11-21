@@ -52,6 +52,8 @@ public:
 	vector <page*> VM;
 	vector <page*>::iterator VMiter;
 	queue <int> FIFO;
+	vector<PCB*>*AllPCBs;
+	vector <PCB*>::iterator iter;
 	
 	int IndexforWM;
 	int FIFOindex;
@@ -60,6 +62,8 @@ public:
 	void Get_Page_From_WM(PCB* blok, int page);
 	void Insert_To_Virtual_Memory(PCB *blok);//wrzuc do pamieci wirtualnej i ustawiaj w pcb TabliceStron
 	int Get_Free_Frame_Number();
+	int Return_ID_of_a_Process_using_this_frame(int FrameNr);
+	int Return_nr_of_a_page_using_this_frame(int FrameNr);
 
 	int WhichPage(short int); //MMU; do przeliczania adresu logicznego na fizyczny
 	int WhatOffset(short int);  //MMU; -||-
@@ -69,6 +73,8 @@ public:
 	void DeleteProcess(PCB *blok);
 	void PrintOM();
 	void PrintVM(vector<PCB*> AllProc);//do wypisania pamieci wirtualnej potrzebna jest lista przechowujaca wszystkie procesy
+	void Update_Overide(int,int);
+	void Set_PCB_Vector(vector<PCB*> *AllProc);
 
 };
 

@@ -39,8 +39,9 @@ int main()
 	CThreadManager EatShit(&PAM);
 	KomunikacjaProcesowa EatMoreShit();
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
+	PAM.Set_PCB_Vector(&EatShit.AllProc);
 	
-	EatShit.AllProc.push_back(new PCB);
+	/*EatShit.AllProc.push_back(new PCB);
 	EatShit.AllProc[0]->sopic = 40;
 	EatShit.AllProc[0]->Process_ID = 0;
 
@@ -50,8 +51,12 @@ int main()
 
 	EatShit.AllProc.push_back(new PCB);
 	EatShit.AllProc[2]->sopic = 35;
-	EatShit.AllProc[2]->Process_ID = 2;
-
+	EatShit.AllProc[2]->Process_ID = 2;*/
+//ZAMIAST POWYZSZEGO UZYWAC CREATEPROCESS
+	EatShit.CreateProcess("shite1", 40);
+	EatShit.CreateProcess("shite2", 40);
+	EatShit.CreateProcess("shite3", 35);
+	
 	page kod_procesu[3];
 	for (int i = 0; i < 3; i++)
 		for (int j=0;j<16;j++)
@@ -80,38 +85,64 @@ int main()
 					kod_procesu3[i].tab[j] = '3';
 		}
 
-
+	cout << "start" << endl;
+	cout << "wydrukuj obie pamieci" << endl;
 
 	PAM.PrintVM(EatShit.AllProc);
+	PAM.PrintOM();
+
+	cout << "wrzuc 3 kody do pamieci wirtualnej" << endl;
+
 	PAM.VM.push_back(kod_procesu);
 	PAM.VM.push_back(kod_procesu2);
-	PAM.PrintVM(EatShit.AllProc);
-	PAM.PrintOM();
-	PAM.Get_Page_From_WM(EatShit.AllProc[0], 0);
-	PAM.Get_Page_From_WM(EatShit.AllProc[0], 1);
-	PAM.Get_Page_From_WM(EatShit.AllProc[0], 2);
-	PAM.Get_Page_From_WM(EatShit.AllProc[1], 0);
-	PAM.Get_Page_From_WM(EatShit.AllProc[1], 1);
-	PAM.Get_Page_From_WM(EatShit.AllProc[1], 2);
-	PAM.Get_Page_From_WM(EatShit.AllProc[1], 3);
-	PAM.Get_Page_From_WM(EatShit.AllProc[1], 4);
-	PAM.PrintOM();
-	cout << "USUWAM" << endl;
-	PAM.DeleteProcess(EatShit.AllProc[0]);
-	PAM.DeleteProcess(EatShit.AllProc[1]);
-	PAM.PrintOM();
-	PAM.PrintVM(EatShit.AllProc);
-	cout << "bierzemy proces 3" << endl;
 	PAM.VM.push_back(kod_procesu3);
+
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintVM(EatShit.AllProc);
+	PAM.PrintOM();
+
+	cout << "wrzuc kod programu 1 i 3 do pamieci operacyjnej" << endl;
+
+	for (int i = 0; i < 40; i++)
+	{
+		PAM.Get_Char_From_OM(EatShit.AllProc[0], i);
+	}
+
 	for (int i = 0; i < 35; i++)
 	{
 		PAM.Get_Char_From_OM(EatShit.AllProc[2], i);
 	}
+
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintVM(EatShit.AllProc);
+	PAM.PrintOM();
+
+	cout << "Wrzucamy proces nr 2" << endl;
+	
+	for (int i = 0; i < 70; i++)
+	{
+		PAM.Get_Char_From_OM(EatShit.AllProc[1], i);
+	}
+	
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintOM();
+	PAM.PrintVM(EatShit.AllProc);
+
+	PAM.DeleteProcess(EatShit.AllProc[0]);
+	PAM.DeleteProcess(EatShit.AllProc[2]);
+
 	PAM.PrintOM();
 	PAM.PrintVM(EatShit.AllProc);
 	
+	EatShit.CreateProcess("poot", 36);
+	//EatShit.PrintProcesses();
+	printf("%d", EatShit.AllProc.size());
+	//EatShit.gethandle(2)->pages;
+	EatShit.PrintProcesses();
 	
-
 	
     return 0;
 }
