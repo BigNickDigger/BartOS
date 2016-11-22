@@ -11,7 +11,7 @@ private:
 	std::vector<PCB*>::iterator ElementAt;
 public:
 	std::queue < int > KPS; //Przechowuje ID procesu
-	void Wait(int ID_procesu);	// operacja P
+	void Wait(int ID_procesu);	// operacja P 
 	void Signal();	// operacja  V
 	Semafor(std::vector <PCB*>*AllProcc);
 	~Semafor();
