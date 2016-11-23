@@ -139,7 +139,7 @@ int main()
 	
 	EatShit.CreateProcess("poot", 36);
 	//EatShit.PrintProcesses();
-	printf("%d", EatShit.AllProc.size());
+	//printf("%d", EatShit.AllProc.size());
 	//EatShit.gethandle(2)->pages;
 	EatShit.PrintProcesses();
 	

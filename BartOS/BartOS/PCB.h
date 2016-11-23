@@ -16,11 +16,13 @@ public:
 	~PCB();
 	char* nazwa;
 	int Process_State,
+		PriorityDynamic,
 		Process_ID;
 	short int Priority,
 		ProgramCounter;
 	int RegA, RegB, RegC, RegD;
-	int sopic;//size of program in chars
+	int sopic,
+		idleTime;//size of program in chars
 
 	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
 
