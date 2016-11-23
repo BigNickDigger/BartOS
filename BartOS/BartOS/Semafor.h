@@ -13,7 +13,7 @@ public:
 	std::queue < int > KPS; //Przechowuje ID procesu
 	void Wait(int ID_procesu);	// operacja P 
 	void Signal();	// operacja  V
-	Semafor(std::vector <PCB*>*AllProcc);
+	Semafor(int WPS,std::vector <PCB*>*AllProcc); //WPS - wartoœæ pocz¹tkowa semafora
 	~Semafor();
 };
 
