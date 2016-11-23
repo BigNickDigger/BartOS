@@ -33,5 +33,7 @@ public:
 	};
 	std::queue<std::string>messages;
 	std::vector<PCB*>::iterator ElementAt;
+	
+	
 };
 

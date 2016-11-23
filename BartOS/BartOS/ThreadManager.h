@@ -20,7 +20,7 @@ public:
 	char* getstate(int el);
 private:
 	PamiecOperiWirt* Memory;
-	
+	std::queue<PCB*>poot[2];
 	
 };
 

@@ -62,6 +62,7 @@ string KomunikacjaProcesowa::Odbierz()
 	//	}
 	/*}*/
 	//SEMAFOR wait(Odbiorca);
+	return "tit";
 }
 
 

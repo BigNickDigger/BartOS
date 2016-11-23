@@ -7,6 +7,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory)
 {
 	srand(time(NULL));	
 	this->Memory = Memory;
+	poot[1].push(new PCB());
 }
 
 
