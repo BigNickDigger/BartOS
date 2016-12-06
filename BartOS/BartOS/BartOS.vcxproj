@@ -143,24 +143,26 @@
   <ItemGroup>
     <ClInclude Include="InterPeter.h" />
     <ClInclude Include="KomunikacjaProcesowa.h" />
-    <ClInclude Include="MechSynch.h" />
     <ClInclude Include="PamiecOperiWirt.h" />
     <ClInclude Include="PCB.h" />
     <ClInclude Include="ProcesoPriorytet.h" />
+    <ClInclude Include="Semafor.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemPlikowFAT.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadManager.h" />
+    <ClInclude Include="Zamek.h" />
+    <ClInclude Include="ZmiennaSrodowiskowa.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BartOS.cpp" />
     <ClCompile Include="InterPeter.cpp" />
     <ClCompile Include="KomunikacjaProcesowa.cpp" />
-    <ClCompile Include="MechSynch.cpp" />
     <ClCompile Include="PamiecOperiWirt.cpp" />
     <ClCompile Include="PCB.cpp" />
     <ClCompile Include="ProcesoPriorytet.cpp" />
+    <ClCompile Include="Semafor.cpp" />
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -170,6 +172,8 @@
     </ClCompile>
     <ClCompile Include="SystemPlikowFAT.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
+    <ClCompile Include="Zamek.cpp" />
+    <ClCompile Include="ZmiennaSrodowiskowa.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

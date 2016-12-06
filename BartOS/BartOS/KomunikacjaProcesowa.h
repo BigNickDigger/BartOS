@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include "PCB.h"
+#include <vector>
+#include <queue>
 using namespace std;
 
 struct Mess
@@ -8,14 +11,16 @@ struct Mess
 	string tresc;
 };
 
+
 class KomunikacjaProcesowa
 {
 public:
-	KomunikacjaProcesowa();
+	KomunikacjaProcesowa(vector<PCB*>*AllProcc);
 	~KomunikacjaProcesowa();
-	void Nadaj(int, int, string);
-	Mess Odbierz(int);
-
+	void Nadaj(int, string);
+	string Odbierz();
+	vector<PCB*>*AllProc;
+	vector<PCB*>::iterator ElementAt;
 };
 
 /*    push - umieszczenie nowego elementu na koñcu kolejki;

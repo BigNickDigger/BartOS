@@ -1,59 +1,69 @@
 #include "stdafx.h"
 #include "KomunikacjaProcesowa.h"
-#include "PCB.h"
-#include <queue>
-//Help
-//KRZYSIU TO PIZDA H3H3 
-KomunikacjaProcesowa::KomunikacjaProcesowa()
+//#include <iostream>
+
+
+
+//#include <vector>
+using namespace std;
+
+KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
 {
+	AllProc = AllProcc;
 }
+
 
 
 KomunikacjaProcesowa::~KomunikacjaProcesowa()
 {
 }
 
-void KomunikacjaProcesowa::Nadaj(int Nadawca, int Odbiorca, string tresc)
+void KomunikacjaProcesowa::Nadaj(int Odbiorca, string tresc)
 {
-	/*szukanie odbiorcy
-	if(Lista->Proces.ID==Odbiorca)
-	Mess x;
-	x.nadawca=Nadawca;
-	x.odbiorca=odbiorca;
-	x.tresc=tresc;
-	Lista->Proces.queue.push<x>;
-	else
-	   Lista=Lista->next;
-
-
-
-
-	   Jak nie znajdzie error (pytanie jak errora wyjebac?)
-	*/
-
+	//szukanie skrzynki
+	int counter = 0;
+	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	{
+		if (ElementAt[counter]->Process_ID == Odbiorca)
+		{
+			string S="";
+			S += to_string(/*Nadawca*/4) + " " + tresc;
+			ElementAt[counter]->messages.push(S);
+//TUTAJ SIGNAL JAKBY SOBIE SPAL TAMTEN (CZEKAL NA WIADOMOSC)signal(odbiorca)
+		}
+		else
+		{
+			counter++;
+		}
+	}
+	//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
 }
 
-/*Mess KomunikacjaProcesowa::Odbierz(int Odbiorca)
+string KomunikacjaProcesowa::Odbierz()
 {
-	szukanie skrzynki
-	if(Lista->Prcoes.ID==Odbiorca)
-	{
-	Lista->Proces.queue.;
-	Mess x;
-
-	x.nadawca=Lista->Proces.queue.front.nadawca;
-	x.odbiorca=Lista->Proces.queue.front.odbiorca;
-	x.tresc=Lista->Proces.queue.front.tresc;
-	}
-	else
-	Lista=Lista->next;
-
-
-
-	return x;
-	Jak nie znajdzie error (pytanie jak errora wyjebac?)
-	
-}*/
+	//szukanie skrzynki
+	int counter = 0;
+	//for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	//{
+	//	if (ElementAt[counter]->Process_ID == Odbiorca)
+	//	{
+	//		if (ElementAt[counter]->messages.empty())
+	//		{
+	//			//SEMAFOR wait(Odbiorca);
+	//		}
+	//		string x;
+	//		x = ElementAt[counter]->messages.front();
+	//		ElementAt[counter]->messages.pop();
+	//		return x;
+	//	}
+	//	else
+	//	{
+	//		counter++;
+	//	}
+	/*}*/
+	//SEMAFOR wait(Odbiorca);
+	return "hi";
+}
 
 
 /*    push - umieszczenie nowego elementu na koñcu kolejki;

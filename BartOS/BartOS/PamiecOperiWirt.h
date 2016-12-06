@@ -1,17 +1,45 @@
 #pragma once
 #include <iostream>
-#include <list>
+#include <vector>
+#include <queue>
 #include "PCB.h"
+
 using namespace std;
 //proszê siê nie sugerowac moimi rozwi¹zaniami, tu jeszcze wszystko mo¿e siê zmieniæ
 
-const int framesize = 16;//rozmiar ramki/strony
-const int framecount = 8;//operacyjna sklada sie z 8 ramek, czyli 8*16 bajtów = 128 bajtów pamiêci
-const int adreslength = 8;//2^8 = 256  /hex(FF)/  limit adresu dla stron ( (dec)1111_1111 = 255), istnieje 256 stron w pamieci wirtualnej, beda one sciagane do ramek
+const int framesize = 16;//rozmiar strony
+const int OMsize = 128;
 
-struct page {
-	unsigned short nr;
-	string data; //Nie wiem jaki typ tu daæ. Jak zostanie string, to bedzie to string na 14charów/bajtów, bo 2 bajty id¹ na NR, a ca³y page=16 bajtów
+class page {
+public:
+	char tab[framesize];//framesize = 16
+	int nr;
+	bool abandon;
+	page()
+	{
+		for (int i = 0; i < framesize; i++)
+		{
+			tab[i] = '-';
+			abandon = false;
+		}
+	}
+
+	void PrintPage()
+	{
+		for (int i = 0; i < framesize; i++)
+		{
+			cout << tab[i] << " ";
+		}
+		cout << endl;
+	}
+	void Clear()
+	{
+		for (int i = 0; i < framesize; i++)
+		{
+			tab[i] = '-';
+		}
+	}
+
 };
 
 class PamiecOperiWirt
@@ -19,23 +47,34 @@ class PamiecOperiWirt
 public:
 	PamiecOperiWirt();
 	~PamiecOperiWirt();
-	unsigned short LicznikDoStron;
-	unsigned short AktualnyRozmiarOP;//zlicza ile ramek jest zajetych
-	unsigned short AktualnyRozmiarWIRT;//zlicza ile stron jest zajetych
+	int OM_Next_Frame_Victim;
+	char OM[OMsize];
+	vector <page*> VM;
+	vector <page*>::iterator VMiter;
+	queue <int> FIFO;
+	vector<PCB*>*AllPCBs;
+	vector <PCB*>::iterator iter;
+	
+	int IndexforWM;
+	int FIFOindex;
 
-	page *singlepage;
-	list <page> POper;
-	list <page> PWirt;
-	list <page>::iterator iter;
+	char Get_Char_From_OM(PCB *blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
+	void Get_Page_From_WM(PCB* blok, int page);
+	void Insert_To_Virtual_Memory(PCB *blok);//wrzuc do pamieci wirtualnej i ustawiaj w pcb TabliceStron
+	int Get_Free_Frame_Number();
+	int Return_ID_of_a_Process_using_this_frame(int FrameNr);
+	int Return_nr_of_a_page_using_this_frame(int FrameNr);
 
-	//PCB blok; //jeszcze nie jestem tego pewien
+	int WhichPage(short int); //MMU; do przeliczania adresu logicznego na fizyczny
+	int WhatOffset(short int);  //MMU; -||-
 
-	//int WhichPage(short int); //MMU do przeliczania adresu logicznego na fizyczny, nie wiem czy sie przydadz¹ na ten moment
-	//int WhatOffset(short int);  //MMU -||-
 
-	void StworzPamiecWirtualna();//kontrowersyjna procedura, musze mieæ swój bank (pamiêc wirt.) z której bêdê przepisywa³ do operacyjnej pojedyncze bloki danych. Tym bankiem NIE mo¿e byæ sam dysk (s³owa bartoszka) wiêc trzeba dokonywaæ jakiegoœ przepisywania dysku do mojego banku, tym bêdzie siê zajmowaæ ta procedura
-
-	void DeleteProcess(PCB);
+	stronice MemRequest();//do obgadania
+	void DeleteProcess(PCB *blok);
+	void PrintOM();
+	void PrintVM(vector<PCB*> AllProc);//do wypisania pamieci wirtualnej potrzebna jest lista przechowujaca wszystkie procesy
+	void Update_Overide(int,int);
+	void Set_PCB_Vector(vector<PCB*> *AllProc);
 
 };
 

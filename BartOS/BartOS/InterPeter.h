@@ -5,7 +5,7 @@ using namespace std;
 
 class InterPeter
 {
-	int rejA, rejB, rejC;
+	int regA, regB, regC;
 	int PC;
 
 public:
@@ -13,9 +13,11 @@ public:
 	~InterPeter();
 	void SaveState();
 	void LoadState();
-	void Command();
-	void LoadProg();
-
+	void ExecuteCommand();
+	std::string LoadCommand();
+	void Interface();
+	void RegisterDisplay();
+	void CommandDisplay();
 
 
 

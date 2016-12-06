@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "PCB.h"
-
-
+#include "KomunikacjaProcesowa.h"
+#include <vector>
 PCB::PCB()
 {
-	Process_ID = Proc_New;
+	
+	//pages = new stronice[(sopic / 16)+1];
 }
 
 

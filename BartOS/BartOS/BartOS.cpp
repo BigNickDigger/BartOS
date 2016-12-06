@@ -6,62 +6,144 @@ Krzysiu	= Komunikacja procesów
 Kuba	= Zarz¹dzanie pamiêci¹ opercyjn¹ i wirtualn¹
 Darek	= Zarz¹dzanie procesami(Tworzenie procesów)
 Marcin	= System plików
-Adam	= ASSembler interpreter
+Adam	= ASSembler interPeter
 
 System Windowso-niepodobny
 Wpisujcie tutaj propozycje nazw:
 BartOS
 kabanOS
 PornOS
+Cyborg
 
 
 
 */
 
+//SHIT BROKE FELLAS
 
 #include "stdafx.h"
 #include <iostream>
 #include <string>
 #include "PamiecOperiWirt.h"
-#include "PCB.h"
-
+#include "ThreadManager.h"
+#include "KomunikacjaProcesowa.h"
 using namespace std;
 const float SystemVer = 1.337;
 int main()
 {
-	//bawie sie tutaj, mo¿ecie to wszystko wywaliæ w piŸdziet//////////////////////////////
+	//K$R*A
+	//KRZYSIU MASZ
+	//NIE WK^R%^AJ MNIE:
+	//ZABAWA NIE ZNA GRANIC, ZNOWU TO ROBIE IKS DE DE DE, MemoryGuy2016~
 	PamiecOperiWirt PAM;
-	PCB proces;
-	proces.pages = new stronice[8];
-	proces.pages[0].cell = 0;
-	proces.pages[5].cell = 5;
-	proces.pages[0].Valid = true;//ramka nr 0 znajduje sie w pamieci
-	proces.pages[5].Valid = true;//ramka nr 5 znajduje sie w pamieci. usuniecie procesu = usuniecie ramek 0 i 5
+	CThreadManager EatShit(&PAM);
+	KomunikacjaProcesowa EatMoreShit();
+	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
+	PAM.Set_PCB_Vector(&EatShit.AllProc);
+	
+	/*EatShit.AllProc.push_back(new PCB);
+	EatShit.AllProc[0]->sopic = 40;
+	EatShit.AllProc[0]->Process_ID = 0;
 
-	proces.nazwa = "cienias";//supermega proces
+	EatShit.AllProc.push_back(new PCB);
+	EatShit.AllProc[1]->sopic = 70;
+	EatShit.AllProc[1]->Process_ID = 1;
 
-	PAM.iter = PAM.POper.begin();
-	PAM.iter->data = "ADD A,8 MOV B,";//zawartosc pierwszej ramki pamieci
-	advance(PAM.iter,5);
-	PAM.iter->data = "ADD B,4 MOV A,";//zawartosc piatej ramki pamieci
+	EatShit.AllProc.push_back(new PCB);
+	EatShit.AllProc[2]->sopic = 35;
+	EatShit.AllProc[2]->Process_ID = 2;*/
+//ZAMIAST POWYZSZEGO UZYWAC CREATEPROCESS
+	EatShit.CreateProcess("shite1", 40);
+	EatShit.CreateProcess("shite2", 40);
+	EatShit.CreateProcess("shite3", 35);
+	
+	page kod_procesu[3];
+	for (int i = 0; i < 3; i++)
+		for (int j=0;j<16;j++)
+			kod_procesu[i].tab[j] = '1';
 
-	PAM.iter = PAM.POper.begin();
-	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
-	advance(PAM.iter, 5);
-	cout << "ramka w pam operacyjnej o nr " << PAM.iter->nr << " zawiera 14 charow, takich " << PAM.iter->data << endl << endl;
+	page kod_procesu2[5];
+	for (int i = 0; i < 5; i++)
+		for (int j = 0; j < 16; j++)
+		{
+			if (i != 4)
+			kod_procesu2[i].tab[j] = '2';
+			else
+			if (j<5)
+				kod_procesu2[i].tab[j] = '2';
+			
+		}
 
-	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
+	page kod_procesu3[3];
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 16; j++)
+		{
+			if (i != 2)
+				kod_procesu3[i].tab[j] = '3';
+			else
+				if (j<6)
+					kod_procesu3[i].tab[j] = '3';
+		}
+
+	cout << "start" << endl;
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintVM(EatShit.AllProc);
+	PAM.PrintOM();
+
+	cout << "wrzuc 3 kody do pamieci wirtualnej" << endl;
+
+	PAM.VM.push_back(kod_procesu);
+	PAM.VM.push_back(kod_procesu2);
+	PAM.VM.push_back(kod_procesu3);
+
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintVM(EatShit.AllProc);
+	PAM.PrintOM();
+
+	cout << "wrzuc kod programu 1 i 3 do pamieci operacyjnej" << endl;
+
+	for (int i = 0; i < 40; i++)
 	{
-		cout << "RAMKA nr " << PAM.iter->nr << " z zawartoscia " << PAM.iter->data << endl;
+		PAM.Get_Char_From_OM(EatShit.AllProc[0], i);
 	}
-	cout << "usuwanie procesu z pamieci..." << endl;
-	PAM.DeleteProcess(proces);//funkcja usuwajaca proces z pamieci
-	cout << endl;
-	for (PAM.iter = PAM.POper.begin(); PAM.iter != PAM.POper.end(); PAM.iter++)
+
+	for (int i = 0; i < 35; i++)
 	{
-		cout << "RAMKA nr " << PAM.iter->nr << " z zawartoscia " << PAM.iter->data << endl;
+		PAM.Get_Char_From_OM(EatShit.AllProc[2], i);
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintVM(EatShit.AllProc);
+	PAM.PrintOM();
+
+	cout << "Wrzucamy proces nr 2" << endl;
+	
+	for (int i = 0; i < 70; i++)
+	{
+		PAM.Get_Char_From_OM(EatShit.AllProc[1], i);
+	}
+	
+	cout << "wydrukuj obie pamieci" << endl;
+
+	PAM.PrintOM();
+	PAM.PrintVM(EatShit.AllProc);
+
+	PAM.DeleteProcess(EatShit.AllProc[0]);
+	PAM.DeleteProcess(EatShit.AllProc[2]);
+
+	PAM.PrintOM();
+	PAM.PrintVM(EatShit.AllProc);
+	
+	EatShit.CreateProcess("poot", 36);
+	//EatShit.PrintProcesses();
+	//printf("%d", EatShit.AllProc.size());
+	//EatShit.gethandle(2)->pages;
+	EatShit.PrintProcesses();
+	
+	
     return 0;
 }
 
