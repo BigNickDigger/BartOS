@@ -12,9 +12,9 @@ public:
 	Shell();
 	~Shell();
 	void WykonujRozkaz(std::string rozkaz, std::vector<std::string> komendy);
-	void UtworzZmiennaSrodowiskowa(std::string nazwa, std::string sciezka);
+	//void UtworzZmiennaSrodowiskowa(std::string nazwa, std::string sciezka);
 	std::vector<std::string> ZczytajRozkaz();
-	void ObsluzLinie(std::vector<std::string> &komendy);
+	void ObsluzLinie(std::vector<std::string> &komendy/*, Dysk &dysk*, ThreadManager thread_manager()*/);
 };
 
 

@@ -5,6 +5,7 @@
 #include <string>
 #include <direct.h>
 #include <stdio.h>
+#include <conio.h>
 
 using namespace std;
 
@@ -53,13 +54,13 @@ vector<string> Shell::ZczytajRozkaz()
 void Shell::ObsluzLinie(vector<string> &komendy)
 {
 	PokazKursor();
-	
 	komendy=ZczytajRozkaz();
-	WykonujRozkaz(komendy[0],komendy);
-
-	
+	if (komendy[0] != "QT")
+	{
+		WykonujRozkaz(komendy[0], komendy);
+	}
 }
-void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
+void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy/*, Dysk &dysk*, ThreadManager thread_manager()*/)
 {
 	
 	if (rozkaz == "CL")			// clear - okienko shella sie czysci
@@ -68,53 +69,54 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "LS")	 // wyswietl zawartosc folderu
 	{
-
+		//dysk.ViewFile();
 	}
 	else if (rozkaz == "CF")	// create file
 	{
-
+		//dysk.CreateFile(komendy[1]);
 	}
 	else if (rozkaz == "DF")	 // delete file
 	{
-
+		//dysk.DeleteFile(komendy[1]);
 	}
 	else if (rozkaz == "OF")	// open file
 	{
-
+		//dysk.OpenFile(komendy[1]);
 	}
 	else if (rozkaz == "CE")	// create folder
 	{	
-
+		//dysk.CreateFolder(komendy[1])	;
 	}
 	
 	else if (rozkaz == "DE")	// delete folder
 	{
-
+		//dysk.DeleteFolder(komendy[1]);
 	}
 	else if (rozkaz == "VD")	// view disc
 	{
-
+		//dysk.ViewDisc();
 	}
-	
 	else if (rozkaz == "VV")	// view virtual memory
 	{
-
+		//thread_manager.Memory->PrintWM();
 	}
 	else if (rozkaz == "VP")	// view physical memory
 	{
-
+		//thread_manager.Memory->PrintOM();
 	}
 	else if (rozkaz == "VT")	// view threads
 	{
-
+		//thread_manager.PrintProcesses();
 	}
 	else if (rozkaz == "EX")	// execute
 	{
-		//
-		if (komendy[1] == "plik.txt")
-		{
-			
-		}
+		// 1) zlecam zarzadcy procesow stworzyc proces
+		// 2) zlecam pamieciowcowi wprowadzic program do pamieci (zaladownie stronic danymi)
+		// 3) zlecam wykonanie pojedynczego rozkazu interpreterowi Assemblera
+	}
+	else if (rozkaz == "C0")
+	{
+		//wykonaj nastepny rozkaz assemblera
 	}
 	else if (rozkaz == "EV")	// enviroment variable
 	{
@@ -124,7 +126,6 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		
 	}
-	
 	else
 	{
 		cout << "nieznana komenda, wpisz poprawna" << endl;
@@ -135,16 +136,31 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 int main2()
 {
 	vector<string>komendy;
+	//PamiecOperiWirt pamiec = new PawmiecOperiWirt();
+	//ThreadManager *thread_manager = new ThreadManager(pamiec);
+	//Dysk dysk = new Dysk();
+
 	Shell *shell= new Shell();
-	shell->ObsluzLinie(komendy);
-	while (komendy[1]!="QT")
+	
+	while (1)
 	{
-		shell->ObsluzLinie(komendy);
-
-
-
-
+		shell->ObsluzLinie(komendy/*,dysk,thread_manager*/);
+		if (komendy[0] == "QT")
+		{
+			break;
+		}
+		komendy.clear();
+		
 	}
-	cout << "dobranoc";
+	cout << "Shutting down...";
+	
 	return 0;
 }
+
+
+
+
+
+
+
+
