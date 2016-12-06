@@ -4,9 +4,9 @@
 #include <queue>
 #include <vector>
 
-Semafor::Semafor(std::vector <PCB*>*AllProcc)
+Semafor::Semafor(int WPS,std::vector <PCB*>*AllProcc) //WPS - wartoœæ pocz¹tkowa semafora
 {
-	SValue = 1;
+	this->SValue = WPS;
 	//std::vector <PCB*>*AllProcc;
 	AllProc = AllProcc;
 }
