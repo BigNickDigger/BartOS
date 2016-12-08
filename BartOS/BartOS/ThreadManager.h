@@ -12,15 +12,17 @@ public:
 	CThreadManager(PamiecOperiWirt* Memory);
 	~CThreadManager();
 	void CreateProcess(char*name, int sopic);
-	static int IdentGen;
-	void RemoveProcess(int id);
-	std::vector<PCB*>AllProc;
-	void PrintProcesses();
-	PCB* gethandle(int id);
-	char* getstate(int el);
+	
+	void RemoveProcess(int id);//usuwa procesy POZA procesem IDLE
+	void RemoveProcess(int id,bool flag);//usuwa proces IDLE
+	std::vector<PCB*>AllProc;//Wszystkie procesy sa tu.
+	void PrintProcesses();//Drukuje wszystkie procesy i info
+	PCB* gethandle(int id);//Nawet nie pamietam po o to tu jest
+	char* getstate(int el);//to tez nie...
+	void PrintProcessState(int id, bool flag);
 private:
 	PamiecOperiWirt* Memory;
-	std::queue<PCB*>poot[2];
+	static int IdentGen;
 	
 };
 

@@ -142,7 +142,8 @@ int main()
 	//printf("%d", EatShit.AllProc.size());
 	//EatShit.gethandle(2)->pages;
 	EatShit.PrintProcesses();
-	
+	//EatShit.RemoveProcess(0, 1);
+	EatShit.PrintProcessState(3, true);
 	
     return 0;
 }

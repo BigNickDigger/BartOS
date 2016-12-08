@@ -4,7 +4,8 @@
 #include <vector>
 PCB::PCB()
 {
-	
+	RegA = RegB = RegC = RegD = ProgramCounter = 0;
+
 	//pages = new stronice[(sopic / 16)+1];
 }
 

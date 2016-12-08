@@ -1,4 +1,11 @@
 #pragma once
+class PCB;
+class stronice;
+class page;
+#ifndef PAMIECPOERIWIRT_H
+#define PAMIECPOERIWIRT_H
+
+class page;
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -78,3 +85,4 @@ public:
 
 };
 
+#endif // !PAMIECPOERIWIRT_H
