@@ -18,25 +18,38 @@ InterPeter::InterPeter()
 
 InterPeter::~InterPeter(){}
 
-void InterPeter::SaveState() //Dareg
+void InterPeter::SaveState(PCB* block) //Dareg
 {
-
+	block->RegA = regA;
+	block->RegB = regB;
+	block->RegC = regC;
+	block->ProgramCounter = PC;
 }
 
-void InterPeter::LoadState() //Dareg
+void InterPeter::LoadState(PCB* block) //Dareg
 {
-
+	regA = block->RegA;
+	regB = block->RegB;
+	regC = block->RegC;
+	PC = block->ProgramCounter;
 }
 
-void InterPeter::ExecuteCommand()
+void InterPeter::ExecuteCommand(PCB* &block)
 {
-	LoadState();
-
-	string line = LoadCommand();
-	string n;
-	n = line.at(0) + line.at(1);
-
+	LoadState(block);
+	//Oj Adam. Wez napraw ten syf :/
+	string line = "IC A\0";// LoadCommand();
+	string n ="IC A";
+	cout << "We did with: " << line << endl;
+	char* tit = "IC A";
+	//n = line.at(0) + line.at(1); NIE DZIALA
+//	n[0] = line[0]; n[1] = line[1]; n += '\0'; NIE DZIALA
+	cout << "n is equal: " << n << endl;
 	//MATHz
+	
+//	cout << line.append(0)/* + line.at(1) */<< endl;
+	if (strstr(tit, "IC A") != NULL)regA++;//DZIALA :3
+	//cout << line.at(0)<<line.at(1);
 
 	if (n == "AD")
 	{
@@ -199,9 +212,10 @@ void InterPeter::ExecuteCommand()
 	}
 	else if (n == "IC")
 	{
+		cout << "at least here\n";
 		switch (line.at(3))
 		{
-		case 'A':
+		case 'A':cout << "we here\n";
 			regA++;
 			break;
 
@@ -420,7 +434,7 @@ void InterPeter::ExecuteCommand()
 	}
 	
 	
-	SaveState();
+	SaveState(block);
 }
 
 std::string InterPeter::LoadCommand()
@@ -437,6 +451,7 @@ std::string InterPeter::LoadCommand()
 
 	return line;
 }
+
 
 void InterPeter::RegisterDisplay()
 {

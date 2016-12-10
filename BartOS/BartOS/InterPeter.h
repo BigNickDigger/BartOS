@@ -1,5 +1,5 @@
 #pragma once
- 
+class PCB;
 using namespace std;
 #include<iostream>
 
@@ -11,9 +11,9 @@ class InterPeter
 public:
 	InterPeter();
 	~InterPeter();
-	void SaveState();
-	void LoadState();
-	void ExecuteCommand();
+	void SaveState(PCB* block);
+	void LoadState(PCB* block);
+	void ExecuteCommand(PCB* &block);
 	std::string LoadCommand();
 	void Interface();
 	void RegisterDisplay();
