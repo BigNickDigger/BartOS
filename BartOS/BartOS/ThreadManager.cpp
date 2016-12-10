@@ -58,6 +58,7 @@ void CThreadManager::RemoveProcess(int id, bool flag) {
 }
 
 void CThreadManager::PrintProcesses() {
+	printf("\nProcesy w systemie:\n");
 	if (!AllProc.empty()) {
 		printf("ID\tName\tState\tPriority\n");
 		for (auto it = AllProc.begin(); it != AllProc.end(); it++) {		
@@ -66,6 +67,7 @@ void CThreadManager::PrintProcesses() {
 				getstate((*it)->Process_State),(*it)->Priority );
 		}
 	}
+	else printf("Cos poszlo nie tak, nie ma procesu IDLE\n");
 }
 char* CThreadManager::getstate(int el) {
 	switch (el) {
@@ -101,6 +103,16 @@ void CThreadManager::PrintProcessState(int id, bool flag) {
 					(*it)->RegC,
 					(*it)->ProgramCounter,
 					getstate((*it)->Process_State));
+		}
+	}
+}
+void CThreadManager::setstate(PCB* bl,PCB::stan st) {
+	bl->Process_State = st; 
+}
+void CThreadManager::setstate(int id, PCB::stan st) {
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
+		if ((*it)->Process_ID == id) {
+			(*it)->Process_State = st;
 		}
 	}
 }

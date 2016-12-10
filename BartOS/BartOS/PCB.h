@@ -35,7 +35,7 @@ public:
 	//stronice *pages; UWAGA WBIJAM NA KWADRAT ZE ZMIANAMI
 	stronice pages[48];//uwa¿am ¿e tablica stronic ma rozmiar WMsize = 48
 	//page str[3];
-	typedef enum//Stany Procesora
+	typedef enum stan//Stany Procesora
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous, Proc_Running
 	};

@@ -18,7 +18,9 @@ public:
 	std::vector<PCB*>AllProc;//Wszystkie procesy sa tu.
 	void PrintProcesses();//Drukuje wszystkie procesy i info
 	PCB* gethandle(int id);//Nawet nie pamietam po o to tu jest
-	char* getstate(int el);//to tez nie...
+	char* getstate(int el);
+	void setstate(PCB* bl, PCB::stan st);
+	void setstate(int id, PCB::stan st);
 	void PrintProcessState(int id, bool flag);
 private:
 	PamiecOperiWirt* Memory;

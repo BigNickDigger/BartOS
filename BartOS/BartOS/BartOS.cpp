@@ -30,6 +30,8 @@ Cyborg
 #include "InterPeter.h"
 using namespace std;
 const float SystemVer = 1.337;
+
+
 int main()
 {
 	//K$R*A
@@ -148,6 +150,10 @@ int main()
 	EatShit.PrintProcessState(3, true);
 	ip.ExecuteCommand(EatShit.AllProc[2]);
 	EatShit.PrintProcessState(2, true);
+
+	EatShit.setstate(1, PCB::Proc_Terminated);
+	EatShit.RemoveProcess(1); EatShit.PrintProcesses();
+
     return 0;
 }
 
