@@ -13,6 +13,8 @@ InterPeter::InterPeter()
 	regB = 0;
 	regC = 0;
 	PC = 0;
+	Adr = 0;
+	AdrPREV = 0;
 }
 
 
@@ -37,21 +39,20 @@ void InterPeter::LoadState(PCB* block) //Dareg
 void InterPeter::ExecuteCommand(PCB* &block)
 {
 	LoadState(block);
-	//Oj Adam. Wez napraw ten syf :/
-	string line = "IC A\0";// LoadCommand();
-	string n ="IC A";
-	cout << "We did with: " << line << endl;
-	char* tit = "IC A";
-	//n = line.at(0) + line.at(1); NIE DZIALA
-//	n[0] = line[0]; n[1] = line[1]; n += '\0'; NIE DZIALA
-	cout << "n is equal: " << n << endl;
-	//MATHz
-	
-//	cout << line.append(0)/* + line.at(1) */<< endl;
-	if (strstr(tit, "IC A") != NULL)regA++;//DZIALA :3
-	//cout << line.at(0)<<line.at(1);
 
-	if (n == "AD")
+	string line;
+	string command;
+
+	line = "IC A"; //LoadCommand(Adr, 0);
+	
+	command += line.at(0);
+	command += line.at(1);
+
+
+
+	//MATHz
+
+	if (command == "AD")
 	{
 		switch (line.at(3))
 		{
@@ -104,7 +105,7 @@ void InterPeter::ExecuteCommand(PCB* &block)
 			break;
 		}
 	}
-	else if (n == "SB")
+	else if (command == "SB")
 	{
 		switch (line.at(3))
 		{
@@ -157,7 +158,7 @@ void InterPeter::ExecuteCommand(PCB* &block)
 			break;
 		}
 	}
-	else if (n == "MP")
+	else if (command == "MP")
 	{
 		switch (line.at(3))
 		{
@@ -210,12 +211,12 @@ void InterPeter::ExecuteCommand(PCB* &block)
 			break;
 		}
 	}
-	else if (n == "IC")
+	else if (command == "IC")
 	{
-		cout << "at least here\n";
+		cout << "IC done at least here\n";
 		switch (line.at(3))
 		{
-		case 'A':cout << "we here\n";
+		case 'A':
 			regA++;
 			break;
 
@@ -228,7 +229,7 @@ void InterPeter::ExecuteCommand(PCB* &block)
 			break;
 		}
 	}
-	else if (n == "DC")
+	else if (command == "DC")
 	{
 		switch (line.at(3))
 		{
@@ -248,19 +249,19 @@ void InterPeter::ExecuteCommand(PCB* &block)
 
 	//TRANSFER
 
-	else if (n == "JP") // jump
+	else if (command == "JP") // jump
 	{
-		PC = std::stoi(line.substr(3));
+		Adr = std::stoi(line.substr(3));
 	}
-	else if (n == "JN") //jump not zero
+	else if (command == "JN") //jump not zero
 	{
 		if (regA != 0)
 		{
-			PC = std::stoi(line.substr(3));
+			Adr = std::stoi(line.substr(3));
 		}
 
 	}
-	else if (n == "MV")
+	else if (command == "MV")
 	{
 		switch (line.at(3))
 		{
@@ -313,7 +314,7 @@ void InterPeter::ExecuteCommand(PCB* &block)
 			break;
 		}
 	}
-	else if (n == "SW") //swap
+	else if (command == "SW") //swap
 	{
 		switch (line.at(3))
 		{
@@ -365,90 +366,97 @@ void InterPeter::ExecuteCommand(PCB* &block)
 
 	//-SYS-
 
-	//FILE #dysk *wink* *wink* Marcin
+	//FILE #dysk  Marcin
 
 
-	else if (n == "NF") //new file
+	else if (command == "NF") //new file
 	{
 
 	}
-	else if (n == "OF") //open file
+	else if (command == "OF") //open file
 	{
 
 	}
-	else if (n == "RF") //read file
+	else if (command == "RF") //read file
 	{
 
 	}
-	else if (n == "WF") //write file
+	else if (command == "WF") //write file
 	{
 
 	}
-	else if (n == "CF") //close file
+	else if (command == "CF") //close file
 	{
 
 	}
 
 	//MEMEory Kuba
 
-	else if (n == "MR") //meme read
+	else if (command == "MR") //meme read
 	{
 		
 	}
-	else if (n == "MW") //meme write
+	else if (command == "MW") //meme write
 	{
 		
 	}
 
 	//MESSAGE Krzysiu
 
-	else if (n == "XR") //read
+	else if (command == "XR") //read
 	{
 		
 	}
-	else if (n == "XS") //send
+	else if (command == "XS") //send
 	{
 
 	}
 	
 	//PROCESS Dareg
 
-	else if (n == "CP") //create
+	else if (command == "CP") //create
 	{
 
 	}
-	else if (n == "HP") //halt - hammer Zeit
+	else if (command == "HP") //halt - hammer Zeit
 	{
 
 	}
-	else if (n == "KP") //kill
+	else if (command == "KP") //kill
 	{
 
 	}
 
 	//END
 	
-	else if (n == "EN") //this is the end, Skyfaaaaaaall
+	else if (command == "EN") //
 	{
-		//BarKar
+		//return to BarKar
 	}
 	
 	
 	SaveState(block);
 }
 
-std::string InterPeter::LoadCommand()
+std::string InterPeter::LoadCommand(int &adress, int f)
 {
 	string line;
 	char p;
-
+	int a = adress;
+	
 	do
 	{
-		//p = load_memez(PC); Get_Char_From_OM(PCB *blok, PC);
+		//p = load_memez(PC); Get_Char_From_OM(PCB *blok, Adr);
 		line += p;
-		PC++;
+		a++;
 	} while (p != ';');
 
+	if (!f)
+	{
+		AdrPREV = adress;
+		adress = a;
+	}
+		
 	return line;
 }
 
@@ -465,8 +473,8 @@ void InterPeter::RegisterDisplay()
 void InterPeter::CommandDisplay()
 {
 	cout << " Commands" << endl;
-	cout << "PREV : " << endl;
-	cout << "NEXT : " << endl;
+	cout << "PREV : " << /*LoadCommand(AdrPREV, 1) <<*/ endl;
+	cout << "NEXT : " << /*LoadCommand(Adr, 1) <<*/ endl;
 }
 
 void InterPeter::Interface()
