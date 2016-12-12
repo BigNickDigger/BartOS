@@ -1,5 +1,6 @@
 #pragma once
 #include <queue>
+/*Olaf Bergmann mechanizmy synchronizacji*/
 
 class Zamek
 {

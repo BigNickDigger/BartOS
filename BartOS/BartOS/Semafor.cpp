@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Semafor.h"
-
 #include <queue>
 #include <vector>
+
+/*Olaf Bergmann mechanizmy synchronizacji*/
 
 Semafor::Semafor(int WPS,std::vector <PCB*>*AllProcc) //WPS - wartoœæ pocz¹tkowa semafora
 {
@@ -45,7 +46,7 @@ void Semafor::Signal()
 	SValue++;
 	if (SValue <= 0)
 	{
-		//KPS.front(); // wznawiam pierwszy oczekuj¹cy 
+		KPS.front(); // wznawiam pierwszy oczekuj¹cy 
 		int Licznik=0;
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{

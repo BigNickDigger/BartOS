@@ -3,6 +3,9 @@
 #ifndef SEMAFOR_H
 #define SEMAFOR_H
 #include "PCB.h"
+
+/*Olaf Bergmann mechanizmy synchronizacji*/
+
 class Semafor
 {
 private:
