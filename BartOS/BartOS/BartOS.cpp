@@ -57,6 +57,7 @@ int main()
 	EatShit.AllProc[2]->sopic = 35;
 	EatShit.AllProc[2]->Process_ID = 2;*/
 //ZAMIAST POWYZSZEGO UZYWAC CREATEPROCESS
+	
 	EatShit.CreateProcess("shite1", 40);
 	EatShit.CreateProcess("shite2", 40);
 	EatShit.CreateProcess("shite3", 35);

@@ -110,6 +110,7 @@ void CThreadManager::setstate(PCB* bl,PCB::stan st) {
 	bl->Process_State = st; 
 }
 void CThreadManager::setstate(int id, PCB::stan st) {
+	gethandle(id)->Process_State = st; return;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id) {
 			(*it)->Process_State = st;
