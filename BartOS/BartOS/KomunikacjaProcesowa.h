@@ -17,8 +17,9 @@ class KomunikacjaProcesowa
 public:
 	KomunikacjaProcesowa(vector<PCB*>*AllProcc);
 	~KomunikacjaProcesowa();
-	void Nadaj(int, string);
-	string Odbierz();
+	void Send(int, string);  //Wyslij (do id, wiadomosc)
+	void Receive();  //Odbierz wiad z queue
+	void ShowMessages(int);  //Pokaz wiadomosci w Queue procesi o (id)
 	vector<PCB*>*AllProc;
 	vector<PCB*>::iterator ElementAt;
 };

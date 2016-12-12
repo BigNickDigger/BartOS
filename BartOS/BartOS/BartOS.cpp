@@ -27,8 +27,11 @@ Cyborg
 #include "PamiecOperiWirt.h"
 #include "ThreadManager.h"
 #include "KomunikacjaProcesowa.h"
+#include "InterPeter.h"
 using namespace std;
 const float SystemVer = 1.337;
+
+
 int main()
 {
 	//K$R*A
@@ -36,6 +39,7 @@ int main()
 	//NIE WK^R%^AJ MNIE:
 	//ZABAWA NIE ZNA GRANIC, ZNOWU TO ROBIE IKS DE DE DE, MemoryGuy2016~
 	PamiecOperiWirt PAM;
+	InterPeter ip;
 	CThreadManager EatShit(&PAM);
 	KomunikacjaProcesowa EatMoreShit();
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
@@ -142,8 +146,14 @@ int main()
 	//printf("%d", EatShit.AllProc.size());
 	//EatShit.gethandle(2)->pages;
 	EatShit.PrintProcesses();
-	
-	
+	//EatShit.RemoveProcess(0, 1);
+	EatShit.PrintProcessState(3, true);
+	ip.ExecuteCommand(EatShit.AllProc[2]);
+	EatShit.PrintProcessState(2, true);
+
+	EatShit.setstate(1, PCB::Proc_Terminated);
+	EatShit.RemoveProcess(1); EatShit.PrintProcesses();
+
     return 0;
 }
 
