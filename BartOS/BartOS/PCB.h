@@ -1,6 +1,7 @@
 #pragma once
 class PamiecOperiWirt;
 class page;
+class Semafor;
 #ifndef __PCB_H_INCLUDED	
 #define __PCB_H__INCLUDED
 
@@ -10,6 +11,7 @@ class page;
 #include <time.h>
 #include <queue>
 #include "PamiecOperiWirt.h"
+#include "Semafor.h"
 struct stronice {
 	bool Valid;
 	short int cell;
@@ -41,7 +43,7 @@ public:
 	};
 	std::queue<std::string>messages;
 	std::vector<PCB*>::iterator ElementAt;
-	
+	Semafor *sem;
 	
 };
 

@@ -32,10 +32,7 @@ void Shell::UtworzZmiennaSrodowiskowa()
 {
 	string komenda;
 	cin >> komenda;
-	if (komenda == "ex")
-	{
-		cout << "cos";
-	}
+	
 }
 void PokazKursor(string znak_kursora=">>> ")
 {
@@ -43,7 +40,7 @@ void PokazKursor(string znak_kursora=">>> ")
 }
 vector<string> Shell::ZczytajRozkaz()
 {
-	cout << "chuj";
+	
 	string linia;
 	string rozkaz;
 	vector<string> komendy;
@@ -155,18 +152,14 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	
 }
 
-void funkcja()
-{
-	
-}
 int main()
 {
 	vector<string>komendy;
-	cout << "cos";
+	
 
 
 	Shell *shell= new Shell();
-	/*cout << "cos";*/
+
 	while (1)
 	{
 		
@@ -178,6 +171,7 @@ int main()
 		komendy.clear();
 		
 	}
+	cout << "Shutting down...";
 	
 	return 0;
 }
