@@ -19,6 +19,7 @@ public:
 	CThreadManager *thread_manager;
 	HardDrive hard_drive;
 	InterPeter parker;
+	KomunikacjaProcesowa * komuch;
 	ProcesoPriorytet planista;
 	Shell();
 	~Shell();

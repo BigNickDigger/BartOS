@@ -20,6 +20,7 @@ Shell::Shell()
 	hard_drive = HardDrive();
 	parker = InterPeter();
 	planista = ProcesoPriorytet();
+	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc);
 }
 
 
@@ -126,7 +127,9 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		
 		//thread_manager.CreateProcess("First", 69);
-		parker.CommandDisplay(planista.FindReadyThread(), *pamiec);
+		//parker.CommandDisplay(planista.FindReadyThread(), *pamiec);
+		parker.ExecuteCommand(planista.FindReadyThread(), *pamiec, komuch, hard_drive);
+		parker.Interface(planista.FindReadyThread(), *pamiec);
 		// 1) zlecam zarzadcy procesow stworzyc proces
 		// 2) zlecam pamieciowcowi wprowadzic program do pamieci (zaladownie stronic danymi)
 		
@@ -158,10 +161,10 @@ int main()
 
 
 	Shell *shell = new Shell();
-	shell->thread_manager->CreateProcess("IDLE", 13);
+	/*shell->thread_manager->CreateProcess("IDLE", 13);
 	shell->thread_manager->AllProc[0]->Priority = 0;
 	shell->thread_manager->AllProc[0]->Process_State = PCB::Proc_Ready;
-	shell->planista.addProcess(shell->thread_manager->gethandle(0));
+	shell->planista.addProcess(shell->thread_manager->gethandle(0));*/
 	while (1)
 	{
 		
