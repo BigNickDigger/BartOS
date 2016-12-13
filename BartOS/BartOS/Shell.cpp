@@ -117,7 +117,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy, HardDrive &hard
 	{
 		// 1) zlecam zarzadcy procesow stworzyc proces
 		// 2) zlecam pamieciowcowi wprowadzic program do pamieci (zaladownie stronic danymi)
-		// 3) zlecam wykonanie pojedynczego rozkazu interpreterowi Assemblera
+		
 	}
 	else if (rozkaz == "C0")
 	{
@@ -143,21 +143,25 @@ int main()
 	vector<string>komendy;
 	PamiecOperiWirt *pamiec = new PamiecOperiWirt();
 	CThreadManager *thread_manager = new CThreadManager(pamiec);
-	HardDrive *hard_drive = new HardDrive();
+	HardDrive hard_drive=HardDrive();
 	//Dysk dysk = new Dysk();
 
 	Shell *shell= new Shell();
 	
-	while (1)
-	{
-		shell->ObsluzLinie(komendy, *hard_drive);
-		if (komendy[0] == "QT")
-		{
-			break;
-		}
-		komendy.clear();
-		
-	}
+	//while (1)
+	//{
+	//	shell->ObsluzLinie(komendy, hard_drive);
+	//	if (komendy[0] == "QT")
+	//	{
+	//		break;
+	//	}
+	//	komendy.clear();
+	//	
+	//}
+	//hard_drive.create_file("plik.txt");
+	hard_drive.view_files();
+	hard_drive.view_sector(1);
+	hard_drive.view_harddrive();
 	cout << "Shutting down...";
 	
 	return 0;
