@@ -29,5 +29,5 @@ public:
     empty - informacja czy kolejka jest pusta;
     size - zwraca iloœæ elementów umieszczonych w kolejce;
     front - zwraca wartoœæ pierwszego elementu w kolejce.
-    back - zwraca wartoœæ ostatniego elementu w kolejce.k
+    back - zwraca wartoœæ ostatniego elementu w kolejce.kk
 	*/
