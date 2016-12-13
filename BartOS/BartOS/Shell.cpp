@@ -75,9 +75,9 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy, HardDrive &hard
 	}
 	else if (rozkaz == "CF")	// create file
 	{
-		cout << "wchodze";
+		//cout << "wchodze";
 		hard_drive.create_file(komendy[1]);
-		cout << "/" << komendy[1] << "/";
+		//cout << "/" << komendy[1] << "/";
 		hard_drive.view_files();
 	}
 	else if (rozkaz == "DF")	 // delete file
@@ -148,20 +148,20 @@ int main()
 
 	Shell *shell= new Shell();
 	
-	//while (1)
-	//{
-	//	shell->ObsluzLinie(komendy, hard_drive);
-	//	if (komendy[0] == "QT")
-	//	{
-	//		break;
-	//	}
-	//	komendy.clear();
-	//	
-	//}
-	//hard_drive.create_file("plik.txt");
+	while (1)
+	{
+		shell->ObsluzLinie(komendy, hard_drive);
+		if (komendy[0] == "QT")
+		{
+			break;
+		}
+		komendy.clear();
+		
+	}
+	/*hard_drive.create_file("plik.txt");
 	hard_drive.view_files();
 	hard_drive.view_sector(1);
-	hard_drive.view_harddrive();
+	hard_drive.view_harddrive();*/
 	cout << "Shutting down...";
 	
 	return 0;
