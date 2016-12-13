@@ -2,9 +2,6 @@
 #include "KomunikacjaProcesowa.h"
 //#include <iostream>
 
-
-
-//#include <vector>
 using namespace std;
 
 KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
@@ -18,28 +15,35 @@ KomunikacjaProcesowa::~KomunikacjaProcesowa()
 {
 }
 
-void KomunikacjaProcesowa::Nadaj(int Odbiorca, string tresc)
+void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 {
 	//szukanie skrzynki
+	bool x=0;
 	int counter = 0;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
 		if (ElementAt[counter]->Process_ID == Odbiorca)
 		{
+			x = 1;
 			string S="";
 			S += to_string(/*Nadawca*/4) + " " + tresc;
 			ElementAt[counter]->messages.push(S);
-//TUTAJ SIGNAL JAKBY SOBIE SPAL TAMTEN (CZEKAL NA WIADOMOSC)signal(odbiorca)
+			//signal(odbiorca)
 		}
 		else
 		{
 			counter++;
 		}
 	}
-	//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
+	if (x == 0)
+	{
+		cout << "hi";
+
+		//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
+	}
 }
 
-string KomunikacjaProcesowa::Odbierz()
+void KomunikacjaProcesowa::Receive() //Potrzebuje zmienna globalna Running zeby to smigalo :3
 {
 	//szukanie skrzynki
 	int counter = 0;
@@ -62,7 +66,36 @@ string KomunikacjaProcesowa::Odbierz()
 	//	}
 	/*}*/
 	//SEMAFOR wait(Odbiorca);
-	return "hi";
+}
+
+void KomunikacjaProcesowa::ShowMessages(int id)
+{
+	bool x=0;
+	int counter = 0;
+	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	{
+		if (ElementAt[counter]->Process_ID == id)
+		{
+			x = 1;
+			if (ElementAt[counter]->messages.empty())
+						{
+							cout << "IPC: Brak wiadomosci w kolejce do procesu o id=" << id << endl;
+							return;
+						}
+			else
+			{
+				//for (int i = 0;i<)
+			}
+		}
+		else
+		{
+			counter++;
+		}
+	}
+	if (x == 0)
+	{
+		cout << "Brak procesu o id=" << id << endl;
+	}
 }
 
 
