@@ -119,4 +119,5 @@ void ProcesoPriorytet::printMyBeautifulStructurePlease()
 
 			std::cout << it->nazwa << " (" << it->Priority << "+" << it->PriorityDynamic << "); " << std::endl;
 		}
+	}
 }
