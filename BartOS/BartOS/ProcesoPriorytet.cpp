@@ -18,8 +18,8 @@ ProcesoPriorytet::~ProcesoPriorytet()
 
 PCB *ProcesoPriorytet::FindReadyThread()
 {
-	for (int i = NUMBER_OF_PRIORITIES; i >= 0; i++) {
-		if(KiReadySummary[i] == 1) {
+	for (int i = NUMBER_OF_PRIORITIES-1; i >= 0; i--) {
+		if (KiReadySummary[i] == 1) {
 			std::list<PCB*>::iterator it;
 			for (auto it : KiDispatcher[i]) {
 				if (it->Process_State == PCB::Proc_Ready) return it;
@@ -67,7 +67,7 @@ bool ProcesoPriorytet::moveProcess(PCB *a)
 
 
 void ProcesoPriorytet::updateKiReadySummary() {
-	for (int i = 1; i <= NUMBER_OF_PRIORITIES; i++) {
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
 		if (KiDispatcher[i].empty() == true) {
 			KiReadySummary[i] = 1;
 		}
@@ -75,11 +75,25 @@ void ProcesoPriorytet::updateKiReadySummary() {
 	}
 }
 
+void ProcesoPriorytet::throwToBack(PCB *a)
+{
+	int i = a->Priority + a->PriorityDynamic;
+	KiDispatcher[i].remove(a);
+	KiDispatcher[i].push_back(a);
+}
+
+
 void ProcesoPriorytet::tick_processes()
 {
-	for (int i = 1; i <= NUMBER_OF_PRIORITIES; i++) {
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
 		std::list<PCB*>::iterator it;
 		for (auto it : KiDispatcher[i]) {
+			if (it->Process_State == PCB::Proc_Running) {
+				//to moze umrzec
+				if ((it->orders_realized != 0) && ((it->orders_realized % NUMBER_OF_TIME_QUANTUM) == 0)) {
+					throwToBack(it);
+				}
+			}
 			if (it->Process_State == PCB::Proc_Ready) {
 				it->idleTime++;
 				if (it->idleTime > NUMBER_OF_HUNGER) {
@@ -92,3 +106,18 @@ void ProcesoPriorytet::tick_processes()
 	}
 }
 
+void ProcesoPriorytet::printMyBeautifulStructurePlease()
+{
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
+		std::list<PCB*>::iterator it;
+		bool PrintPriority = true;
+		for (auto it : KiDispatcher[i]) {
+			if (PrintPriority) {
+				std::cout << i << ":" << std::endl;
+				PrintPriority = false;
+			}
+
+			std::cout << it->nazwa << " (" << it->Priority << "+" << it->PriorityDynamic << "); " << std::endl;
+		}
+	}
+}

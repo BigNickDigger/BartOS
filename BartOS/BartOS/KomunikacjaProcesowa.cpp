@@ -19,27 +19,30 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 {
 	//szukanie skrzynki
 	bool x=0;
-	int counter = 0;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
-		if (ElementAt[counter]->Process_ID == Odbiorca)
+		if ((*ElementAt)->Process_ID == Odbiorca)
 		{
 			x = 1;
-			string S="";
+			string S = "";
 			S += to_string(/*Nadawca*/4) + " " + tresc;
-			ElementAt[counter]->messages.push(S);
-			//signal(odbiorca)
+			(*ElementAt)->messages.push(S);
 		}
 		else
 		{
-			counter++;
+
 		}
 	}
 	if (x == 0)
 	{
 		cout << "hi";
-
-		//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
+		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+		{
+			if ((*ElementAt)->Process_State == PCB::Proc_Running) 
+			{
+				(*ElementAt)->Process_State == PCB::Proc_Terminated;
+			}
+		}
 	}
 }
 
