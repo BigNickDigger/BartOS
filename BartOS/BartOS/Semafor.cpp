@@ -36,8 +36,7 @@ void Semafor::Wait(int ID_Procesu)
 			else
 			{
 				Licznik++;
-			}
-			
+			}	
 		}
 	}
 }
@@ -52,7 +51,6 @@ void Semafor::Signal()
 		int Licznik=0;
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
-
 			if (ElementAt[Licznik]->Process_ID == KPS.front())
 			{
 				ElementAt[Licznik]->Process_State = 2;
@@ -62,9 +60,7 @@ void Semafor::Signal()
 			{
 				Licznik++;
 			}
-
 		}
 		KPS.pop(); //i usuwam go z kolejki w¹tków oczekuj¹cych
-		
 	}
 }
