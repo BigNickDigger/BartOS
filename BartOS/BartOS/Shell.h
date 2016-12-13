@@ -3,6 +3,7 @@
 #include "PamiecOperiWirt.h"
 #include "ThreadManager.h"
 #include "SystemPlikowFAT.h"
+#include "ProcesoPriorytet.h"
 #include <string>
 #include <iostream>
 #include <string>
