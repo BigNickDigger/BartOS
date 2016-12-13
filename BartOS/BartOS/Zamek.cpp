@@ -26,7 +26,9 @@ void Zamek::lock(int ID_procesu)
 	{
 
 		KPZ.push(ID_procesu); // umieszam w¹tek w kolejsce 
-		
+		CThreadManager *d;
+		d->setstate(ID_procesu, PCB::Proc_Terminated);
+		delete d;
 		//CThreadManager::setstate(ID_procesu, PCB::stan::Proc_Waiting);
 		//KPZ.back();// i zmieniam  jego stan na oczekuj¹cy 
 	}
