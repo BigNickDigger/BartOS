@@ -44,17 +44,24 @@ void ProcesoPriorytet::addProcess(PCB *a)
 }
 void ProcesoPriorytet::removeProcess(PCB * a)
 {
-	int i = a->Priority;
-	std::list<PCB*>::iterator it;
-	for (auto it : KiDispatcher[i]) {
-		if(it == a) KiDispatcher[i].remove(a);
-	}
+	int i = a->Priority + a->PriorityDynamic;
+	KiDispatcher[i].remove(a);
 }
 
 
 bool ProcesoPriorytet::moveProcess(PCB *a)
 {
-	
+	int i = a->Priority + a->PriorityDynamic;
+	for (auto it : KiDispatcher[i]) {
+		KiDispatcher[i].remove(a);
+		a->PriorityDynamic++;
+		i = a->Priority + a->PriorityDynamic;
+		KiDispatcher[i].push_back(a);
+
+		updateKiReadySummary();
+		return true;
+	}
+	updateKiReadySummary();
 	return false;
 }
 
@@ -76,8 +83,9 @@ void ProcesoPriorytet::tick_processes()
 			if (it->Process_State == PCB::Proc_Ready) {
 				it->idleTime++;
 				if (it->idleTime > NUMBER_OF_HUNGER) {
-					moveProcess(it);
-					updateKiReadySummary();
+					if (moveProcess(it)) {
+						continue;
+					}
 				}
 			}
 		}

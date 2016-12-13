@@ -12,9 +12,6 @@ int PriorityDynamic; //pole uzywane do podnoszenia priorytetu procesu
 class PCB;
 #include "PCB.h";
 #include <list>
-int NUMBER_OF_PRIORITIES = 15; //ile mamy priorytetow-1, bo to cpp
-int NUMBER_OF_TIME_QUANTUM = 3; //ile rozkazow trwa kwant
-int NUMBER_OF_HUNGER = 6; //co ile rozkazow zwiekszamy priorytet glodzonego procesu
 
 /*
 Wyw³aszczenie przez w¹tek o wy¿szym priorytecie mo¿e byæ konsekwencj¹:
@@ -24,6 +21,10 @@ podwy¿szenia priorytetu w¹tku gotowego.
 
 
 class ProcesoPriorytet {
+private:
+	int NUMBER_OF_PRIORITIES = 15; //ile mamy priorytetow-1, bo to cpp
+	int NUMBER_OF_TIME_QUANTUM = 3; //ile rozkazow trwa kwant
+	int NUMBER_OF_HUNGER = 6; //co ile rozkazow zwiekszamy priorytet glodzonego procesu
 public:
 	ProcesoPriorytet();
 	~ProcesoPriorytet();
@@ -33,7 +34,7 @@ public:
 	void addProcess(PCB *a);	//dodawanie procesu do mojej struktury danych
 	void removeProcess(PCB *a); //usuwanie procesu z mojej struktury
 	bool moveProcess(PCB *a);	//przeniesienie procesu miedzy kolejkami
-	void tick_processes();		
+	void tick_processes();		//podnosimy idleTime procesom gotowym
 	void updateKiReadySummary();
 	int *KiReadySummary;		//mapa bitowa pokazuj¹ca niepuste kolejki
 
