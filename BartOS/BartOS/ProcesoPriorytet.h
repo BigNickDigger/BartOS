@@ -12,13 +12,9 @@ int PriorityDynamic; //pole uzywane do podnoszenia priorytetu procesu
 class PCB;
 #include "PCB.h";
 #include <list>
-int NUMBER_OF_PRIORITIES = 7; //ile mamy priorytetow-1, bo to cpp
-
-struct List {
-	std::queue<PCB*> proces;
-	List *next;
-	List *prev;
-};
+int NUMBER_OF_PRIORITIES = 15; //ile mamy priorytetow-1, bo to cpp
+int NUMBER_OF_TIME_QUANTUM = 3; //ile rozkazow trwa kwant
+int NUMBER_OF_HUNGER = 6; //co ile rozkazow zwiekszamy priorytet glodzonego procesu
 
 /*
 Wyw³aszczenie przez w¹tek o wy¿szym priorytecie mo¿e byæ konsekwencj¹:
@@ -27,28 +23,22 @@ podwy¿szenia priorytetu w¹tku gotowego.
 */
 
 
-
-
-
 class ProcesoPriorytet {
 public:
 	ProcesoPriorytet();
 	~ProcesoPriorytet();
 
-	PCB *FindReadyThread(); //proces oddaje procesor
-	void ReadyThread(PCB *a);		//proces zmienia stan na ready oraz podniesiono priorytet jakiemus procesowi
-	void addProcess(PCB *a); //dodawanie procesu do mojej struktury danych
+	PCB *FindReadyThread();		//proces oddaje procesor
+	void ReadyThread(PCB *a);	//proces zmienia stan na ready oraz podniesiono priorytet jakiemus procesowi
+	void addProcess(PCB *a);	//dodawanie procesu do mojej struktury danych
 	void removeProcess(PCB *a); //usuwanie procesu z mojej struktury
-	void tick_processes();
-	int *KiReadySummary; //mapa bitowa pokazuj¹ca niepuste kolejki
+	bool moveProcess(PCB *a);	//przeniesienie procesu miedzy kolejkami
+	void tick_processes();		
+	void updateKiReadySummary();
+	int *KiReadySummary;		//mapa bitowa pokazuj¹ca niepuste kolejki
 
 
-	std::list<PCB*> KiDispatcher[7];
-
-	
-	
+	std::list<PCB*> *KiDispatcher;
 };
-
-
 
 #endif 

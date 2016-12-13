@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Shell.h"
+
 #include <vector>
 #include <iostream>
 #include <string>
@@ -51,16 +52,16 @@ vector<string> Shell::ZczytajRozkaz()
 	komendy.push_back(linia);
 	return komendy;
 }
-void Shell::ObsluzLinie(vector<string> &komendy)
+void Shell::ObsluzLinie(vector<string> &komendy, HardDrive &hard_drive)
 {
 	PokazKursor();
 	komendy=ZczytajRozkaz();
 	if (komendy[0] != "QT")
 	{
-		WykonujRozkaz(komendy[0], komendy);
+		WykonujRozkaz(komendy[0], komendy, hard_drive);
 	}
 }
-void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy/*, Dysk &dysk*, ThreadManager thread_manager()*/)
+void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy, HardDrive &hard_drive)
 {
 	
 	if (rozkaz == "CL")			// clear - okienko shella sie czysci
@@ -69,11 +70,13 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy/*, Dysk &dysk*, 
 	}
 	else if (rozkaz == "LS")	 // wyswietl zawartosc folderu
 	{
+		cout << "wyswietlam";
 		//dysk.ViewFile();
 	}
 	else if (rozkaz == "CF")	// create file
 	{
-		//dysk.CreateFile(komendy[1]);
+		cout << "wchodze";
+		hard_drive.create_file(komendy[1]);
 	}
 	else if (rozkaz == "DF")	 // delete file
 	{
@@ -94,7 +97,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy/*, Dysk &dysk*, 
 	}
 	else if (rozkaz == "VD")	// view disc
 	{
-		//dysk.ViewDisc();
+		hard_drive.view_harddrive();
 	}
 	else if (rozkaz == "VV")	// view virtual memory
 	{
@@ -133,18 +136,19 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy/*, Dysk &dysk*, 
 	
 }
 
-int main2()
+int main()
 {
 	vector<string>komendy;
-	//PamiecOperiWirt pamiec = new PawmiecOperiWirt();
-	//ThreadManager *thread_manager = new ThreadManager(pamiec);
+	PamiecOperiWirt *pamiec = new PamiecOperiWirt();
+	CThreadManager *thread_manager = new CThreadManager(pamiec);
+	HardDrive *hard_drive = new HardDrive();
 	//Dysk dysk = new Dysk();
 
 	Shell *shell= new Shell();
 	
 	while (1)
 	{
-		shell->ObsluzLinie(komendy/*,dysk,thread_manager*/);
+		shell->ObsluzLinie(komendy, *hard_drive);
 		if (komendy[0] == "QT")
 		{
 			break;

@@ -25,10 +25,13 @@ void Zamek::lock(int ID_procesu)
 	{
 		cout << "Zamek: Zmieniam stan procesu " <<ID_procesu<< " na oczekujacy"<<endl;
 		KPZ.push(ID_procesu); // umieszam w¹tek w kolejsce 
+		/*
 		CThreadManager *d;
 		d->setstate(ID_procesu, PCB::Proc_Waiting); //  zmieniam  jego stan na oczekuj¹cy 
 		delete d;
-		//KPZ.back();
+		*/
+		tm->setstate(KPZ.back(), PCB::Proc_Waiting);
+		
 	}
 }
 
@@ -43,13 +46,13 @@ void Zamek::unlock(int ID_procesu)
 		else
 		{	
 			cout << "Zamek: Zmieniam stan procesu "<<ID_procesu<<" na gotowy"<<endl;
-			CThreadManager *d;
-			d->setstate(KPZ.front(), PCB::Proc_Ready); // zmieniam stan w¹tku na gotowy 
-			delete d;
+			tm->setstate(KPZ.front(), PCB::Proc_Ready);
 			KPZ.pop();//i biorê go z kolejki w¹tków oczekuj¹cych
 			this->ID_procesu = ID_procesu;
 		}
 	}
 }
 
-
+void Zamek::InitZamek(CThreadManager *TM) {
+	tm = TM;
+}
