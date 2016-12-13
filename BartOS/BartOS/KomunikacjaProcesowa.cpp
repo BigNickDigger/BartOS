@@ -38,6 +38,7 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 	if (x == 0)
 	{
 		cout << "hi";
+
 		//no tutaj to niszczymy pana procesa czy tam zatrzymujemy
 	}
 }

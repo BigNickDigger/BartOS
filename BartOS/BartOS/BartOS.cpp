@@ -27,6 +27,7 @@ Cyborg
 #include "PamiecOperiWirt.h"
 #include "ThreadManager.h"
 #include "KomunikacjaProcesowa.h"
+#include "Zamek.h"
 #include "InterPeter.h"
 using namespace std;
 const float SystemVer = 1.337;
@@ -44,7 +45,8 @@ int main()
 	KomunikacjaProcesowa EatMoreShit();
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
 	PAM.Set_PCB_Vector(&EatShit.AllProc);
-	
+	Zamek D;
+	D.InitZamek(&EatShit);
 	/*EatShit.AllProc.push_back(new PCB);
 	EatShit.AllProc[0]->sopic = 40;
 	EatShit.AllProc[0]->Process_ID = 0;

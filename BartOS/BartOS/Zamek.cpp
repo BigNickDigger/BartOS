@@ -57,3 +57,6 @@ void Zamek::unlock(int ID_procesu)
 }
 
 
+void Zamek::InitZamek(CThreadManager *TM) {
+	tm = TM;
+}
