@@ -67,7 +67,7 @@ bool ProcesoPriorytet::moveProcess(PCB *a)
 
 
 void ProcesoPriorytet::updateKiReadySummary() {
-	for (int i = 1; i <= NUMBER_OF_PRIORITIES; i++) {
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
 		if (KiDispatcher[i].empty() == true) {
 			KiReadySummary[i] = 1;
 		}
@@ -85,7 +85,7 @@ void ProcesoPriorytet::throwToBack(PCB *a)
 
 void ProcesoPriorytet::tick_processes()
 {
-	for (int i = 1; i <= NUMBER_OF_PRIORITIES; i++) {
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
 		std::list<PCB*>::iterator it;
 		for (auto it : KiDispatcher[i]) {
 			if (it->Process_State == PCB::Proc_Running) {
@@ -108,7 +108,7 @@ void ProcesoPriorytet::tick_processes()
 
 void ProcesoPriorytet::printMyBeautifulStructurePlease()
 {
-	for (int i = 1; i <= NUMBER_OF_PRIORITIES; i++) {
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
 		std::list<PCB*>::iterator it;
 		bool PrintPriority = true;
 		for (auto it : KiDispatcher[i]) {
