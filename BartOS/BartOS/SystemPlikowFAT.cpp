@@ -97,8 +97,9 @@ void HardDrive::file_writing(string name, string content) {
 	int current_size = atoi(cur_size.c_str());
 
 	string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
-	int current_pointer = atoi(cur_size.c_str());
+	int current_pointer = atoi(cur_pointer.c_str());
 	current_pointer = current_pointer - (floor((double)current_pointer / 64) * 64);
+
 
 	int size = content.size();
 	if (place == "") {
@@ -114,8 +115,14 @@ void HardDrive::file_writing(string name, string content) {
 		if (free_space > size) {
 			int s = 0;
 			int	JAP = sector_data[a].data[b + 11];
-			while (JAP != 1 && JAP != 0) {
-				JAP = sector_data[0].data[JAP];
+			int counter = 1;
+			while (JAP != 1) {
+
+				if (sector_data[0].data[JAP] != 1) {
+					counter++;
+					JAP = sector_data[0].data[JAP];
+				}
+				else break;
 			}
 			for (int i = 0;i < ceil((double)size / 64);i++) {
 				if (sector_data[a].data[b + 11] == 1) {
@@ -139,7 +146,7 @@ void HardDrive::file_writing(string name, string content) {
 					if (j == 63) current_pointer = 0;
 				}
 			}
-			string pom_pointer = to_string(size);
+			string pom_pointer = to_string(current_pointer);
 			if (pom_pointer.length() < 3) sector_data[a].data[b + 14] = atoi(pom_pointer.c_str());
 			else if (pom_pointer.length() < 4) {
 				string pom_pointer_m = pom_pointer.substr(0, 1);
@@ -153,9 +160,8 @@ void HardDrive::file_writing(string name, string content) {
 				sector_data[a].data[b + 14] = atoi(pom_pointer_l.c_str());
 				sector_data[a].data[b + 15] = atoi(pom_pointer_m.c_str());
 			}
-
-			size += current_size;
-			string pom_size = to_string((int)ceil((double)size / 64) * 64);
+			size = counter * 64;
+			string pom_size = to_string(size);
 			if (pom_size.length() < 3) sector_data[a].data[b + 12] = atoi(pom_size.c_str());
 			else if (pom_size.length() < 4) {
 				string pom_size_m = pom_size.substr(0, 1);
@@ -184,10 +190,12 @@ HardDrive::HardDrive() {
 	for (int i = 0; i < 64; i++) {
 		for (int j = 0; j < 64; j++) {
 			sector_data[i].data[j] = 0;			// tablica FAT zapisana na 0 sektorze
-			free_sectors.push_back(j);
 		}
 	}
 	free_space = 4096 - (9 * 64);				// 1 sektor na FAT i 8 sektory na wpisy katalogowe (max 32 wpisy po 4 wpisy na sektor)
+	for (int i = 9;i < 64;i++) {
+		free_sectors.push_back(i);
+	}
 }
 
 void HardDrive::create_file(string name) {
@@ -233,13 +241,12 @@ void HardDrive::write_to_file(string name, string content) {
 	calculate_free_space();
 }
 
-void HardDrive::write_to_file_from_file(string name, string path) { // sciezka do pliku znadujacego sie na naszym lokalnym dysku np.: C://Desktop//dane.txt
+void HardDrive::write_to_file_from_file(string name, string path) { // sciezka do pliku znadujacego sie na naszym lokalnym dysku np.: C://Desktop/dane.txt
 
 	ifstream r_file(path);
 	string data_from_file;
 	getline(r_file, data_from_file);
 	int size = data_from_file.size();
-
 	file_writing(name, data_from_file);
 
 	calculate_free_space();
@@ -253,28 +260,36 @@ void HardDrive::delete_file(string name) {
 	buff2 = place.substr(poss + 1);
 	int a = atoi(buff.c_str());
 	int b = atoi(buff2.c_str());
-	int sector = sector_data[0].data[sector_data[a].data[b + 11]];
-	int pom;
+	int JAP = sector_data[a].data[b + 11];
+	int pom = JAP;
 
 	if (place != "") {
 
 		if (sector_data[a].data[b + 11] != 1) {
-			while (sector_data[0].data[sector] != 1) {
-				pom = sector_data[0].data[sector];
-				sector_data[0].data[sector] = 0;
+			while (JAP >= 1) {
+				pom = JAP;
+				JAP = sector_data[0].data[pom];
+				sector_data[0].data[pom] = 0;
 				free_sectors.push_back(pom);
-				sector = sector_data[0].data[pom];
 			}
 		}
 		for (int i = 0;i < b + 16;i++) {
 			sector_data[a].data[b + i] = 0;
 		}
 		cout << "Plik zostal usuniety" << endl;
-		free_sectors.sort();
+
+
 	}
 	else cout << "Nie znaleziono pliku o padanej nazwie" << endl;
 
 	calculate_free_space();
+}
+
+int HardDrive::file_size(string name)
+{
+
+
+	return 0;
 }
 
 void HardDrive::view_files() {
