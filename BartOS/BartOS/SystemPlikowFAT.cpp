@@ -3,7 +3,7 @@
 
 void Sector::view() {
 	for (int i = 0; i < 64; i++) {
-		cout << setw(4) << (int)data[i] << " ";
+		cout << setw(4) << data[i] << " ";
 	}
 	cout << endl;
 }

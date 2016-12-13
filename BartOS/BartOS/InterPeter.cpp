@@ -13,7 +13,8 @@ InterPeter::InterPeter()
 	PC = 0;
 	Adr = 0;
 	AdrPREV = 0;
-	prog = "MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";
+	prog = "NF plik.txt;WF plik.txt,string Mariusz;DF plik.txt;EN;";
+		//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";
 }
 
 
@@ -35,7 +36,7 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	PC = block->ProgramCounter;
 }
 
-void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProcesowa *kom, HardDrive dysk)
+void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProcesowa *kom, HardDrive &dysk)
 {
 	//LoadState(block);
 
@@ -392,6 +393,10 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProc
 	{
 
 	}
+	else if (command == "DF") //write file
+	{
+		dysk.delete_file("PLICZAK.xD");
+	}
 
 	//MEMEory Kuba
 
@@ -432,12 +437,14 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProc
 
 	//END
 	
-	else if (command == "EN") //
+	else if (command == "EN") //BUT IN THE END
 	{
+		cout << "but in the EN, it doesn't even matter" << endl;
+		//block->Process_State = PCB::Proc_Terminated;
 		//return to BarKar
 	}
 	
-	
+	PC++;
 	//SaveState(block);
 }
 

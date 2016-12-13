@@ -158,6 +158,27 @@ int main()
 {
 	vector<string>komendy;
 	
+	vector<vector<int*>>v;
+	int a = 10;
+
+	for (int i = 0; i < 3;i++)
+	{
+		vector <int*> z;
+		v.push_back(z);
+		for (int j = 0; j < 3; j++)
+		{
+			v[i].push_back(&a);
+			
+		}
+	}
+
+	for (int i = 0; i < 3;i++)
+	{
+		for (auto j : v[i])
+		{
+			cout << *j << " " << j << endl;
+		}
+	}
 
 
 	Shell *shell = new Shell();
