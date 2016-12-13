@@ -22,23 +22,13 @@ CThreadManager::~CThreadManager()
 void CThreadManager::CreateProcess(char*name, int sopic) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
-	nowy->sem->AllProc = &AllProc;
-	try { /*Proc_Control_block->pages = */&Memory->MemRequest(); }
-	catch (int ErrCode) {
-		switch (rand()%2) {
-			case 1:nowy->Process_State = PCB::Proc_Ready;
-			break;
-			case 0:nowy->Process_State = PCB::Proc_New;
-			break;
-			
-		}
-		
-	}
+	Memory->Insert_To_Virtual_Memory(nowy);
+
 	nowy->Process_ID = IdentGen; IdentGen++;
 	nowy->Priority = rand() % 6 + 1;
 //	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
 	AllProc.push_back(nowy);
-
+	planista->addProcess(nowy);
 }
 void CThreadManager::RemoveProcess(int id) {
 	if (id == 0) { printf("\nNie mozna usunac procesu IDLE\n"); }

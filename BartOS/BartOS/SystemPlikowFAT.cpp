@@ -182,7 +182,7 @@ void HardDrive::file_writing(string name, string content) {
 
 HardDrive::HardDrive() {
 	for (int i = 0; i < 64; i++) {
-		for (int j = 9; j < 64; j++) {
+		for (int j = 0; j < 64; j++) {
 			sector_data[i].data[j] = 0;			// tablica FAT zapisana na 0 sektorze
 			free_sectors.push_back(j);
 		}
