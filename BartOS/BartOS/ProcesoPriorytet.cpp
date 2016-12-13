@@ -5,9 +5,6 @@
 
 ProcesoPriorytet::ProcesoPriorytet()
 {
-	NUMBER_OF_PRIORITIES = 16; //ile mamy priorytetow-1, bo to cpp
-	NUMBER_OF_TIME_QUANTUM = 3; //ile rozkazow trwa kwant
-	NUMBER_OF_HUNGER = 6;
 
 	KiDispatcher = new std::list<PCB*>[NUMBER_OF_PRIORITIES];
 	KiReadySummary = new int[NUMBER_OF_PRIORITIES];
@@ -15,6 +12,9 @@ ProcesoPriorytet::ProcesoPriorytet()
 		KiReadySummary[i] = 0;
 
 }
+int ProcesoPriorytet::NUMBER_OF_PRIORITIES = 16;
+int ProcesoPriorytet::NUMBER_OF_TIME_QUANTUM = 3;
+int ProcesoPriorytet::NUMBER_OF_HUNGER = 6;
 
 ProcesoPriorytet::~ProcesoPriorytet()
 {
