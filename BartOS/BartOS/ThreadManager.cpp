@@ -22,6 +22,7 @@ CThreadManager::~CThreadManager()
 void CThreadManager::CreateProcess(char*name, int sopic) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
+	nowy->sem->AllProc = &AllProc;
 	try { /*Proc_Control_block->pages = */&Memory->MemRequest(); }
 	catch (int ErrCode) {
 		switch (rand()%2) {
