@@ -28,7 +28,7 @@ void CThreadManager::CreateProcess(char*name, int sopic) {
 	nowy->Priority = rand() % 6 + 1;
 //	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
 	AllProc.push_back(nowy);
-
+	planista->addProcess(nowy);
 }
 void CThreadManager::RemoveProcess(int id) {
 	if (id == 0) { printf("\nNie mozna usunac procesu IDLE\n"); }

@@ -22,15 +22,16 @@ Cyborg
 //SHIT BROKE FELLAS
 
 #include "stdafx.h"
-#include <iostream>
-#include <string>
-#include "PamiecOperiWirt.h"
-#include "ThreadManager.h"
-#include "KomunikacjaProcesowa.h"
-#include "Zamek.h"
-#include "InterPeter.h"
-using namespace std;
-const float SystemVer = 1.337;
+////#include <iostream>
+////#include <string>
+////#include "PamiecOperiWirt.h"
+////#include "ThreadManager.h"
+////#include "KomunikacjaProcesowa.h"
+////#include "Zamek.h"
+////#include "InterPeter.h"
+////#include "SystemPlikowFAT.h"
+////using namespace std;
+////const float SystemVer = 1.337;
 int main2()
 {
 	//K$R*A
@@ -40,9 +41,11 @@ int main2()
 	PamiecOperiWirt PAM;
 	InterPeter ip;
 	CThreadManager EatShit(&PAM);
-	KomunikacjaProcesowa EatMoreShit();
+	
 	std::vector<PCB*>*MoreShit = &EatShit.AllProc;
+	KomunikacjaProcesowa EatMoreShit = KomunikacjaProcesowa(MoreShit);
 	PAM.Set_PCB_Vector(&EatShit.AllProc);
+	HardDrive dysk;
 	Zamek D;
 	D.InitZamek(&EatShit);
 	/*EatShit.AllProc.push_back(new PCB);
@@ -149,7 +152,7 @@ int main2()
 	EatShit.PrintProcesses();
 	//EatShit.RemoveProcess(0, 1);
 	EatShit.PrintProcessState(3, true);
-	ip.ExecuteCommand(EatShit.AllProc[2]);
+	ip.ExecuteCommand(EatShit.AllProc[2],PAM,EatMoreShit,dysk);
 	EatShit.PrintProcessState(2, true);
 	
 	EatShit.setstate(1, PCB::Proc_Terminated);

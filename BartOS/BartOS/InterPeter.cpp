@@ -3,9 +3,7 @@
 #include <string>
 
 
-#include "ThreadManager.h"
-#include "PamiecOperiWirt.h"
-#include "KomunikacjaProcesowa.h"
+
 
 InterPeter::InterPeter()
 {
@@ -15,6 +13,7 @@ InterPeter::InterPeter()
 	PC = 0;
 	Adr = 0;
 	AdrPREV = 0;
+	prog = "MV B,0;MV C,1;AD B,C;SW C,B;DC A;JN 3;EN;";
 }
 
 
@@ -36,7 +35,7 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	PC = block->ProgramCounter;
 }
 
-void InterPeter::ExecuteCommand(PCB* &block)
+void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaProcesowa kom, HardDrive dysk)
 {
 	LoadState(block);
 
@@ -213,7 +212,6 @@ void InterPeter::ExecuteCommand(PCB* &block)
 	}
 	else if (command == "IC")
 	{
-		cout << "IC done at least here\n";
 		switch (line.at(3))
 		{
 		case 'A':
@@ -438,15 +436,17 @@ void InterPeter::ExecuteCommand(PCB* &block)
 	SaveState(block);
 }
 
-std::string InterPeter::LoadCommand(int &adress, int f)
+std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt pam)
 {
 	string line;
 	char p;
 	int a = adress;
 	
+	if (prog[Adr] == ';')
+		Adr++;
 	do
 	{
-		//p = load_memez(PC); Get_Char_From_OM(PCB *blok, Adr);
+		p = prog[Adr];//pam.Get_Char_From_OM(block, Adr);
 		line += p;
 		a++;
 	} while (p != ';');
@@ -470,16 +470,16 @@ void InterPeter::RegisterDisplay()
 	cout << "PC : " << PC << endl;
 }
 
-void InterPeter::CommandDisplay()
+void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt pam)
 {
 	cout << " Commands" << endl;
-	cout << "PREV : " << /*LoadCommand(AdrPREV, 1) <<*/ endl;
-	cout << "NEXT : " << /*LoadCommand(Adr, 1) <<*/ endl;
+	cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
+	cout << "NEXT : " << LoadCommand(Adr, 1, block, pam) << endl;
 }
 
-void InterPeter::Interface()
+void InterPeter::Interface(PCB *block, PamiecOperiWirt pam)
 {
 	RegisterDisplay();
 	cout << "-----------" << endl;
-	CommandDisplay();
+	CommandDisplay(block, pam);
 }

@@ -2,6 +2,8 @@
 
 #include "PamiecOperiWirt.h"
 #include <vector>
+#include "ProcesoPriorytet.h"
+
 #define Average_Priority 4
 
 
@@ -25,6 +27,7 @@ public:
 private:
 	PamiecOperiWirt* Memory;
 	static int IdentGen;
+	ProcesoPriorytet *planista;
 	
 };
 
