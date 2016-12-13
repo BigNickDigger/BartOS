@@ -2,13 +2,14 @@
 #include "Semafor.h"
 #include <queue>
 #include <vector>
+#include "ThreadManager.h"
 
 /*Olaf Bergmann mechanizmy synchronizacji*/
 
-Semafor::Semafor(int WPS,std::vector <PCB*>*AllProcc) //WPS - wartoœæ pocz¹tkowa semafora
+Semafor::Semafor(int WPS, std::vector <PCB*>*AllProcc;) //WPS - wartoœæ pocz¹tkowa semafora
 {
 	this->SValue = WPS;
-	//std::vector <PCB*>*AllProcc;
+	std::vector <PCB*>*AllProcc;
 	AllProc = AllProcc;
 }
 
@@ -36,8 +37,7 @@ void Semafor::Wait(int ID_Procesu)
 			else
 			{
 				Licznik++;
-			}
-			
+			}	
 		}
 	}
 }
@@ -52,7 +52,6 @@ void Semafor::Signal()
 		int Licznik=0;
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
-
 			if (ElementAt[Licznik]->Process_ID == KPS.front())
 			{
 				ElementAt[Licznik]->Process_State = 2;
@@ -62,9 +61,7 @@ void Semafor::Signal()
 			{
 				Licznik++;
 			}
-
 		}
 		KPS.pop(); //i usuwam go z kolejki w¹tków oczekuj¹cych
-		
 	}
 }
