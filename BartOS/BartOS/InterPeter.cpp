@@ -446,7 +446,7 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 		Adr++;
 	do
 	{
-		p = prog[Adr];//pam.Get_Char_From_OM(block, Adr);
+		p = prog[a];//pam.Get_Char_From_OM(block, Adr);
 		line += p;
 		a++;
 	} while (p != ';');
@@ -473,8 +473,8 @@ void InterPeter::RegisterDisplay()
 void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt pam)
 {
 	cout << " Commands" << endl;
-	cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
-	cout << "NEXT : " << LoadCommand(Adr, 1, block, pam) << endl;
+	cout << "PREV : " << LoadCommand(AdrPREV, 0, block, pam) << endl;
+	cout << "NEXT : " << LoadCommand(Adr, 0, block, pam) << endl;
 }
 
 void InterPeter::Interface(PCB *block, PamiecOperiWirt pam)
