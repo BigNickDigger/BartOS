@@ -12,12 +12,11 @@ using namespace std;
 
 
 
-Shell::Shell()
-	/*:thread_manager(pamiec)*/
+Shell::Shell()	
 {
 
 	pamiec = new PamiecOperiWirt();
-
+	thread_manager = new CThreadManager(pamiec);
 	hard_drive = HardDrive();
 	parker = InterPeter();
 	planista = ProcesoPriorytet();
@@ -65,7 +64,7 @@ void Shell::ObsluzLinie(vector<string> &komendy)
 	komendy=ZczytajRozkaz();
 	if (komendy[0] != "QT")
 	{
-		cout << komendy[0] << endl;
+		//cout << komendy[0] << endl;
 		WykonujRozkaz(komendy[0], komendy);
 	}
 }
@@ -125,7 +124,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "EX")	// execute
 	{
-		cout << "EX" << endl;
+		
 		//thread_manager.CreateProcess("First", 69);
 		parker.CommandDisplay(planista.FindReadyThread(), *pamiec);
 		// 1) zlecam zarzadcy procesow stworzyc proces
@@ -158,8 +157,11 @@ int main()
 	
 
 
-	Shell *shell= new Shell();
-
+	Shell *shell = new Shell();
+	shell->thread_manager->CreateProcess("IDLE", 13);
+	shell->thread_manager->AllProc[0]->Priority = 0;
+	shell->thread_manager->AllProc[0]->Process_State = PCB::Proc_Ready;
+	shell->planista.addProcess(shell->thread_manager->gethandle(0));
 	while (1)
 	{
 		
