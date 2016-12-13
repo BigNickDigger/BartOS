@@ -6,10 +6,10 @@
 
 /*Olaf Bergmann mechanizmy synchronizacji*/
 
-Semafor::Semafor(int WPS, std::vector <PCB*>*AllProcc;) //WPS - wartoœæ pocz¹tkowa semafora
+Semafor::Semafor(int WPS, std::vector <PCB*>*AllProcc) //WPS - wartoœæ pocz¹tkowa semafora
 {
 	this->SValue = WPS;
-	std::vector <PCB*>*AllProcc;
+	//std::vector <PCB*>*AllProcc;
 	AllProc = AllProcc;
 }
 

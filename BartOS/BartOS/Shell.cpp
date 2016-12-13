@@ -77,6 +77,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy, HardDrive &hard
 	{
 		cout << "wchodze";
 		hard_drive.create_file(komendy[1]);
+		cout << "/" << komendy[1] << "/";
+		hard_drive.view_files();
 	}
 	else if (rozkaz == "DF")	 // delete file
 	{
