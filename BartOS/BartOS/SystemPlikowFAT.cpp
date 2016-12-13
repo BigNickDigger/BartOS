@@ -9,29 +9,8 @@ void Sector::view() {
 }
 
 void Sector::clear(int file) {
-	for (int i = file; i < i + 16; i++) {
-		data[i] = 0;							// czyszczenie wpisu katalogowego
-	}
-}
-
-void Sector::view_properties() {
-	if (data[0] != 0) {							// plik
-		for (int i = 0;i <= 7;i++) {			// nazwa pliku
-			if (data[i] != 0) cout << data[i];
-		}
-		if (data[8] != 0) {						// rozszerzenie pliku
-			cout << ".";
-			for (int i = 8;i <= 10;i++) {
-				cout << data[i];
-			}
-		}
-		cout << "  rozmiar: ";					// rozmiar pliku
-		if (data[13] != 0) cout << (int)data[13];
-		cout << (int)data[12];
-
-	}
-	else {										// pusty sektor
-		cout << "Sektor jest pusty" << endl;
+	for (int i = 0; i < i + 16; i++) {
+		data[file + i] = 0;							// czyszczenie wpisu katalogowego
 	}
 }
 
@@ -98,7 +77,6 @@ void HardDrive::file_writing(string name, string content) {
 
 	string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
 	int current_pointer = atoi(cur_pointer.c_str());
-	current_pointer = current_pointer - (floor((double)current_pointer / 64) * 64);
 
 
 	int size = content.size();
@@ -117,7 +95,6 @@ void HardDrive::file_writing(string name, string content) {
 			int	JAP = sector_data[a].data[b + 11];
 			int counter = 1;
 			while (JAP != 1) {
-
 				if (sector_data[0].data[JAP] != 1) {
 					counter++;
 					JAP = sector_data[0].data[JAP];
@@ -143,7 +120,10 @@ void HardDrive::file_writing(string name, string content) {
 					sector_data[JAP].data[j] = content[s];
 					current_pointer++;
 					s++;
-					if (j == 63) current_pointer = 0;
+					if (j == 63) {
+						current_pointer = 0;
+						counter++;
+					}
 				}
 			}
 			string pom_pointer = to_string(current_pointer);
@@ -285,11 +265,26 @@ void HardDrive::delete_file(string name) {
 	calculate_free_space();
 }
 
-int HardDrive::file_size(string name)
-{
+int HardDrive::file_size(string name) {
+	string place = find_file_by_name(name);
+	if (place != "") {
+		string buff, buff2;
+		size_t poss = place.find(",");
+		buff = place.substr(0, poss);
+		buff2 = place.substr(poss + 1);
+		int a = atoi(buff.c_str());
+		int b = atoi(buff2.c_str());
 
+		string cur_size = to_string((int)sector_data[a].data[b + 13]) + to_string((int)sector_data[a].data[b + 12]);
+		int current_size = atoi(cur_size.c_str()) / 64;
 
-	return 0;
+		string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
+		int current_pointer = atoi(cur_pointer.c_str());
+
+		return (current_size - 1) * 64 + current_pointer;
+
+	}
+	else return 0;
 }
 
 void HardDrive::view_files() {
@@ -308,6 +303,28 @@ void HardDrive::view_files() {
 			}
 		}
 	}
+}
+
+void HardDrive::view_file_propertise(string name) {
+	string place = find_file_by_name(name);
+	if (place != "") {
+		string buff, buff2;
+		size_t poss = place.find(",");
+		buff = place.substr(0, poss);
+		buff2 = place.substr(poss + 1);
+		int a = atoi(buff.c_str());
+		int b = atoi(buff2.c_str());
+
+		string cur_size = to_string((int)sector_data[a].data[b + 13]) + to_string((int)sector_data[a].data[b + 12]);
+		int current_size = atoi(cur_size.c_str()) / 64;
+
+		string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
+		int current_pointer = atoi(cur_pointer.c_str());
+
+		cout << name << " rozmiar: " << (current_size - 1) * 64 + current_pointer << " rozmiar na dysku: " << current_size * 64 << endl;
+
+	}
+	else cout << "Plik o podanej nazwie nie istnieje." << endl;
 }
 
 void HardDrive::view_harddrive() {

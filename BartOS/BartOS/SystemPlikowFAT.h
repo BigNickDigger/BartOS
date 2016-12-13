@@ -13,7 +13,6 @@ public:
 	unsigned char data[64];
 	void view();											// funkcja wyswietlajaca sektor
 	void clear(int file);									// funkcja czyszczaca sektor
-	void view_properties();									// funkcja pokazuj¹ca wlasciwosci pliku
 	void fill(string content, int pointer);					// funkcja uzupelniajaca sektor danymi
 };
 
@@ -31,12 +30,12 @@ private:
 public:
 	HardDrive();											// konstruktor tworzacy dysk skladajacy sie z 64 sektorow wypelniony 0		
 	void create_file(string name);							// metoda tworzaca plik
-	void write_to_file(string name, string content);		// metoda uzupelniajaca plik danymi z klawiatury 
+	void write_to_file(string name, string content);			// metoda uzupelniajaca plik danymi z klawiatury 
 	void write_to_file_from_file(string name, string path);	// metoda przepisujaca dane z pliku znajdujacego sie na lokalnym dysku do dysku symulowanego
 	void delete_file(string name);							// metoda usuwajaca plik	
 	int file_size(string name);								// metoda zwracajaca rozmiar pliku
 	void view_files();										// metoda wyswieltajaca wszystkie pliki w postaci listy nazw
-	void view_file_propertise();							// metoda wyswietlajaca wlasciwosci pliku
+	void view_file_propertise(string name);							// metoda wyswietlajaca wlasciwosci pliku
 	void view_harddrive();									// metoda wyswietlajaca wszystkie sektory w postaci liczbowej
 	void view_sector(int sector_No);						// metoda wyswieltajaca konkretny sektor
 	void view_free_space();									// metoda wyswietlajaca ilosc wolnego miejsca na dysku	
