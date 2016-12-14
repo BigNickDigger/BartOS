@@ -19,14 +19,24 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 {
 	//szukanie skrzynki
 	bool x=0;
+	int id;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
 		if ((*ElementAt)->Process_ID == Odbiorca)
 		{
+			for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+			{
+				if ((*ElementAt)->Process_State == PCB::Proc_Running)
+				{
+					id = (*ElementAt)->Process_ID;
+				}
+			}
+			string sid = to_string(id);
 			x = 1;
-			string S = "";
-			S += to_string(/*Nadawca*/4) + " " + tresc; // nadanie wiadomosci 
+			string S;
+			S +=sid.length()+""+to_string(id) + " " + tresc; // nadanie wiadomosci 
 			(*ElementAt)->messages.push(S);
+			break;
 		}
 		else
 		{
