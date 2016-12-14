@@ -1,18 +1,11 @@
 #pragma once
-/*
-DO ZIOMKA OD PCB
-proszê o dodanie pól:
-int idleTime; //czas bez procesora
-int workingTime; //czas ile dany procesor spedzil na procesorze
-int PriorityDynamic; //pole uzywane do podnoszenia priorytetu procesu
-*/
 #ifndef __ProcesoPriorytet_H_INCLUDED__	
 #define __ProcesoPriorytet_H_INCLUDED__ 
 
 class PCB;
 #include "PCB.h";
-#include <list>
-
+#include <vector>
+#include <algorithm>
 /*
 Wyw³aszczenie przez w¹tek o wy¿szym priorytecie mo¿e byæ konsekwencj¹:
 wejœcia w¹tku o wy¿szym priorytecie w stan gotowoœci,
@@ -30,21 +23,22 @@ public:
 	static int NUMBER_OF_HUNGER; //co ile rozkazow zwiekszamy priorytet glodzonego procesu
 
 
-	PCB *FindReadyThread();		//zwraca najwyzszy wykonywalny proces
+	PCB *FindReadyThread();		//zwraca najwyzszy gotowy proces
 	void ReadyThread(PCB *a);	//proces zmienia stan na ready lub podniesiono priorytet jakiemus procesowi
 	void addProcess(PCB *a);	//dodawanie procesu do mojej struktury danych
 	void removeProcess(PCB *a); //usuwanie procesu z mojej struktury
 	bool moveProcess(PCB *a);	//przeniesienie procesu miedzy kolejkami
 	void tick_processes();		//podnosimy idleTime procesom gotowym
 	void throwToBack(PCB *a);	//wyrzuc na koniec kolejki dany proces
-	void printMyBeautifulStructurePlease(); //drukowanie
 
+	void printMyBeautifulStructurePlease(); //drukowanie
+	void printMyBeatufiulBitVectorPlease(); //drukowanie wektora bitowego
 
 	void updateKiReadySummary();
 	int *KiReadySummary;		//mapa bitowa pokazuj¹ca niepuste kolejki
 
 
-	std::list<PCB*> *KiDispatcher;
+	std::vector<std::vector<PCB*>> KiDispatcher;
 };
 
 #endif 

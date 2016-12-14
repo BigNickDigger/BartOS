@@ -11,12 +11,12 @@
 class CThreadManager
 {
 public:
-	CThreadManager(PamiecOperiWirt* Memory);
+	CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl);
 	~CThreadManager();
 	void CreateProcess(char*name, int sopic);
-	
+
 	void RemoveProcess(int id);//usuwa procesy POZA procesem IDLE
-	void RemoveProcess(int id,bool flag);//usuwa proces IDLE
+	void RemoveProcess(int id, bool flag);//usuwa proces IDLE
 	std::vector<PCB*>AllProc;//Wszystkie procesy sa tu.
 	void PrintProcesses();//Drukuje wszystkie procesy i info
 	PCB* gethandle(int id);//Nawet nie pamietam po o to tu jest
@@ -28,6 +28,6 @@ private:
 	PamiecOperiWirt* Memory;
 	static int IdentGen;
 	ProcesoPriorytet *planista;
-	
+
 };
 

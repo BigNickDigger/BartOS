@@ -4,18 +4,19 @@
 /*Darek Krajewski - Zarz¹dzanie procesami*/
 
 int CThreadManager::IdentGen = 0;
-CThreadManager::CThreadManager(PamiecOperiWirt* Memory)
+CThreadManager::CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl)
 {
-	srand(time(NULL));	
+	srand(time(NULL));
 	this->Memory = Memory;
-
+	planista = pl;
+	CreateProcess("IDLE", 0);
 }
 
 
 CThreadManager::~CThreadManager()
 {
 	AllProc.clear();
-	
+
 }
 void CThreadManager::CreateProcess(char*name, int sopic) {
 	PCB* nowy = new PCB;
@@ -26,17 +27,18 @@ void CThreadManager::CreateProcess(char*name, int sopic) {
 	nowy->Process_ID = IdentGen; IdentGen++;
 	nowy->Priority = rand() % 6 + 1;
 	nowy->sopic = sopic;
-//	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
-	AllProc.push_back(nowy);
+	//	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
+		AllProc.push_back(nowy);
 	planista->addProcess(nowy);
 }
 void CThreadManager::RemoveProcess(int id) {
+	printf("Shite\n");
 	if (id == 0) { printf("\nNie mozna usunac procesu IDLE\n"); }
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id && (*it)->Process_State == PCB::Proc_Terminated) {
-			
-			Memory->DeleteProcess((*it));
-			
+		
+			//Memory->DeleteProcess((*it)); ZEPSUTE
+		
 			AllProc.erase(it); return;
 		}
 	}
@@ -52,10 +54,10 @@ void CThreadManager::PrintProcesses() {
 	printf("\nProcesy w systemie:\n");
 	if (!AllProc.empty()) {
 		printf("ID\tName\tState\tPriority\n");
-		for (auto it = AllProc.begin(); it != AllProc.end(); it++) {		
-			printf("%d\t%s\t%s\t%d\n",(*it)->Process_ID,
+		for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
+			printf("%d\t%s\t%s\t%d\n", (*it)->Process_ID,
 				(*it)->nazwa,
-				getstate((*it)->Process_State),(*it)->Priority );
+				getstate((*it)->Process_State), (*it)->Priority);
 		}
 	}
 	else printf("Cos poszlo nie tak, nie ma procesu IDLE\n");
@@ -88,17 +90,17 @@ void CThreadManager::PrintProcessState(int id, bool flag) {
 		if ((*it)->Process_ID == id) {
 			printf("\nStan Procesu : %s\n", (*it)->nazwa);
 			printf("ID\tRegA\tRegB\tRegC\tPC\tStan\n");
-				printf("%d\t%d\t%d\t%d\t%d\t%s\n",(*it)->Process_ID,
-					(*it)->RegA,
-					(*it)->RegB,
-					(*it)->RegC,
-					(*it)->ProgramCounter,
-					getstate((*it)->Process_State));
+			printf("%d\t%d\t%d\t%d\t%d\t%s\n", (*it)->Process_ID,
+				(*it)->RegA,
+				(*it)->RegB,
+				(*it)->RegC,
+				(*it)->ProgramCounter,
+				getstate((*it)->Process_State));
 		}
 	}
 }
-void CThreadManager::setstate(PCB* bl,PCB::stan st) {
-	bl->Process_State = st; 
+void CThreadManager::setstate(PCB* bl, PCB::stan st) {
+	bl->Process_State = st;
 }
 void CThreadManager::setstate(int id, PCB::stan st) {
 	gethandle(id)->Process_State = st; return;

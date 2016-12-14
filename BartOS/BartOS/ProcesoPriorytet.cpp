@@ -5,30 +5,38 @@
 
 ProcesoPriorytet::ProcesoPriorytet()
 {
-
-	KiDispatcher = new std::list<PCB*>[NUMBER_OF_PRIORITIES];
-	KiReadySummary = new int[NUMBER_OF_PRIORITIES];
-	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++)
+	KiReadySummary = new int[NUMBER_OF_PRIORITIES]; //tworzymy bitowy wektor pomocniczy
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
+		//zerujemy bity na wektorze
 		KiReadySummary[i] = 0;
 
+		//dodajemy wektory do wektora wektorow
+		std::vector<PCB*> tmp;
+		KiDispatcher.push_back(tmp);
+	}
+	//system("Pause");
 }
+
+//kilka zmiennych zadeklarowanych aby program byl bardziej "elastyczny", tzn. mozemy z jednego miejsca
+//zmieniac wszystkie wartosci na ktorych opiera sie moj modul
 int ProcesoPriorytet::NUMBER_OF_PRIORITIES = 16;
 int ProcesoPriorytet::NUMBER_OF_TIME_QUANTUM = 3;
 int ProcesoPriorytet::NUMBER_OF_HUNGER = 6;
 
 ProcesoPriorytet::~ProcesoPriorytet()
 {
+	//czyscimy wskazniczki
+	KiDispatcher.clear();
 	delete KiReadySummary;
 }
 
 PCB *ProcesoPriorytet::FindReadyThread()
 {
-	for (int i = NUMBER_OF_PRIORITIES-1; i >= 0; i--) {
-		if (KiReadySummary[i] == 1) {
-			std::list<PCB*>::iterator it;
-			for (auto it : KiDispatcher[i]) {
-				if (it->Process_State == PCB::Proc_Ready) return it;
-			}
+	//szukanie zaczynamy od najwyzszej mozliwej kolejki
+	for (int i = NUMBER_OF_PRIORITIES - 1; i >= 0; i--) {
+		if (KiReadySummary[i] == 0) continue; //pomijamy iteracje, bo dana kolejka jest pusta
+		for (auto it : KiDispatcher[i]) {
+			if (it->Process_State == PCB::Proc_Ready) return it; //znaleziono chetny proces - zwracamy go
 		}
 	}
 }
@@ -43,25 +51,34 @@ void ProcesoPriorytet::ReadyThread(PCB *a)
 
 void ProcesoPriorytet::addProcess(PCB *a)
 {
-	int i = a->Priority;
-	KiDispatcher[i].push_back(a);
+	if (a->nazwa == "IDLE") {
+		a->Priority = 0;
+		a->PriorityDynamic = 0;
+	}
+	int i = a->Priority + a->PriorityDynamic;
+
+	KiDispatcher[i].push_back(a); //wrzucamy proces na jego liste
 	KiReadySummary[i] = 1;
 }
 void ProcesoPriorytet::removeProcess(PCB * a)
 {
 	int i = a->Priority + a->PriorityDynamic;
-	KiDispatcher[i].remove(a);
+	KiDispatcher[i].erase(std::remove(KiDispatcher[i].begin(), KiDispatcher[i].end(), a), KiDispatcher[i].end());	//funkcja usuwajaca konkretny element z wektora
+	if (KiDispatcher[i].empty()) KiReadySummary[i] = 0;
 }
-
 
 bool ProcesoPriorytet::moveProcess(PCB *a)
 {
 	int i = a->Priority + a->PriorityDynamic;
+	if (i + 1 >= NUMBER_OF_PRIORITIES) {
+		cout << "Proces " << a->nazwa << " ma juz najwyzszy mozliwy priorytet." << endl;
+		return true;
+	}
 	for (auto it : KiDispatcher[i]) {
-		KiDispatcher[i].remove(a);
-		a->PriorityDynamic++;
+		removeProcess(a); //usuwamy z aktualnej listy
+		a->PriorityDynamic++; //zwiekszamy priorytet dynamiczny - maksymalnie 8
 		i = a->Priority + a->PriorityDynamic;
-		KiDispatcher[i].push_back(a);
+		KiDispatcher[i].push_back(a); //dodajemy do nowej kolejki
 
 		updateKiReadySummary();
 		return true;
@@ -70,40 +87,35 @@ bool ProcesoPriorytet::moveProcess(PCB *a)
 	return false;
 }
 
-
-void ProcesoPriorytet::updateKiReadySummary() {
-	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
-		if (KiDispatcher[i].empty() == true) {
-			KiReadySummary[i] = 1;
-		}
-		else KiReadySummary[i] = 0;
-	}
-}
-
 void ProcesoPriorytet::throwToBack(PCB *a)
 {
 	int i = a->Priority + a->PriorityDynamic;
-	KiDispatcher[i].remove(a);
+	removeProcess(a);
 	KiDispatcher[i].push_back(a);
+	KiReadySummary[i] = 1;
 }
 
 
 void ProcesoPriorytet::tick_processes()
 {
-	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
-		std::list<PCB*>::iterator it;
-		for (auto it : KiDispatcher[i]) {
-			if (it->Process_State == PCB::Proc_Running) {
-				//to moze umrzec
-				if ((it->orders_realized != 0) && ((it->orders_realized % NUMBER_OF_TIME_QUANTUM) == 0)) {
-					throwToBack(it);
-				}
-			}
-			if (it->Process_State == PCB::Proc_Ready) {
-				it->idleTime++;
-				if (it->idleTime > NUMBER_OF_HUNGER) {
-					if (moveProcess(it)) {
-						continue;
+	//zaczynamy od najwyzszych
+	for (int i = NUMBER_OF_PRIORITIES - 1; i > 0; i--) {
+		if (KiReadySummary[i] == 0) continue; //pomijamy ta iteracje petli, bo struktura jest pusta
+		bool leave = false;
+		while (!leave) {
+			leave = true; //domyslnie opuszczamy petle, chyba, ze cos zostanie przeniesione
+			for (auto it : KiDispatcher[i]) {
+				if (it->Process_State == PCB::Proc_Ready) {
+					it->idleTime++; //znaleziono kogos kto czekal -> zwiekszamy wartosc 'czekania'
+					if (it->idleTime >= NUMBER_OF_HUNGER) {
+						//proces czekal bardzo dlugo - pora go nagrodzic i podwyzszyc priorytet
+						it->idleTime = 0; //zerujemy idleTime - bo dostal 'nagrode' za czekanie
+						bool flag = false;
+						flag = moveProcess(it); //przenosimy tylko, jezeli proces nie jest w najwyzszej kolejce
+						if (flag) {
+							leave = false; //przenieslismy proces z jednej kolejki do drugiej - nalezy ponownie przeiterowac nizsza kolejke
+							break;
+						}
 					}
 				}
 			}
@@ -111,18 +123,38 @@ void ProcesoPriorytet::tick_processes()
 	}
 }
 
+
+
+
 void ProcesoPriorytet::printMyBeautifulStructurePlease()
 {
 	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
-		std::list<PCB*>::iterator it;
+		std::vector<PCB*>::iterator it;
 		bool PrintPriority = true;
 		for (auto it : KiDispatcher[i]) {
 			if (PrintPriority) {
 				std::cout << i << ":" << std::endl;
 				PrintPriority = false;
 			}
-
-			std::cout << it->nazwa << " (" << it->Priority << "+" << it->PriorityDynamic << "); " << std::endl;
+			std::cout << it->nazwa << " (" << it->Priority << "+" << it->PriorityDynamic << ") " << it->Process_State << " IDLE: " << it->idleTime << std::endl;
 		}
+	}
+}
+void ProcesoPriorytet::printMyBeatufiulBitVectorPlease()
+{
+	cout << "Pomocniczy wektor bitowy:" << endl;
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
+		cout << i << ": " << KiReadySummary[i] << "|";
+		if (i < 9)cout << " ";
+		if (i % 8 == 0 && i != 0)cout << endl;
+	}
+
+}
+void ProcesoPriorytet::updateKiReadySummary() {
+	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++) {
+		if (KiDispatcher[i].empty()) {
+			KiReadySummary[i] = 0;
+		}
+		else KiReadySummary[i] = 1;
 	}
 }
