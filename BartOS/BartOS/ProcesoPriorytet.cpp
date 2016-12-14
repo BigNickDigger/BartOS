@@ -5,11 +5,16 @@
 
 ProcesoPriorytet::ProcesoPriorytet()
 {
+
 	KiDispatcher = new std::list<PCB*>[NUMBER_OF_PRIORITIES];
 	KiReadySummary = new int[NUMBER_OF_PRIORITIES];
 	for (int i = 0; i < NUMBER_OF_PRIORITIES; i++)
 		KiReadySummary[i] = 0;
+
 }
+int ProcesoPriorytet::NUMBER_OF_PRIORITIES = 16;
+int ProcesoPriorytet::NUMBER_OF_TIME_QUANTUM = 3;
+int ProcesoPriorytet::NUMBER_OF_HUNGER = 6;
 
 ProcesoPriorytet::~ProcesoPriorytet()
 {

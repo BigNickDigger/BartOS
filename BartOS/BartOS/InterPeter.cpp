@@ -13,7 +13,8 @@ InterPeter::InterPeter()
 	PC = 0;
 	Adr = 0;
 	AdrPREV = 0;
-	prog = "MV B,0;MV C,1;AD B,C;SW C,B;DC A;JN 3;EN;";
+	prog = "NF plik.txt;WF plik.txt,string Mariusz;DF plik.txt;EN;";
+		//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";
 }
 
 
@@ -35,14 +36,14 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	PC = block->ProgramCounter;
 }
 
-void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaProcesowa kom, HardDrive dysk)
+void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProcesowa *kom, HardDrive &dysk)
 {
-	LoadState(block);
+	//LoadState(block);
 
 	string line;
 	string command;
 
-	line = "IC A"; //LoadCommand(Adr, 0);
+	line = LoadCommand(Adr, 0, block, pam);
 	
 	command += line.at(0);
 	command += line.at(1);
@@ -53,6 +54,8 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 
 	if (command == "AD")
 	{
+		cout << "#" << line.at(3) << endl;
+		cout << "#" << line.at(5) << endl;
 		switch (line.at(3))
 		{
 		case 'A':
@@ -79,7 +82,7 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 				break;
 
 			case 'C':
-				regB += regA;
+				regB += regC;
 				break;
 			default:
 				regB += std::stoi(line.substr(5));
@@ -96,13 +99,16 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 				break;
 
 			case 'B':
+				cout << "arf" << endl;
 				regC += regB;
 				break;
+			default:
+				regC += std::stoi(line.substr(5));
+				break;
 			}
-		default:
-			regC += std::stoi(line.substr(5));
 			break;
 		}
+		
 	}
 	else if (command == "SB")
 	{
@@ -132,7 +138,7 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 				break;
 
 			case 'C':
-				regB -= regA;
+				regB -= regC;
 				break;
 			default:
 				regB -= std::stoi(line.substr(5));
@@ -185,7 +191,7 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 				break;
 
 			case 'C':
-				regB *= regA;
+				regB *= regC;
 				break;
 			default:
 				regB *= std::stoi(line.substr(5));
@@ -287,7 +293,7 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 				break;
 
 			case 'C':
-				regB = regA;
+				regB = regC;
 				break;
 			default:
 				regB = std::stoi(line.substr(5));
@@ -369,7 +375,7 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 
 	else if (command == "NF") //new file
 	{
-
+		dysk.create_file("PLICZAK.xD");
 	}
 	else if (command == "OF") //open file
 	{
@@ -381,18 +387,22 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 	}
 	else if (command == "WF") //write file
 	{
-
+		dysk.write_to_file("PLICZAK.xD", "string mariusz inferno spaghetti");
 	}
 	else if (command == "CF") //close file
 	{
 
+	}
+	else if (command == "DF") //write file
+	{
+		dysk.delete_file("PLICZAK.xD");
 	}
 
 	//MEMEory Kuba
 
 	else if (command == "MR") //meme read
 	{
-		
+
 	}
 	else if (command == "MW") //meme write
 	{
@@ -403,37 +413,39 @@ void InterPeter::ExecuteCommand(PCB* &block, PamiecOperiWirt pam, KomunikacjaPro
 
 	else if (command == "XR") //read
 	{
-		
+		kom->Receive();
 	}
 	else if (command == "XS") //send
 	{
-
+		kom->Send(69, "inferno_spaghetti");
 	}
 	
 	//PROCESS Dareg
 
 	else if (command == "CP") //create
 	{
-
+		
 	}
 	else if (command == "HP") //halt - hammer Zeit
 	{
-
+		block->Process_State = PCB::Proc_Ready;
 	}
 	else if (command == "KP") //kill
 	{
-
+		block->Process_State = PCB::Proc_Terminated;
 	}
 
 	//END
 	
-	else if (command == "EN") //
+	else if (command == "EN") //BUT IN THE END
 	{
+		cout << "but in the EN, it doesn't even matter" << endl;
+		//block->Process_State = PCB::Proc_Terminated;
 		//return to BarKar
 	}
 	
-	
-	SaveState(block);
+	PC++;
+	//SaveState(block);
 }
 
 std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt pam)
@@ -446,7 +458,7 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 		Adr++;
 	do
 	{
-		p = prog[Adr];//pam.Get_Char_From_OM(block, Adr);
+		p = prog[a];//pam.Get_Char_From_OM(block, Adr);
 		line += p;
 		a++;
 	} while (p != ';');

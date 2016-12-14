@@ -8,9 +8,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory)
 {
 	srand(time(NULL));	
 	this->Memory = Memory;
-	CreateProcess("IDLE", 13);
-	AllProc[0]->Priority = 0;
-	AllProc[0]->Process_State = PCB::Proc_Ready;
+
 }
 
 
@@ -23,9 +21,11 @@ void CThreadManager::CreateProcess(char*name, int sopic) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
 	Memory->Insert_To_Virtual_Memory(nowy);
-
+	nowy->Process_State = PCB::Proc_Ready;
+	nowy->PriorityDynamic = 0;
 	nowy->Process_ID = IdentGen; IdentGen++;
 	nowy->Priority = rand() % 6 + 1;
+	nowy->sopic = sopic;
 //	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
 	AllProc.push_back(nowy);
 	planista->addProcess(nowy);

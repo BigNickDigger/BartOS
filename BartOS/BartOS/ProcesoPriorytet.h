@@ -21,13 +21,14 @@ podwy¿szenia priorytetu w¹tku gotowego.
 
 
 class ProcesoPriorytet {
-private:
-	int NUMBER_OF_PRIORITIES = 16; //ile mamy priorytetow-1, bo to cpp
-	int NUMBER_OF_TIME_QUANTUM = 3; //ile rozkazow trwa kwant
-	int NUMBER_OF_HUNGER = 6; //co ile rozkazow zwiekszamy priorytet glodzonego procesu
 public:
 	ProcesoPriorytet();
 	~ProcesoPriorytet();
+
+	static int NUMBER_OF_PRIORITIES; //ile mamy priorytetow-1, bo to cpp
+	static int NUMBER_OF_TIME_QUANTUM; //ile rozkazow trwa kwant
+	static int NUMBER_OF_HUNGER; //co ile rozkazow zwiekszamy priorytet glodzonego procesu
+
 
 	PCB *FindReadyThread();		//zwraca najwyzszy wykonywalny proces
 	void ReadyThread(PCB *a);	//proces zmienia stan na ready lub podniesiono priorytet jakiemus procesowi
