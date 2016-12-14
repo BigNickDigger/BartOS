@@ -19,16 +19,16 @@ void Semafor::Wait(int ID_Procesu)
 	SValue--;
 	if (SValue < 0)
 	{
-		cout << "Semafor: Zmieniam stan procesu na oczekujacy" << endl;
+		cout << "Semafor: Zmieniam stan procesu "<< ID_Procesu<<" na oczekujacy" << endl;
 		KPS.push(ID_Procesu); //Dodaje w¹tek do kolejki FIFO w¹tków oczekuj¹cych na podniesienie semafora 
-		//zmieniam stan w¹tku na waiting
+		
 		
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++) 
 		{
 			
 			if ((*ElementAt)->Process_ID == ID_Procesu)
 			{
-				(*ElementAt)->Process_State = 1;
+				(*ElementAt)->Process_State = 1; //zmieniam stan w¹tku na waiting
 				break;
 			}
 		}
@@ -40,7 +40,7 @@ void Semafor::Signal()
 	SValue++;
 	if (SValue <= 0)
 	{
-		cout << "Semafor: Zmieniam stan procesu na gotowy"<<endl;
+		cout << "Semafor: Zmieniam stan procesu "<<KPS.front()<<" na gotowy"<<endl;
 		KPS.front(); // wznawiam pierwszy oczekuj¹cy 
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
