@@ -17,6 +17,7 @@ Shell::Shell()
 
 	pamiec = new PamiecOperiWirt();
 	thread_manager = new CThreadManager(pamiec);
+	pamiec->Set_PCB_Vector(&thread_manager->AllProc);
 	hard_drive = HardDrive();
 	parker = InterPeter();
 	planista = ProcesoPriorytet();

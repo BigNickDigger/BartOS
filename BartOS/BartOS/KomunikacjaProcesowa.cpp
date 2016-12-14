@@ -6,7 +6,7 @@ using namespace std;
 
 KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
 {
-	AllProc = AllProcc;
+	AllProc = AllProcc;  // wskaznik na wszystkie procki
 }
 
 
@@ -25,7 +25,7 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 		{
 			x = 1;
 			string S = "";
-			S += to_string(/*Nadawca*/4) + " " + tresc;
+			S += to_string(/*Nadawca*/4) + " " + tresc; // nadanie wiadomosci 
 			(*ElementAt)->messages.push(S);
 		}
 		else
@@ -35,21 +35,42 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 	}
 	if (x == 0)
 	{
-		cout << "hi";
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
 			if ((*ElementAt)->Process_State == PCB::Proc_Running) 
 			{
-				(*ElementAt)->Process_State == PCB::Proc_Terminated;
+				(*ElementAt)->Process_State == PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
 			}
 		}
 	}
 }
 
-void KomunikacjaProcesowa::Receive() //Potrzebuje zmienna globalna Running zeby to smigalo :3
+void KomunikacjaProcesowa::Receive() 
 {
+	bool spi = 1;
 	//szukanie skrzynki
 	int counter = 0;
+	if (spi == 1)
+	{
+		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+		{
+			if ((*ElementAt)->Process_State == PCB::Proc_Running)
+			{
+				(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
+				if ((*ElementAt)->messages.empty())
+				{
+					return;
+				}
+				else
+				{
+					string x;
+					x = (*ElementAt)->messages.front();
+
+					(*ElementAt)->messages.pop();
+				}
+			}
+		}
+	}
 	//for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	//{
 	//	if (ElementAt[counter]->Process_ID == Odbiorca)
