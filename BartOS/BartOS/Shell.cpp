@@ -16,10 +16,12 @@ Shell::Shell()
 {
 
 	pamiec = new PamiecOperiWirt();
-	thread_manager = new CThreadManager(pamiec);
+	
+	pamiec->Set_PCB_Vector(&thread_manager->AllProc);
 	hard_drive = HardDrive();
 	parker = InterPeter();
 	planista = ProcesoPriorytet();
+	thread_manager = new CThreadManager(pamiec, &planista);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc);
 }
 
@@ -114,14 +116,19 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		cout << "VVVVVVVHitler" << endl;
 		//thread_manager.Memory->PrintWM();
+		
+		thread_manager->CreateProcess("TEST", 0);
 	}
 	else if (rozkaz == "VP")	// view physical memory
 	{
+		//Dwa ponizsze testowo
+		thread_manager->setstate(2, PCB::Proc_Terminated);
+		thread_manager->RemoveProcess(2);
 		//thread_manager.Memory->PrintOM();
 	}
 	else if (rozkaz == "VT")	// view threads
 	{
-		//thread_manager.PrintProcesses();
+		thread_manager->PrintProcesses();
 	}
 	else if (rozkaz == "EX")	// execute
 	{
