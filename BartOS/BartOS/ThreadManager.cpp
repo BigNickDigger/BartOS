@@ -61,11 +61,16 @@ void CThreadManager::RemoveProcess(int id, bool flag) {
 void CThreadManager::PrintProcesses() {
 	printf("\nProcesy w systemie:\n");
 	if (!AllProc.empty()) {
-		printf("ID\tName\tState\tPriority\n");
+		cout << "ID\tName\tState\tPriority\n";
 		for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
-			printf("%d\t%s\t%s\t%d\n", (*it)->Process_ID,
+			cout << (*it)->Process_ID << "\t";
+			cout << (*it)->nazwa << "\t";
+			cout << getstate((*it)->Process_State) << "\t";
+			cout << (*it)->Priority << "\n";
+			
+			/*printf("%d\t%s\t%s\t%d\n", (*it)->Process_ID,
 				(*it)->nazwa,
-				getstate((*it)->Process_State), (*it)->Priority);
+				getstate((*it)->Process_State), (*it)->Priority);*/
 		}
 	}
 	else printf("Cos poszlo nie tak, nie ma procesu IDLE\n");
