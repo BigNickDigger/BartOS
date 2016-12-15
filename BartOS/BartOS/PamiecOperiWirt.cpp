@@ -68,9 +68,29 @@ stronice PamiecOperiWirt::MemRequest()
 }
 
 
-void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok)
+void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab)
 {
-	//laduj do VM[processID] tablice reprezentujaca kod programu
+	int j = 0;
+	int number_of_pages = WhichPage(blok->sopic) + 1;
+	page *kod = new page();
+	for (int i = 0; i < number_of_pages; i++)
+	{
+		
+		for (j; j < framesize; j++)
+		{
+			if (j + 1 == framesize)//wejdz tu jesli ostatnia strona, przepisz i wyjdz z funkcji
+			{
+				for (int k = 0; k < WhatOffset(blok->sopic); k++)
+				{
+					kod[i].tab[k] = disc_tab[j];
+				}
+				return;
+			}
+
+			kod[i].tab[j] = disc_tab[j];
+		}
+	}
+	VM.push_back(kod);
 
 }
 

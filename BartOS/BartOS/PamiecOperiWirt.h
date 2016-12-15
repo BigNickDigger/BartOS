@@ -67,7 +67,7 @@ public:
 
 	char Get_Char_From_OM(PCB *blok, int LogicAdr);//mechanizm obs³ugi stronicowania na ¿¹danie, zwraca 1 char dla danego procesu
 	void Get_Page_From_WM(PCB* blok, int page);
-	void Insert_To_Virtual_Memory(PCB *blok);//wrzuc do pamieci wirtualnej i ustawiaj w pcb TabliceStron
+	void Insert_To_Virtual_Memory(PCB *blok, char*);//wrzuc do pamieci wirtualnej i ustawiaj w pcb TabliceStron
 	int Get_Free_Frame_Number();
 	int Return_ID_of_a_Process_using_this_frame(int FrameNr);
 	int Return_nr_of_a_page_using_this_frame(int FrameNr);

@@ -22,7 +22,7 @@ class PCB
 public:
 	PCB();
 	~PCB();
-	char* nazwa;
+	std::string nazwa;
 	int Process_State,
 		PriorityDynamic,
 		Process_ID;
