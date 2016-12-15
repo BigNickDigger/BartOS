@@ -284,7 +284,7 @@ int HardDrive::file_size(string name) {
 		return (current_size - 1) * 64 + current_pointer;
 
 	}
-	else return -1;					// zwraca -1 w przypadku braku pliku
+	else return 0;
 }
 
 void HardDrive::view_files() {
@@ -321,7 +321,7 @@ void HardDrive::view_file_propertise(string name) {
 		string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
 		int current_pointer = atoi(cur_pointer.c_str());
 
-		cout << name << " rozmiar: " << (current_size - 1) * 64 + current_pointer << "B rozmiar na dysku: " << current_size * 64 << "B" << endl;
+		cout << name << " rozmiar: " << (current_size - 1) * 64 + current_pointer << " rozmiar na dysku: " << current_size * 64 << endl;
 
 	}
 	else cout << "Plik o podanej nazwie nie istnieje." << endl;
@@ -342,56 +342,4 @@ void HardDrive::view_sector(int numer) {
 
 void HardDrive::view_free_space() {
 	cout << "Na dysku zostalo: " << free_space << "B wolnego miejsca." << endl;
-}
-
-unsigned char* HardDrive::open_file(string name) {
-	string place = find_file_by_name(name);
-
-	if (place == "") {
-		string errorr = "Error";
-		unsigned char* error = new unsigned char[errorr.length()];
-		for (int i = 0;i < errorr.size();i++) {
-			error[i] = errorr[i];
-		}
-
-		return error;
-	}
-	else {
-		string buff, buff2;
-		size_t poss = place.find(",");
-		buff = place.substr(0, poss);
-		buff2 = place.substr(poss + 1);
-		int a = atoi(buff.c_str());
-		int b = atoi(buff2.c_str());
-
-		int size = file_size(name);
-		int JAP = sector_data[a].data[b + 11];
-		unsigned char* file = new unsigned char[size];
-		int position = 0;
-
-
-		if (sector_data[a].data[b + 11] != 1) {
-			while (JAP > 1) {
-				if (sector_data[0].data[JAP] == 1) {
-					string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
-					int current_pointer = atoi(cur_pointer.c_str());
-					for (int i = 0;i < current_pointer;i++) {
-						file[position + i] = sector_data[JAP].data[i];
-					}
-					position += current_pointer;
-					JAP = sector_data[0].data[JAP];
-				}
-				else {
-					for (int i = 0;i < 64;i++) {
-						file[position + i] = sector_data[JAP].data[i];
-					}
-					position += 64;
-
-					JAP = sector_data[0].data[JAP];
-				}
-			}
-		}
-
-		return file;
-	}
 }
