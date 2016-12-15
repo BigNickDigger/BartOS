@@ -3,6 +3,8 @@
 #ifndef SEMAFOR_H
 #define SEMAFOR_H
 #include "PCB.h"
+#include <vector>
+#include <queue>
 
 /*Olaf Bergmann mechanizmy synchronizacji*/
 
