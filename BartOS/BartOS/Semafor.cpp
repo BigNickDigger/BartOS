@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Semafor.h"
-#include <queue>
-#include <vector>
 #include "ThreadManager.h"
 
 /*Olaf Bergmann mechanizmy synchronizacji*/
