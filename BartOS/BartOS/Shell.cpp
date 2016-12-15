@@ -110,7 +110,11 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "VD")	// view disc
 	{
-		hard_drive.view_harddrive();
+		//hard_drive.view_harddrive();
+	}
+	else if (rozkaz == "PP")	// view disc
+	{
+		planista.printMyBeautifulStructurePlease();
 	}
 	else if (rozkaz == "VV")	// view virtual memory
 	{

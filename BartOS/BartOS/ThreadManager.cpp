@@ -10,6 +10,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl)
 	this->Memory = Memory;
 	planista = pl;
 	CreateProcess("IDLE", 0);
+	//PrintProcesses();
 }
 
 
@@ -21,15 +22,18 @@ CThreadManager::~CThreadManager()
 void CThreadManager::CreateProcess(char*name, int sopic) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
-	Memory->Insert_To_Virtual_Memory(nowy);
+	//Memory->Insert_To_Virtual_Memory(nowy);
 	nowy->Process_State = PCB::Proc_Ready;
 	nowy->PriorityDynamic = 0;
 	nowy->Process_ID = IdentGen; IdentGen++;
 	nowy->Priority = rand() % 6 + 1;
 	nowy->sopic = sopic;
 	//	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
-		AllProc.push_back(nowy);
+	
+	AllProc.push_back(nowy);
+	
 	planista->addProcess(nowy);
+	
 }
 void CThreadManager::RemoveProcess(int id) {
 	printf("Shite\n");
@@ -38,16 +42,20 @@ void CThreadManager::RemoveProcess(int id) {
 		if ((*it)->Process_ID == id && (*it)->Process_State == PCB::Proc_Terminated) {
 		
 			//Memory->DeleteProcess((*it)); ZEPSUTE
-		
-			AllProc.erase(it); return;
+			planista->removeProcess(*it);
+			AllProc.erase(it); 
+			
+			return;
 		}
 	}
 }
 void CThreadManager::RemoveProcess(int id, bool flag) {
 	auto it = AllProc.begin();
 	(*it)->Process_State = PCB::Proc_Terminated;
+	planista->removeProcess(*it);
 	Memory->DeleteProcess((*it));
 	AllProc.erase(it);
+
 }
 
 void CThreadManager::PrintProcesses() {
