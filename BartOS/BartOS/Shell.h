@@ -15,7 +15,7 @@ class Shell
 {
 public:
 	std::vector <ZmiennaSrodowiskowa> vector_zmiennych_srodowiskowych;
-	PamiecOperiWirt *pamiec;
+	PamiecOperiWirt pamiec;
 	CThreadManager *thread_manager;
 	HardDrive hard_drive;
 	InterPeter parker;
