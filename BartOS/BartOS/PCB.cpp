@@ -9,6 +9,9 @@ PCB::PCB()
 	orders_realized = 0;
 	idleTime = 0;
 	sopic = 0;
+	for (int i = 0; i < 16; i++) {
+		pages[i].Valid = false;
+	}
 	//pages = new stronice[(sopic / 16)+1];
 }
 

@@ -68,10 +68,50 @@ stronice PamiecOperiWirt::MemRequest()
 }
 
 
-void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok)
+void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab,int sopic)
 {
-	//laduj do VM[processID] tablice reprezentujaca kod programu
+	//cout << disc_tab << endl;
+	//int j = 0;
+	blok->sopic = sopic;
+	if (sopic == -1) { blok->Process_State = PCB::Proc_New; return; }
+	int number_of_pages = WhichPage(blok->sopic) + 1;
+	int pom = 0;
+	page *kod = new page[number_of_pages];
+	
+	for (int i = 0; i < number_of_pages; i++) {
+		
+		
+		for (int j = 0; j < framesize; j++) {
+			if (pom < sopic) { 
+				kod[i].tab[j] = disc_tab[pom]; pom++; }
+			else {
+				VM.push_back(kod);return;
+			}
+		}
 
+	}
+
+
+	/*for (int i = 0; i < number_of_pages-1; i++)
+	{
+		
+		for (int j=0; j < framesize; j++)
+		{
+			kod[i].tab[j] = disc_tab[pom];
+			pom++;
+		}
+		if (i + 1 == number_of_pages)//wejdz tu jesli ostatnia strona, przepisz i wyjdz z funkcji
+		{
+			for (int k = 0; k < WhatOffset(blok->sopic); k++)
+			{
+				kod[i].tab[k] = disc_tab[pom];
+				pom++;
+			}
+		}
+		
+	}
+	
+	VM.push_back(kod);*/
 }
 
 char PamiecOperiWirt::Get_Char_From_OM(PCB *blok, int LogicAdr)
@@ -95,12 +135,9 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 {
 	short FrameNr = Get_Free_Frame_Number();//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
 
-	for (int i = 0; i < blok->sopic / 16 + 1; i++)
+	for (int j = 0; j < framesize; j++)
 	{
-		for (int j = 0; j < framesize; j++)
-		{
-			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
-		}
+		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID-1][page].tab[j];
 	}
 
 	int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
@@ -148,27 +185,39 @@ void PamiecOperiWirt::PrintOM()
 
 void PamiecOperiWirt::PrintVM()
 {
-	vector<PCB*>AllProcc = *AllProc;
+	//vector<PCB*>AllProcc = *AllProc;
 	if (VM.capacity() == 0)
 	{
 		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
 		return;
 	}
 
+	cout << VM.capacity() << endl;
+	cout << VM.size() << endl;
+	cout << AllProc->capacity() << endl;
+	cout << AllProc->size() << endl;
 
 	int capacity = VM.capacity();
-	for (int i = 0; i < capacity; i++)//skacz po zawartosci VM
+	int cnt = 1;
+	for (auto it = AllProc->begin(); it != AllProc->end(); it++)//skacz po zawartosci VM
 	{
-		if (VM[i]->abandon == true)
-			continue;
-		else
+		
+//		if (VM[i]->abandon == true)
+	//		continue;
+		//else
+		if ((*it)->Process_ID == 0)
 		{
-			cout << "PAMIEC WIRTUALNA PROCESU NR " << i << endl;
-			for (int j = 0; j < AllProcc[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+			continue;
+		}
+		{
+			cout << "PAMIEC WIRTUALNA PROCESU NR " <<(*it)->Process_ID << endl;
+			for (int i = 0; i < (*it)->sopic/16+1;i++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
 			{
-				VM[i][j].PrintPage();
+				VM[cnt-1][i].PrintPage();
+				//VM[i][j].PrintPage();
 			}
 			cout << endl;
+			cnt++;
 		}
 	}
 

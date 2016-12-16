@@ -75,11 +75,15 @@ void KomunikacjaProcesowa::Receive()
 				{
 					string x;
 					x = (*ElementAt)->messages.front();
-
 					(*ElementAt)->messages.pop();
+					//FUNKCJAKUBY do Pamieci
 				}
 			}
 		}
+	}
+	else
+	{
+
 	}
 	//for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	//{

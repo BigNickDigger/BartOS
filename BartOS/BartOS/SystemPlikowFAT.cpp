@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SystemPlikowFAT.h"
 
+
 void Sector::view() {
 	for (int i = 0; i < 64; i++) {
 		cout << setw(4) << (int)data[i] << " ";
@@ -8,15 +9,9 @@ void Sector::view() {
 	cout << endl;
 }
 
-void Sector::clear(int file) {
-	for (int i = 0; i < i + 16; i++) {
-		data[file + i] = 0;							// czyszczenie wpisu katalogowego
-	}
-}
-
-void Sector::fill(string content, int pointer) {
-	for (int i = pointer; i < content.length(); i++) {
-		data[i] = content[i];
+void Sector::clear(int position) {
+	for (int i = position; i < position + 16; i++) {
+		data[i] = 0;							// czyszczenie wpisu katalogowego
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,14 +29,14 @@ string HardDrive::find_file_by_name(string name) {
 	if (pos != string::npos) buff2 = name.substr(pos + 1);
 	int correct = 0, correct2 = 0;
 	string sector;
-	for (int i = 1;i < 9;i++) {
-		for (int j = 0;j < 64;j += 16) {
+	for (int i = 1; i < 9; i++) {
+		for (int j = 0; j < 64; j += 16) {
 			if (sector_data[i].data[j] != 0) {
-				for (int s = 0;s < buff.length();s++) {
+				for (int s = 0; s < buff.length(); s++) {
 					if (sector_data[i].data[j + s] == buff[s]) correct++;
 					else break;
 				}
-				for (int s = 0;s < buff2.length();s++) {
+				for (int s = 0; s < buff2.length(); s++) {
 					if (sector_data[i].data[j + s + 8] == buff2[s]) correct2++;
 					else break;
 
@@ -54,8 +49,8 @@ string HardDrive::find_file_by_name(string name) {
 }
 
 string HardDrive::find_place_in_root_directory() {
-	for (int i = 1;i < 9;i++) {
-		for (int j = 0;j < 64;j += 16) {
+	for (int i = 1; i < 9; i++) {
+		for (int j = 0; j < 64; j += 16) {
 			if (sector_data[i].data[j] == 0) return to_string(i) + "," + to_string(j);
 		}
 	}
@@ -101,7 +96,7 @@ void HardDrive::file_writing(string name, string content) {
 				}
 				else break;
 			}
-			for (int i = 0;i < ceil((double)size / 64);i++) {
+			for (int i = 0; i < ceil((double)size / 64); i++) {
 				if (sector_data[a].data[b + 11] == 1) {
 					list<int>::iterator it = free_sectors.begin();
 					sector_data[a].data[b + 11] = *it;
@@ -116,7 +111,7 @@ void HardDrive::file_writing(string name, string content) {
 					sector_data[0].data[*it] = 1;
 					free_sectors.pop_front();
 				}
-				for (int j = current_pointer;(j < 64) && (s < content.size());j++) {
+				for (int j = current_pointer; (j < 64) && (s < content.size()); j++) {
 					sector_data[JAP].data[j] = content[s];
 					current_pointer++;
 					s++;
@@ -173,7 +168,7 @@ HardDrive::HardDrive() {
 		}
 	}
 	free_space = 4096 - (9 * 64);				// 1 sektor na FAT i 8 sektory na wpisy katalogowe (max 32 wpisy po 4 wpisy na sektor)
-	for (int i = 9;i < 64;i++) {
+	for (int i = 9; i < 64; i++) {
 		free_sectors.push_back(i);
 	}
 }
@@ -201,10 +196,10 @@ void HardDrive::create_file(string name) {
 				int a = atoi(buff3.c_str());
 				int b = atoi(buff4.c_str());
 
-				for (int i = 0;i < buff.length();i++) {
+				for (int i = 0; i < buff.length(); i++) {
 					sector_data[a].data[b + i] = buff[i];
 				}
-				for (int i = 0;i < buff2.length();i++) {
+				for (int i = 0; i < buff2.length(); i++) {
 					sector_data[a].data[b + i + 8] = buff2[i];
 				}
 				sector_data[a].data[b + 11] = 1;
@@ -250,15 +245,12 @@ void HardDrive::delete_file(string name) {
 				pom = JAP;
 				JAP = sector_data[0].data[pom];
 				sector_data[0].data[pom] = 0;
-				free_sectors.push_back(pom);
+				if (pom != 1)free_sectors.push_back(pom);
 			}
 		}
-		for (int i = 0;i < b + 16;i++) {
-			sector_data[a].data[b + i] = 0;
-		}
+		sector_data[a].clear(b);
+		free_sectors.sort();
 		cout << "Plik zostal usuniety" << endl;
-
-
 	}
 	else cout << "Nie znaleziono pliku o padanej nazwie" << endl;
 
@@ -284,18 +276,18 @@ int HardDrive::file_size(string name) {
 		return (current_size - 1) * 64 + current_pointer;
 
 	}
-	else return 0;
+	else return -1;					// zwraca -1 w przypadku braku pliku
 }
 
 void HardDrive::view_files() {
-	for (int i = 1;i < 9;i++) {
-		for (int j = 0;j < 64;j += 16) {
+	for (int i = 1; i < 9; i++) {
+		for (int j = 0; j < 64; j += 16) {
 			if (sector_data[i].data[j] != 0) {
-				for (int z = j;z < 8 + j;z++) {
+				for (int z = j; z < 8 + j; z++) {
 					if (sector_data[i].data[z] != 0) cout << sector_data[i].data[z];
 				}
 				if (sector_data[i].data[j + 8] != 0) cout << ".";
-				for (int z = j + 8;z < 11 + j;z++) {
+				for (int z = j + 8; z < 11 + j; z++) {
 					if (sector_data[i].data[z] != 0) cout << sector_data[i].data[z];
 				}
 
@@ -321,14 +313,14 @@ void HardDrive::view_file_propertise(string name) {
 		string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
 		int current_pointer = atoi(cur_pointer.c_str());
 
-		cout << name << " rozmiar: " << (current_size - 1) * 64 + current_pointer << " rozmiar na dysku: " << current_size * 64 << endl;
+		cout << name << " rozmiar: " << (current_size - 1) * 64 + current_pointer << "B rozmiar na dysku: " << current_size * 64 << "B" << endl;
 
 	}
 	else cout << "Plik o podanej nazwie nie istnieje." << endl;
 }
 
 void HardDrive::view_harddrive() {
-	for (int i = 0;i < 64;i++) {
+	for (int i = 0; i < 64; i++) {
 		cout << "Sektor " << i << endl;
 		sector_data[i].view();
 		getchar();
@@ -342,4 +334,56 @@ void HardDrive::view_sector(int numer) {
 
 void HardDrive::view_free_space() {
 	cout << "Na dysku zostalo: " << free_space << "B wolnego miejsca." << endl;
+}
+
+char* HardDrive::open_file(string name) {
+	string place = find_file_by_name(name);
+
+	if (place == "") {
+		string errorr = "Error";
+		char* error = new char[errorr.length()];
+		for (int i = 0; i < errorr.size(); i++) {
+			error[i] = errorr[i];
+		}
+
+		return error;
+	}
+	else {
+		string buff, buff2;
+		size_t poss = place.find(",");
+		buff = place.substr(0, poss);
+		buff2 = place.substr(poss + 1);
+		int a = atoi(buff.c_str());
+		int b = atoi(buff2.c_str());
+
+		int size = file_size(name);
+		int JAP = sector_data[a].data[b + 11];
+		char* file = new  char[size];
+		int position = 0;
+
+
+		if (sector_data[a].data[b + 11] != 1) {
+			while (JAP > 1) {
+				if (sector_data[0].data[JAP] == 1) {
+					string cur_pointer = to_string((int)sector_data[a].data[b + 15]) + to_string((int)sector_data[a].data[b + 14]);
+					int current_pointer = atoi(cur_pointer.c_str());
+					for (int i = 0; i < current_pointer; i++) {
+						file[position + i] = sector_data[JAP].data[i];
+					}
+					position += current_pointer;
+					JAP = sector_data[0].data[JAP];
+				}
+				else {
+					for (int i = 0; i < 64; i++) {
+						file[position + i] = sector_data[JAP].data[i];
+					}
+					position += 64;
+
+					JAP = sector_data[0].data[JAP];
+				}
+			}
+		}
+
+		return file;
+	}
 }

@@ -24,7 +24,6 @@ public:
 
 
 	PCB *FindReadyThread();		//zwraca najwyzszy gotowy proces
-	void ReadyThread(PCB *a);	//proces zmienia stan na ready lub podniesiono priorytet jakiemus procesowi
 	void addProcess(PCB *a);	//dodawanie procesu do mojej struktury danych
 	void removeProcess(PCB *a); //usuwanie procesu z mojej struktury
 	bool moveProcess(PCB *a);	//przeniesienie procesu miedzy kolejkami
@@ -37,7 +36,7 @@ public:
 	void updateKiReadySummary();
 	int *KiReadySummary;		//mapa bitowa pokazuj¹ca niepuste kolejki
 
-
+	PCB *running;
 	std::vector<std::vector<PCB*>> KiDispatcher;
 };
 

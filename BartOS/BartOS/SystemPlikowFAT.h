@@ -10,10 +10,9 @@ using namespace std;
 
 class Sector {
 public:
-	unsigned char data[64];
+	char data[64];
 	void view();											// funkcja wyswietlajaca sektor
 	void clear(int file);									// funkcja czyszczaca sektor
-	void fill(string content, int pointer);					// funkcja uzupelniajaca sektor danymi
 };
 
 class HardDrive {
@@ -35,8 +34,9 @@ public:
 	void delete_file(string name);							// metoda usuwajaca plik	
 	int file_size(string name);								// metoda zwracajaca rozmiar pliku
 	void view_files();										// metoda wyswieltajaca wszystkie pliki w postaci listy nazw
-	void view_file_propertise(string name);							// metoda wyswietlajaca wlasciwosci pliku
+	void view_file_propertise(string name);					// metoda wyswietlajaca wlasciwosci pliku
 	void view_harddrive();									// metoda wyswietlajaca wszystkie sektory w postaci liczbowej
 	void view_sector(int sector_No);						// metoda wyswieltajaca konkretny sektor
-	void view_free_space();									// metoda wyswietlajaca ilosc wolnego miejsca na dysku	
+	void view_free_space();									// metoda wyswietlajaca ilosc wolnego miejsca na dysku
+	char* open_file(string name);							// metoda zwracajaca caly plik
 };
