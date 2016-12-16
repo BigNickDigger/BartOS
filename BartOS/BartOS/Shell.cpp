@@ -12,17 +12,15 @@ using namespace std;
 
 
 
-Shell::Shell()	
+Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
 
-	pamiec = new PamiecOperiWirt();
-	
-	
-	hard_drive = HardDrive();
+//	pamiec = new PamiecOperiWirt();	
+/*	hard_drive = HardDrive();
 	parker = InterPeter();
-	planista = ProcesoPriorytet();
-	thread_manager = new CThreadManager(pamiec, &planista);
-	pamiec->Set_PCB_Vector(&thread_manager->AllProc);
+	planista = ProcesoPriorytet();*/
+	thread_manager = new CThreadManager(&pamiec, &planista);
+	pamiec.Set_PCB_Vector(&thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc);
 	hard_drive.create_file("p1");
 	hard_drive.write_to_file_from_file("p1", "p1.txt.txt");
@@ -124,7 +122,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 		cout << "Dodano proces" << endl;
 		int k = thread_manager->CreateProcess("TEST", stoi(komendy[1]));
 		
-		pamiec->Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file("p1"), hard_drive.file_size("p1"));
+		pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file("p1"), hard_drive.file_size("p1"));
 	}
 	else if (rozkaz == "PP")	// view disc
 	{
@@ -133,7 +131,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "VV")	// view virtual memory
 	{
-		pamiec->PrintVM();
+		pamiec.PrintVM();
 	}
 	else if (rozkaz == "VP")	// view physical memory
 	{
@@ -157,8 +155,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 		//thread_manager.CreateProcess("First", 69);
 		//parker.CommandDisplay(planista.FindReadyThread(), *pamiec);
 		PCB *tmp = planista.FindReadyThread();
-		parker.ExecuteCommand(tmp, *pamiec, komuch, hard_drive);
-		parker.Interface(planista.FindReadyThread(), *pamiec);
+		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive);
+		parker.Interface(planista.FindReadyThread(), pamiec);
 		// 1) zlecam zarzadcy procesow stworzyc proces
 		// 2) zlecam pamieciowcowi wprowadzic program do pamieci (zaladownie stronic danymi)
 		planista.tick_processes();
@@ -170,7 +168,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "EV")	// enviroment variable
 	{
-		pamiec->PrintOM();
+		pamiec.PrintOM();
 	}
 	else if (rozkaz == "SM") {
 		komuch->Send(stoi(komendy[1]), "this sucks");
