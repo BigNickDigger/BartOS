@@ -17,12 +17,15 @@ Shell::Shell()
 
 	pamiec = new PamiecOperiWirt();
 	
-	pamiec->Set_PCB_Vector(&thread_manager->AllProc);
+	
 	hard_drive = HardDrive();
 	parker = InterPeter();
 	planista = ProcesoPriorytet();
 	thread_manager = new CThreadManager(pamiec, &planista);
+	pamiec->Set_PCB_Vector(&thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc);
+	hard_drive.create_file("p1");
+	hard_drive.write_to_file_from_file("p1", "p1.txt.txt");
 }
 
 
@@ -101,49 +104,64 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "CE")	// create folder
 	{	
+		hard_drive.create_file("p1");
+		hard_drive.write_to_file_from_file("p1", "p1.txt.txt");
 		//dysk.CreateFolder(komendy[1])	;
 	}
 	
 	else if (rozkaz == "DE")	// delete folder
 	{
+		for (int i = 0; i < 6;i++)
+		planista.tick_processes();
+		cout << (planista.FindReadyThread()->nazwa) << endl;
 		//dysk.DeleteFolder(komendy[1]);
 	}
 	else if (rozkaz == "VD")	// view disc
 	{
-		//hard_drive.view_harddrive();
+		hard_drive.view_harddrive();
+	}
+	else if (rozkaz == "CP") {//child pr0n
+		cout << "Dodano proces" << endl;
+		int k = thread_manager->CreateProcess("TEST", stoi(komendy[1]));
+		
+		pamiec->Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file("p1"), hard_drive.file_size("p1"));
 	}
 	else if (rozkaz == "PP")	// view disc
 	{
+		//thread_manager->setstate(3, PCB::Proc_Waiting);
 		planista.printMyBeautifulStructurePlease();
 	}
 	else if (rozkaz == "VV")	// view virtual memory
 	{
-		cout << "VVVVVVVHitler" << endl;
-		//thread_manager.Memory->PrintWM();
-		
-		thread_manager->CreateProcess("TEST", 0);
+		pamiec->PrintVM();
 	}
 	else if (rozkaz == "VP")	// view physical memory
 	{
 		//Dwa ponizsze testowo
-		thread_manager->setstate(2, PCB::Proc_Terminated);
-		thread_manager->RemoveProcess(2);
 		//thread_manager.Memory->PrintOM();
+	}
+	else if (rozkaz == "SS") {//ustaw stan
+		thread_manager->setstate(stoi(komendy[1]), PCB::Proc_Terminated);
+	}
+	else if (rozkaz == "RT") {
+		thread_manager->setstate(stoi(komendy[1]), PCB::Proc_Terminated);
+		thread_manager->RemoveProcess(stoi(komendy[1]));
 	}
 	else if (rozkaz == "VT")	// view threads
 	{
 		thread_manager->PrintProcesses();
 	}
-	else if (rozkaz == "EX")	// execute
+	else if (rozkaz == "ST")	// step
 	{
 		
 		//thread_manager.CreateProcess("First", 69);
 		//parker.CommandDisplay(planista.FindReadyThread(), *pamiec);
-		parker.ExecuteCommand(planista.FindReadyThread(), *pamiec, komuch, hard_drive);
+		PCB *tmp = planista.FindReadyThread();
+		parker.ExecuteCommand(tmp, *pamiec, komuch, hard_drive);
 		parker.Interface(planista.FindReadyThread(), *pamiec);
 		// 1) zlecam zarzadcy procesow stworzyc proces
 		// 2) zlecam pamieciowcowi wprowadzic program do pamieci (zaladownie stronic danymi)
-		
+		planista.tick_processes();
 	}
 	else if (rozkaz == "C0")
 	{
@@ -152,7 +170,13 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "EV")	// enviroment variable
 	{
-
+		pamiec->PrintOM();
+	}
+	else if (rozkaz == "SM") {
+		komuch->Send(stoi(komendy[1]), "this sucks");
+	}
+	else if (rozkaz == "RM") {
+		//komuch->ShowMessages()
 	}
 	else if (rozkaz == "HE")	// help
 	{

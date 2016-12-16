@@ -14,6 +14,7 @@ ProcesoPriorytet::ProcesoPriorytet()
 		std::vector<PCB*> tmp;
 		KiDispatcher.push_back(tmp);
 	}
+	running = NULL;
 	//system("Pause");
 }
 
@@ -32,28 +33,43 @@ ProcesoPriorytet::~ProcesoPriorytet()
 
 PCB *ProcesoPriorytet::FindReadyThread()
 {
+	updateKiReadySummary();
 	//szukanie zaczynamy od najwyzszej mozliwej kolejki
 	for (int i = NUMBER_OF_PRIORITIES - 1; i >= 0; i--) {
 		if (KiReadySummary[i] == 0) continue; //pomijamy iteracje, bo dana kolejka jest pusta
 		for (auto it : KiDispatcher[i]) {
-			if (it->Process_State == PCB::Proc_Ready) return it; //znaleziono chetny proces - zwracamy go
+			if (it == running) {
+				return it;
+			}
+			if (it->Process_State == PCB::Proc_Ready) {
+				if (running != NULL) {
+					if ((running->Priority + running->PriorityDynamic) < (it->Priority + it->PriorityDynamic)) {
+						//wywlaszczanie
+						cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
+						running->Process_State = PCB::Proc_Ready;
+						running = it;
+						it->Process_State = PCB::Proc_Running;
+						return it;
+					}
+					else continue;
+				}
+				it->Process_State = PCB::Proc_Running;
+				running = it;
+				return it; //znaleziono chetny proces - zwracamy go
+			}
 		}
 	}
 }
-
-void ProcesoPriorytet::ReadyThread(PCB *a)
-{
-	//if (terazWykonywanyProces->priority < a-.Priority) => dajemy a na procesor
-	//else dodajemy a do odpowiedniej kolejki
-}
-
-
 
 void ProcesoPriorytet::addProcess(PCB *a)
 {
 	if (a->nazwa == "IDLE") {
 		a->Priority = 0;
 		a->PriorityDynamic = 0;
+	}
+	else if (!running) {
+		a->Process_State = PCB::Proc_Running;
+		running = a;
 	}
 	int i = a->Priority + a->PriorityDynamic;
 
@@ -98,10 +114,18 @@ void ProcesoPriorytet::throwToBack(PCB *a)
 
 void ProcesoPriorytet::tick_processes()
 {
+	if (running != NULL) {
+		if ((running->ProgramCounter % NUMBER_OF_TIME_QUANTUM + 1) == 0 && running->ProgramCounter != 0) {
+			cout << "Proces " << running->nazwa << " wykorzystal kwant czasu." << endl;
+			//round-robin - przenosimy na koniec kolejki
+			throwToBack(running);
+		}
+	}
 	//zaczynamy od najwyzszych
 	for (int i = NUMBER_OF_PRIORITIES - 1; i > 0; i--) {
 		if (KiReadySummary[i] == 0) continue; //pomijamy ta iteracje petli, bo struktura jest pusta
 		bool leave = false;
+		
 		while (!leave) {
 			leave = true; //domyslnie opuszczamy petle, chyba, ze cos zostanie przeniesione
 			for (auto it : KiDispatcher[i]) {
@@ -136,7 +160,7 @@ void ProcesoPriorytet::printMyBeautifulStructurePlease()
 				std::cout << i << ":" << std::endl;
 				PrintPriority = false;
 			}
-			std::cout << it->nazwa << " (" << it->Priority << "+" << it->PriorityDynamic << ") " << it->Process_State << " IDLE: " << it->idleTime << std::endl;
+			std::cout << it->nazwa << " (" << it->Priority << "+" << it->PriorityDynamic << ") " << it->Process_State << "("<<it->ProgramCounter<<")"<<" IDLE: " << it->idleTime << std::endl;
 		}
 	}
 }

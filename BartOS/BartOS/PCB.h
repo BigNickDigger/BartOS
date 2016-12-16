@@ -12,6 +12,7 @@ class Semafor;
 #include <queue>
 #include "PamiecOperiWirt.h"
 #include "Semafor.h"
+
 struct stronice {
 	bool Valid;
 	short int cell;
@@ -35,7 +36,7 @@ public:
 	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
 	
 	//stronice *pages; UWAGA WBIJAM NA KWADRAT ZE ZMIANAMI
-	stronice pages[48];//uwa¿am ¿e tablica stronic ma rozmiar WMsize = 48
+	stronice pages[16];//uwa¿am ¿e tablica stronic ma rozmiar WMsize = 48
 	//page str[3];
 	typedef enum stan//Stany Procesora
 	{

@@ -9,7 +9,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl)
 	srand(time(NULL));
 	this->Memory = Memory;
 	planista = pl;
-	CreateProcess("IDLE", 0);
+	CreateProcess("IDLE");
 	//PrintProcesses();
 }
 
@@ -19,22 +19,32 @@ CThreadManager::~CThreadManager()
 	AllProc.clear();
 
 }
-void CThreadManager::CreateProcess(char*name, int sopic) {
+int CThreadManager::CreateProcess(char*name) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
 	//Memory->Insert_To_Virtual_Memory(nowy);
 	nowy->Process_State = PCB::Proc_Ready;
 	nowy->PriorityDynamic = 0;
 	nowy->Process_ID = IdentGen; IdentGen++;
-	nowy->Priority = rand() % 6 + 1;
-	nowy->sopic = sopic;
+	nowy->Priority = rand() % 6 + 1;	
 	//	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
-	
 	AllProc.push_back(nowy);
-	
 	planista->addProcess(nowy);
-	
+	return (IdentGen-1);
 }
+int CThreadManager::CreateProcess(char*name, int prior) {
+	 PCB* nowy = new PCB;
+	 nowy->nazwa = name;
+	 //Memory->Insert_To_Virtual_Memory(nowy);
+	 nowy->Process_State = PCB::Proc_Ready;
+	 nowy->PriorityDynamic = 0;
+	 nowy->Process_ID = IdentGen; IdentGen++;
+	 nowy->Priority = prior;
+	 //	Proc_Control_block->pages = new stronice[(sopic / 16) + 1]; #kuba
+	 AllProc.push_back(nowy);
+	 planista->addProcess(nowy);
+	 return (IdentGen - 1);
+ }
 void CThreadManager::RemoveProcess(int id) {
 	printf("Shite\n");
 	if (id == 0) { printf("\nNie mozna usunac procesu IDLE\n"); }
@@ -67,10 +77,6 @@ void CThreadManager::PrintProcesses() {
 			cout << (*it)->nazwa << "\t";
 			cout << getstate((*it)->Process_State) << "\t";
 			cout << (*it)->Priority << "\n";
-			
-			/*printf("%d\t%s\t%s\t%d\n", (*it)->Process_ID,
-				(*it)->nazwa,
-				getstate((*it)->Process_State), (*it)->Priority);*/
 		}
 	}
 	else printf("Cos poszlo nie tak, nie ma procesu IDLE\n");

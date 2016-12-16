@@ -13,7 +13,7 @@ InterPeter::InterPeter()
 	PC = 0;
 	Adr = 0;
 	AdrPREV = 0;
-	prog = "NF plik.txt;WF plik.txt,string Mariusz;DF plik.txt;EN;";
+	//prog = "NF plik.txt;WF plik.txt,string Mariusz;DF plik.txt;EN;";
 		//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";//"MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;";
 }
 
@@ -36,9 +36,9 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	PC = block->ProgramCounter;
 }
 
-void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProcesowa *kom, HardDrive &dysk)
+void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa *kom, HardDrive &dysk)
 {
-	//LoadState(block);
+	LoadState(block);
 
 	string line;
 	string command;
@@ -445,20 +445,20 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt pam, KomunikacjaProc
 	}
 	
 	PC++;
-	//SaveState(block);
+	SaveState(block);
 }
 
-std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt pam)
+std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt &pam)
 {
 	string line;
-	char p;
+	char p='d';
 	int a = adress;
-	
-	if (prog[Adr] == ';')
-		Adr++;
+		if (pam.Get_Char_From_OM(block, a) == ';')
+			a++;
 	do
 	{
-		p = prog[a];//pam.Get_Char_From_OM(block, Adr);
+		p = pam.Get_Char_From_OM(block, a);//Adr -> a
+			//prog[a];//
 		line += p;
 		a++;
 	} while (p != ';');
@@ -468,7 +468,7 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 		AdrPREV = adress;
 		adress = a;
 	}
-		
+	//Adr = a;
 	return line;
 }
 
@@ -482,14 +482,14 @@ void InterPeter::RegisterDisplay()
 	cout << "PC : " << PC << endl;
 }
 
-void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt pam)
+void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt &pam)
 {
 	cout << " Commands" << endl;
 	cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
 	cout << "NEXT : " << LoadCommand(Adr, 1, block, pam) << endl;
 }
 
-void InterPeter::Interface(PCB *block, PamiecOperiWirt pam)
+void InterPeter::Interface(PCB *block, PamiecOperiWirt &pam)
 {
 	RegisterDisplay();
 	cout << "-----------" << endl;
