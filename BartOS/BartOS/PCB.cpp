@@ -11,6 +11,7 @@ PCB::PCB()
 	sopic = 0;
 	for (int i = 0; i < 16; i++) {
 		pages[i].Valid = false;
+		pages[i].cell = -1;
 	}
 	//pages = new stronice[(sopic / 16)+1];
 }

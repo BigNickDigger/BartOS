@@ -192,14 +192,14 @@ void PamiecOperiWirt::PrintVM()
 		return;
 	}
 
-	cout << VM.capacity() << endl;
-	cout << VM.size() << endl;
-	cout << AllProc->capacity() << endl;
-	cout << AllProc->size() << endl;
+	//cout << VM.capacity() << endl;
+	//cout << VM.size() << endl;
+	//cout << AllProc->capacity() << endl;
+	//cout << AllProc->size() << endl;
 
 	int capacity = VM.capacity();
 	int cnt = 1;
-	for (auto it = AllProc->begin(); it != AllProc->end(); it++)//skacz po zawartosci VM
+	for (vector<PCB*>::iterator it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
 		
 //		if (VM[i]->abandon == true)
@@ -233,24 +233,26 @@ void PamiecOperiWirt::Update_Overide(int PCBnumber, int Pagenr)
 
 }
 
-void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> *AllProc)
+void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
 {
 	this->AllProc = AllProc;
 }
 
 int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 {
-	iter = AllProc->begin();
-	int cap = AllProc->capacity();
-	for (int i = 0; i < cap; i++)
+	int cnt = 1;
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		for (int j = 0; j < iter[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+		if (cnt == 1)it++;//przeskocz
+		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
-			if (iter[i]->pages[j].cell == FrameNr)
+			if ((*it)->pages[j].cell == FrameNr)
 			{
-				return i;//search succeeded
+				return cnt;//search succeeded
 			}
+			
 		}
+		cnt++;
 
 	}
 	return -1;//search failed
@@ -258,17 +260,34 @@ int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 
 int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 {
-	iter = AllProc->begin();
-	int cap = AllProc->capacity();
-	for (int i = 0; i < cap; i++)
+	//iter = AllProc.begin();
+	//int cap = AllProc.capacity();
+	//for (int i = 0; i < cap; i++)
+	//{
+	//	for (int j = 0; j < iter[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+	//	{
+	//		if (iter[i]->pages[j].cell == FrameNr)
+	//		{
+	//			return j;//search succeeded
+	//		}
+	//	}
+
+	//}
+	//return -1;//search failed TO JEST STARY KOD, MOZLIWE ZE TEZ DZIALA
+
+	int cnt = 1;
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		for (int j = 0; j < iter[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+		if (cnt == 1)it++;//przeskocz
+		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
-			if (iter[i]->pages[j].cell == FrameNr)
+			if ((*it)->pages[j].cell == FrameNr)
 			{
 				return j;//search succeeded
 			}
+
 		}
+		cnt++;
 
 	}
 	return -1;//search failed

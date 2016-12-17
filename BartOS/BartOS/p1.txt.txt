@@ -1,1 +1,1 @@
-MV A,5;
+MV A,5;MV B,0;MV C,1;AD C,B;SW C,B;DC A;JN 21;EN;

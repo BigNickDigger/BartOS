@@ -60,7 +60,7 @@ public:
 	vector <page*> VM;
 	vector <page*>::iterator VMiter;
 	queue <int> FIFO;
-	vector<PCB*>*AllProc;
+	vector<PCB*> AllProc;
 	vector <PCB*>::iterator iter;
 
 	int IndexforWM;
@@ -83,7 +83,7 @@ public:
 	void PrintOM();
 	void PrintVM();//do wypisania pamieci wirtualnej potrzebna jest lista przechowujaca wszystkie procesy
 	void Update_Overide(int, int);
-	void Set_PCB_Vector(vector<PCB*> *AllProc);
+	void Set_PCB_Vector(vector<PCB*> &AllProc);
 
 };
 
