@@ -8,14 +8,13 @@ class page;
 class page;
 #include <iostream>
 #include <vector>
-#include <queue>
+#include <deque>
 #include "PCB.h"
 
 
 using namespace std;
-//proszê siê nie sugerowac moimi rozwi¹zaniami, tu jeszcze wszystko mo¿e siê zmieniæ
 
-const int framesize = 16;//rozmiar strony
+const int framesize = 16;
 const int OMsize = 128;
 
 class page {
@@ -59,7 +58,7 @@ public:
 	char OM[OMsize];
 	vector <page*> VM;
 	vector <page*>::iterator VMiter;
-	queue <int> FIFO;
+	deque <int> FIFO;
 	vector<PCB*> AllProc;
 	vector <PCB*>::iterator iter;
 

@@ -49,6 +49,24 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 				OM[(blok->pages[j].cell) * 16 + k] = '-';
 		}
 	}
+	////////////////////////////////////////////////////////////////
+	int pom = 0;
+	for (int i = 0; i < 16; i++)//skacz po tablicy stronic dla usuwanego procesu
+	{
+		pom = 0;
+		if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
+		{
+			for (auto it = FIFO.front(); it != FIFO.back(); it++)
+			{
+				if (it == blok->pages[i].cell)
+				{
+					FIFO.erase(FIFO.begin()+pom);
+				}
+				pom++;
+			}
+			
+		}
+	}
 }
 //Dodalem Ci funkcje hehe XD
 // Wez ja wypelnij jakos ladnie
@@ -115,7 +133,7 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 
 	blok->pages[page].Valid = true;
 	blok->pages[page].cell = FrameNr;
-	FIFO.push(FrameNr);
+	FIFO.push_back(FrameNr);
 	if (ID_of_a_process_which_frame_is_being_overriden != -1 && Nr_of_the_page != -1)
 		Update_Overide(ID_of_a_process_which_frame_is_being_overriden, Nr_of_the_page);//w pcb procesu, który by³ w ramce przed jej nadpisaniem, ustaw pages list, zeby juz nie wskazywa na ta ramke 
 }
@@ -130,7 +148,7 @@ int PamiecOperiWirt::Get_Free_Frame_Number()
 		}
 	}//bo jak ich nie ma to realizuj wyrzucanie z OM wg FIFO = zwróc index ramki która by³a najd³u¿ej
 	int x = FIFO.front();
-	FIFO.pop();
+	FIFO.pop_front();
 	return x;
 
 }
@@ -172,8 +190,11 @@ void PamiecOperiWirt::PrintVM()
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
 		if (cnt == 1)it++;
-		if (VM[cnt-1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
+		if (VM[cnt - 1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
+		{
+			cnt++;
 			continue;
+		}
 		else
 		if ((*it)->Process_ID == 0)
 		{

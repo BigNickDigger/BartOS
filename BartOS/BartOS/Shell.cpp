@@ -180,6 +180,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	else if (rozkaz == "HE")	// help
 	{
 		cout << "No hope left *noose tightening* " << endl;
+		pamiec.DeleteProcess(thread_manager->gethandle(2));
+		thread_manager->RemoveProcess(2);
 	}
 	else
 	{
