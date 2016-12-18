@@ -8,19 +8,18 @@ class page;
 class page;
 #include <iostream>
 #include <vector>
-#include <queue>
+#include <deque>
 #include "PCB.h"
 
 
 using namespace std;
-//proszê siê nie sugerowac moimi rozwi¹zaniami, tu jeszcze wszystko mo¿e siê zmieniæ
 
-const int framesize = 16;//rozmiar strony
-const int OMsize = 128;
+const int framesize = 16;
+const int OMsize = 64;
 
 class page {
 public:
-	char tab[framesize];//framesize = 16
+	char tab[framesize];
 	int nr;
 	bool abandon;
 	page()
@@ -28,7 +27,7 @@ public:
 		for (int i = 0; i < framesize; i++)
 		{
 			tab[i] = '-';
-			abandon = false;
+			abandon = false;//nowe strony nie s¹ stronami zombie
 		}
 	}
 
@@ -59,8 +58,8 @@ public:
 	char OM[OMsize];
 	vector <page*> VM;
 	vector <page*>::iterator VMiter;
-	queue <int> FIFO;
-	vector<PCB*>*AllProc;
+	deque <int> FIFO;
+	vector<PCB*> AllProc;
 	vector <PCB*>::iterator iter;
 
 	int IndexforWM;
@@ -83,7 +82,7 @@ public:
 	void PrintOM();
 	void PrintVM();//do wypisania pamieci wirtualnej potrzebna jest lista przechowujaca wszystkie procesy
 	void Update_Overide(int, int);
-	void Set_PCB_Vector(vector<PCB*> *AllProc);
+	void Set_PCB_Vector(vector<PCB*> &AllProc);
 
 };
 
