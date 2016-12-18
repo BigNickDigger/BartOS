@@ -437,7 +437,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	else if (command == "EN") //BUT IN THE END
 	{
 		cout << "but in the EN, it doesn't even matter" << endl;
-		//block->Process_State = PCB::Proc_Terminated;
+		block->Process_State = PCB::Proc_Terminated;
 		//return to BarKar
 	}
 	
@@ -481,8 +481,12 @@ void InterPeter::RegisterDisplay()
 void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt &pam)
 {
 	cout << " Commands" << endl;
+	cout << block->sopic << endl;
 	//cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
-	cout << "NEXT : " << LoadCommand(PC, 1, block, pam) << endl;
+	if (PC < block->sopic)
+	{
+		cout << "NEXT : " << LoadCommand(PC, 1, block, pam) << endl;
+	}
 	
 
 }
