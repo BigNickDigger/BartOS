@@ -56,11 +56,12 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 		pom = 0;
 		if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
 		{
-			for (auto it = FIFO.front(); it != FIFO.back(); it++)
+			for (int j = 0; j < OMsize / 16; j++)//wykonaj siê o iloœæ ramek w OM
 			{
-				if (it == blok->pages[i].cell)
+				if (FIFO[j] == blok->pages[i].cell)
 				{
 					FIFO.erase(FIFO.begin()+pom);
+					break; // dla ka¿dego i jest tylko jedna taka operacja, mo¿na œmia³o break
 				}
 				pom++;
 			}
