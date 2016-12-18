@@ -149,11 +149,11 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "PS") // process state
 	{
-		//thread_manager->PrintProcessState(stoi(komendy[1]),);
+		thread_manager->PrintProcessState(stoi(komendy[1]),true);
 	}
 	else if (rozkaz == "RP") // remove process
 	{
-		thread_manager->setstate(stoi(komendy[1]), PCB::Proc_Terminated);
+		//thread_manager->setstate(stoi(komendy[1]), PCB::Proc_Terminated);
 		thread_manager->RemoveProcess(stoi(komendy[1]));
 	}
 	else if (rozkaz == "VT")	// view threads
