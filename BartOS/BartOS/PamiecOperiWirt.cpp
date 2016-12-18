@@ -11,7 +11,6 @@ PamiecOperiWirt::PamiecOperiWirt()
 	{
 		OM[i] = '-';
 	}
-
 }
 
 PamiecOperiWirt::~PamiecOperiWirt()
@@ -37,10 +36,10 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 	while (i != blok->Process_ID)
 	{
 		VMiter++; i++;
-	}
+	}VMiter--;
 	VM.erase(VMiter);
 	VM.insert(VMiter, new page);
-	VM[i]->abandon = true;
+	VM[i-1]->abandon = true;
 	/////////////////////////////////////////////////////////////////
 	for (int j = 0; j < blok->sopic / framesize + 1; j++)
 	{
@@ -55,23 +54,16 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 // Wez ja wypelnij jakos ladnie
 stronice PamiecOperiWirt::MemRequest()
 {
-
-
-
-
 	int ErrCode;
 	if (true)//Jest wolne miejsce dla alokacji pliku w 
 		throw ErrCode = 1; //podmien true na wypelniona stronice
 	else //Nie ma miejsca na plik
 		throw ErrCode = 0;
-
 }
 
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab,int sopic)
 {
-	//cout << disc_tab << endl;
-	//int j = 0;
 	blok->sopic = sopic;
 	if (sopic == -1) { blok->Process_State = PCB::Proc_New; return; }
 	int number_of_pages = WhichPage(blok->sopic) + 1;
@@ -90,28 +82,6 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab,int sop
 		}
 
 	}
-
-
-	/*for (int i = 0; i < number_of_pages-1; i++)
-	{
-		
-		for (int j=0; j < framesize; j++)
-		{
-			kod[i].tab[j] = disc_tab[pom];
-			pom++;
-		}
-		if (i + 1 == number_of_pages)//wejdz tu jesli ostatnia strona, przepisz i wyjdz z funkcji
-		{
-			for (int k = 0; k < WhatOffset(blok->sopic); k++)
-			{
-				kod[i].tab[k] = disc_tab[pom];
-				pom++;
-			}
-		}
-		
-	}
-	
-	VM.push_back(kod);*/
 }
 
 char PamiecOperiWirt::Get_Char_From_OM(PCB *blok, int LogicAdr)
@@ -199,12 +169,12 @@ void PamiecOperiWirt::PrintVM()
 
 	int capacity = VM.capacity();
 	int cnt = 1;
-	for (vector<PCB*>::iterator it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		
-//		if (VM[i]->abandon == true)
-	//		continue;
-		//else
+		if (cnt == 1)it++;
+		if (VM[cnt-1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
+			continue;
+		else
 		if ((*it)->Process_ID == 0)
 		{
 			continue;
@@ -214,7 +184,6 @@ void PamiecOperiWirt::PrintVM()
 			for (int i = 0; i < (*it)->sopic/16+1;i++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
 			{
 				VM[cnt-1][i].PrintPage();
-				//VM[i][j].PrintPage();
 			}
 			cout << endl;
 			cnt++;
@@ -227,6 +196,7 @@ void PamiecOperiWirt::PrintVM()
 void PamiecOperiWirt::Update_Overide(int PCBnumber, int Pagenr)
 {
 	//vector <PCB*>::iterator iter;
+	iter = this->AllProc.begin();
 	iter[PCBnumber]->pages[Pagenr].Valid = false;
 	//AllPCBs[PCBnumber]->pages[Pagenr].Valid = false;
 
@@ -278,7 +248,7 @@ int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 	int cnt = 1;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		if (cnt == 1)it++;//przeskocz
+		if (cnt == 1)it++;//przeskocz idle
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
 			if ((*it)->pages[j].cell == FrameNr)

@@ -20,7 +20,7 @@ const int OMsize = 128;
 
 class page {
 public:
-	char tab[framesize];//framesize = 16
+	char tab[framesize];
 	int nr;
 	bool abandon;
 	page()
@@ -28,7 +28,7 @@ public:
 		for (int i = 0; i < framesize; i++)
 		{
 			tab[i] = '-';
-			abandon = false;
+			abandon = false;//nowe strony nie s¹ stronami zombie
 		}
 	}
 
