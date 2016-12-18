@@ -43,19 +43,15 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	string line;
 	string command;
 
-	line = LoadCommand(Adr, 0, block, pam);
+	line = LoadCommand(PC, 0, block, pam);
 	
 	command += line.at(0);
 	command += line.at(1);
-
-
 
 	//MATHz
 
 	if (command == "AD")
 	{
-		cout << "#" << line.at(3) << endl;
-		cout << "#" << line.at(5) << endl;
 		switch (line.at(3))
 		{
 		case 'A':
@@ -99,7 +95,6 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 				break;
 
 			case 'B':
-				cout << "arf" << endl;
 				regC += regB;
 				break;
 			default:
@@ -255,13 +250,13 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 
 	else if (command == "JP") // jump
 	{
-		Adr = std::stoi(line.substr(3));
+		PC = std::stoi(line.substr(3));
 	}
 	else if (command == "JN") //jump not zero
 	{
 		if (regA != 0)
 		{
-			Adr = std::stoi(line.substr(3));
+			PC = std::stoi(line.substr(3));
 		}
 
 	}
@@ -414,6 +409,8 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	else if (command == "XR") //read
 	{
 		kom->Receive();
+		//  if fail
+		//PC-=line.length();
 	}
 	else if (command == "XS") //send
 	{
@@ -444,21 +441,21 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		//return to BarKar
 	}
 	
-	PC++;
+	//PC++;
 	SaveState(block);
 }
 
 std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt &pam)
 {
 	string line;
-	char p='d';
+	char p;
 	int a = adress;
-		if (pam.Get_Char_From_OM(block, a) == ';')
+	
+	if (pam.Get_Char_From_OM(block, a) == ';')
 			a++;
 	do
 	{
-		p = pam.Get_Char_From_OM(block, a);//Adr -> a
-			//prog[a];//
+		p = pam.Get_Char_From_OM(block, a);
 		line += p;
 		a++;
 	} while (p != ';');
@@ -472,7 +469,6 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 	return line;
 }
 
-
 void InterPeter::RegisterDisplay()
 {
 	cout << " Register State " << endl;
@@ -485,13 +481,17 @@ void InterPeter::RegisterDisplay()
 void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt &pam)
 {
 	cout << " Commands" << endl;
-	cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
-	cout << "NEXT : " << LoadCommand(Adr, 1, block, pam) << endl;
+	//cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
+	cout << "NEXT : " << LoadCommand(PC, 1, block, pam) << endl;
+	
+
 }
 
 void InterPeter::Interface(PCB *block, PamiecOperiWirt &pam)
 {
+	LoadState(block);
 	RegisterDisplay();
 	cout << "-----------" << endl;
+	//cout << "PROC : " << block->Process_ID << endl;
 	CommandDisplay(block, pam);
 }

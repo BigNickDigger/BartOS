@@ -16,7 +16,6 @@ class InterPeter
 	int PC;
 	int Adr;
 	int AdrPREV;
-	string prog;
 
 
 public:
@@ -26,6 +25,7 @@ public:
 	void LoadState(PCB* block);
 	void ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa * kom, HardDrive &dysk);
 	std::string LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt &pam);
+	std::string LoadCommand(short int &adress, int f, PCB *block, PamiecOperiWirt &pam);
 	void Interface(PCB *block, PamiecOperiWirt &pam);
 	void RegisterDisplay();
 	void CommandDisplay(PCB *block, PamiecOperiWirt &pam);
