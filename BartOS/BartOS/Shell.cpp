@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Shell.h"
 
+
 #include <vector>
 #include <iostream>
 #include <string>
@@ -20,7 +21,7 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	parker = InterPeter();
 	planista = ProcesoPriorytet();*/
 	thread_manager = new CThreadManager(&pamiec, &planista);
-	pamiec.Set_PCB_Vector(&thread_manager->AllProc);
+	pamiec.Set_PCB_Vector(thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc);
 	hard_drive.create_file("p1");
 	hard_drive.write_to_file_from_file("p1", "p1.txt.txt");
@@ -43,7 +44,7 @@ void PokazKursor(string znak_kursora=">>> ")
 }
 vector<string> Shell::ZczytajRozkaz()
 {
-	
+	pamiec.Set_PCB_Vector(thread_manager->AllProc);
 	string linia;
 	string rozkaz;
 	vector<string> komendy;
@@ -179,6 +180,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	else if (rozkaz == "HE")	// help
 	{
 		cout << "No hope left *noose tightening* " << endl;
+		pamiec.DeleteProcess(thread_manager->gethandle(2));
+		thread_manager->RemoveProcess(2);
 	}
 	else
 	{
@@ -189,6 +192,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
+
+
 	vector<string>komendy;
 	
 	vector<vector<int*>>v;
@@ -228,7 +233,6 @@ int main()
 			break;
 		}
 		komendy.clear();
-		
 	}
 	cout << "Shutting down...";
 	
