@@ -15,7 +15,7 @@ class page;
 using namespace std;
 
 const int framesize = 16;
-const int OMsize = 128;
+const int OMsize = 64;
 
 class page {
 public:
