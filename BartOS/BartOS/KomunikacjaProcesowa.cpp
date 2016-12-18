@@ -50,6 +50,7 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 			if ((*ElementAt)->Process_State == PCB::Proc_Running) 
 			{
 				(*ElementAt)->Process_State == PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
+				cout << "Proces terminates: nie znaleziono odbiorcy!" << endl;
 			}
 		}
 	}
@@ -76,7 +77,7 @@ void KomunikacjaProcesowa::Receive()
 					string x;
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
-					//FUNKCJAKUBY do Pamieci
+					//FUNKCJAKUBY do Pamieci !!!!!! 
 				}
 			}
 		}
@@ -109,25 +110,27 @@ void KomunikacjaProcesowa::Receive()
 void KomunikacjaProcesowa::ShowMessages(int id)
 {
 	bool x=0;
-	int counter = 0;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
-		if (ElementAt[counter]->Process_ID == id)
+		if ((*ElementAt)->Process_ID == id)
 		{
 			x = 1;
-			if (ElementAt[counter]->messages.empty())
+			if ((*ElementAt)->messages.empty())
 						{
 							cout << "IPC: Brak wiadomosci w kolejce do procesu o id=" << id << endl;
 							return;
 						}
 			else
 			{
-				//for (int i = 0;i<)
+				string wiad;
+				queue<string> pomoc;
+				pomoc = (*ElementAt)->messages;
+				while (pomoc.empty() != 0)
+				{
+					wiad = pomoc.front();
+					pomoc.pop();
+				}
 			}
-		}
-		else
-		{
-			counter++;
 		}
 	}
 	if (x == 0)

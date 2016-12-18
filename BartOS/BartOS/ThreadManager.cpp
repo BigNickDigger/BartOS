@@ -51,7 +51,7 @@ void CThreadManager::RemoveProcess(int id) {
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id && (*it)->Process_State == PCB::Proc_Terminated) {
 		
-			//Memory->DeleteProcess((*it)); ZEPSUTE
+			//Memory->DeleteProcess((*it));// ZEPSUTE
 			planista->removeProcess(*it);
 			AllProc.erase(it); 
 			
@@ -60,11 +60,14 @@ void CThreadManager::RemoveProcess(int id) {
 	}
 }
 void CThreadManager::RemoveProcess(int id, bool flag) {
-	auto it = AllProc.begin();
+	
+	gethandle(id)->Process_State = PCB::Proc_Terminated;
+	RemoveProcess(id);
+/*	auto it = AllProc.begin();
 	(*it)->Process_State = PCB::Proc_Terminated;
 	planista->removeProcess(*it);
 	Memory->DeleteProcess((*it));
-	AllProc.erase(it);
+	AllProc.erase(it);*/
 
 }
 
