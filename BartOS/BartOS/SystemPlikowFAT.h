@@ -29,7 +29,7 @@ private:
 public:
 	HardDrive();											// konstruktor tworzacy dysk skladajacy sie z 64 sektorow wypelniony 0		
 	void create_file(string name);							// metoda tworzaca plik
-	void write_to_file(string name, string content);			// metoda uzupelniajaca plik danymi z klawiatury 
+	void write_to_file(string name, string content);		// metoda uzupelniajaca plik danymi z klawiatury 
 	void write_to_file_from_file(string name, string path);	// metoda przepisujaca dane z pliku znajdujacego sie na lokalnym dysku do dysku symulowanego
 	void delete_file(string name);							// metoda usuwajaca plik	
 	int file_size(string name);								// metoda zwracajaca rozmiar pliku
