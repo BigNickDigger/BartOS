@@ -185,7 +185,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		string wiadomosc;
 		cout << "wpisz tresc wiadomosci"<<endl;
-		cin >> wiadomosc;
+		getline(cin, wiadomosc);
 		komuch->Send(stoi(komendy[1]), wiadomosc);
 	}
 	else if (rozkaz == "XR") 

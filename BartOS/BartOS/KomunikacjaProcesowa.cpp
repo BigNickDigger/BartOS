@@ -31,9 +31,11 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 					id = (*ElementAt)->Process_ID;
 				}
 			}
+			ElementAt--;
 			string sid = to_string(id);
 			x = 1;
 			string S;
+			cout << sid.length() << endl;;
 			S +=sid.length()+""+to_string(id) + " " + tresc; // nadanie wiadomosci 
 			(*ElementAt)->messages.push(S);
 			break;
@@ -77,6 +79,7 @@ void KomunikacjaProcesowa::Receive()
 					string x;
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
+					cout << x << endl;
 					//FUNKCJAKUBY do Pamieci !!!!!! 
 				}
 			}
@@ -109,6 +112,7 @@ void KomunikacjaProcesowa::Receive()
 
 void KomunikacjaProcesowa::ShowMessages(int id)
 {
+	cout <<"ID: "<< id << endl;
 	bool x=0;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
@@ -122,12 +126,16 @@ void KomunikacjaProcesowa::ShowMessages(int id)
 						}
 			else
 			{
+				int id;
 				string wiad;
 				queue<string> pomoc;
+				cout << (*ElementAt)->messages.size() << endl;;
 				pomoc = (*ElementAt)->messages;
 				while (pomoc.empty() != 0)
 				{
 					wiad = pomoc.front();
+					id = stoi(wiad.substr(1, wiad[0]));
+					cout << "Wiadomosc od " << id << ": " << wiad.substr(wiad[0], wiad.length() - wiad[0]);
 					pomoc.pop();
 				}
 			}
