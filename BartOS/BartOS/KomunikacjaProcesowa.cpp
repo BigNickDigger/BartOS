@@ -22,16 +22,15 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 	int id;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
+		if ((*ElementAt)->Process_State == PCB::Proc_Running)
+		{
+			id = (*ElementAt)->Process_ID;
+		}
+	}
+	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	{
 		if ((*ElementAt)->Process_ID == Odbiorca)
 		{
-			for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
-			{
-				if ((*ElementAt)->Process_State == PCB::Proc_Running)
-				{
-					id = (*ElementAt)->Process_ID;
-				}
-			}
-			ElementAt--;
 			string sid = to_string(id);
 			x = 1;
 			string S;
