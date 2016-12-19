@@ -6,10 +6,13 @@
 #include "ProcesoPriorytet.h"
 #include "InterPeter.h"
 #include "ProcesoPriorytet.h"
-#include <string>
+//#include "Intro.h"
 #include <iostream>
 #include <string>
 #include <vector>
+#include <direct.h>
+#include <stdio.h>
+#include <conio.h>
 
 class Shell
 {

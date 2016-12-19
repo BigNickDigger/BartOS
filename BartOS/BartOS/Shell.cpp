@@ -2,12 +2,7 @@
 #include "Shell.h"
 
 
-#include <vector>
-#include <iostream>
-#include <string>
-#include <direct.h>
-#include <stdio.h>
-#include <conio.h>
+
 
 using namespace std;
 
@@ -204,6 +199,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 			//cout << "Dodano proces" << endl;
 			int k = thread_manager->CreateProcess(komendy[2], stoi(komendy[1]));
 			pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file(komendy[2]), hard_drive.file_size(komendy[2]));
+		
 		}
 		else
 		{
@@ -320,7 +316,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
-
+	//Intro *intro = new Intro();
+	//intro->start();
 
 	vector<string>komendy;
 	
