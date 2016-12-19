@@ -24,7 +24,13 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	pamiec.Set_PCB_Vector(thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc, &pamiec);
 	hard_drive.create_file("p1");
-	hard_drive.write_to_file_from_file("p1", "p1.txt.txt");
+	hard_drive.write_to_file_from_file("p1", "p1.txt");
+	hard_drive.create_file("t2");
+	hard_drive.write_to_file_from_file("t2", "t2.txt");
+	hard_drive.create_file("gab");
+	hard_drive.write_to_file_from_file("gab", "procesy.txt");
+	hard_drive.create_file("droc2");
+	hard_drive.write_to_file_from_file("droc2", "procesy2.txt");
 }
 
 
@@ -143,9 +149,9 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	//////////////////////////////////////////////// THREAD_MANAGER //////////////////////////////////////////////
 	else if (rozkaz == "CP")	// create process
 	{
-		cout << "Dodano proces" << endl;
-		int k = thread_manager->CreateProcess("TEST", stoi(komendy[1]));
-		pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file("p1"), hard_drive.file_size("p1"));
+		//cout << "Dodano proces" << endl;
+		int k = thread_manager->CreateProcess(komendy[2], stoi(komendy[1]));
+		pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file(komendy[2]), hard_drive.file_size(komendy[2]));
 	}
 	else if (rozkaz == "PS") // process state
 	{
