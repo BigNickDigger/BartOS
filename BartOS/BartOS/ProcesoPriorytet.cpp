@@ -1,4 +1,4 @@
-c//amen
+//amen
 
 #include "stdafx.h"
 #include "ProcesoPriorytet.h"
