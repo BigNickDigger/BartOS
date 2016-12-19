@@ -94,23 +94,59 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "CF")	// create file
 	{
-		hard_drive.create_file(komendy[1]);
+		if (komendy.size() == 2)
+		{
+			hard_drive.create_file(komendy[1]);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "DF")	 // delete file
 	{
-		hard_drive.delete_file(komendy[1]);
+		if (komendy.size() == 2)
+		{
+			hard_drive.delete_file(komendy[1]);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
+
 	}
 	else if (rozkaz == "OF")	// open file
 	{
-		hard_drive.open_file(komendy[1]);
+		if (komendy.size() == 2)
+		{
+			hard_drive.open_file(komendy[1]);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "WF")	// write to file
 	{	
-		hard_drive.write_to_file(komendy[1], komendy[2]);
+		if (komendy.size() == 3)
+		{
+			hard_drive.write_to_file(komendy[1], komendy[2]);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "VS")	// view sector 
 	{
-		hard_drive.view_sector(stoi(komendy[1]));
+		if (komendy.size() == 2)
+		{
+			hard_drive.view_sector(stoi(komendy[1]));
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "VH")	// view hard drive
 	{
@@ -118,11 +154,25 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	}
 	else if (rozkaz == "FS")	// file size
 	{
-		hard_drive.file_size(komendy[1]);
+		if (komendy.size() == 2)
+		{
+			hard_drive.file_size(komendy[1]);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "FP")	// file propertise
 	{
-		hard_drive.view_file_propertise(komendy[1]);
+		if (komendy.size() == 2)
+		{
+			hard_drive.view_file_propertise(komendy[1]);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "VS")	// view free space
 	{
@@ -149,18 +199,41 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	//////////////////////////////////////////////// THREAD_MANAGER //////////////////////////////////////////////
 	else if (rozkaz == "CP")	// create process
 	{
-		//cout << "Dodano proces" << endl;
-		int k = thread_manager->CreateProcess(komendy[2], stoi(komendy[1]));
-		pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file(komendy[2]), hard_drive.file_size(komendy[2]));
+		if (komendy.size()==3)
+		{
+			//cout << "Dodano proces" << endl;
+			int k = thread_manager->CreateProcess(komendy[2], stoi(komendy[1]));
+			pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file(komendy[2]), hard_drive.file_size(komendy[2]));
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
+		
 	}
 	else if (rozkaz == "PS") // process state
 	{
+		if (komendy.size() == 2)
+		{
 		thread_manager->PrintProcessState(stoi(komendy[1]),true);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "RP") // remove process
 	{
-		//thread_manager->setstate(stoi(komendy[1]), PCB::Proc_Terminated);
-		thread_manager->RemoveProcess(stoi(komendy[1]));
+		if (komendy.size() == 2)
+		{
+			//thread_manager->setstate(stoi(komendy[1]), PCB::Proc_Terminated);
+			thread_manager->RemoveProcess(stoi(komendy[1]));
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
+		
 	}
 	else if (rozkaz == "VT")	// view threads
 	{
@@ -184,15 +257,30 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	//////////////////////////////////////////////// KOMUNIKACJA //////////////////////////////////////////////
 	else if (rozkaz == "SM") // show messages
 	{
-		komuch->ShowMessages(stoi(komendy[1]));
-		
+		if (komendy.size() == 2)
+		{
+			komuch->ShowMessages(stoi(komendy[1]));
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "XS")  // wyslij wiadomosc 
 	{
-		string wiadomosc;
-		cout << "wpisz tresc wiadomosci"<<endl;
-		getline(cin, wiadomosc);
-		komuch->Send(stoi(komendy[1]), wiadomosc);
+
+		if (komendy.size() == 2)
+		{
+			thread_manager->PrintProcessState(stoi(komendy[1]), true);
+			string wiadomosc;
+			cout << "wpisz tresc wiadomosci"<<endl;
+			getline(cin, wiadomosc);
+			komuch->Send(stoi(komendy[1]), wiadomosc);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else if (rozkaz == "XR") 
 	{
@@ -213,8 +301,15 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	else if (rozkaz == "DP")	// help
 	{
 		//cout << "No hope left *noose tightening* " << endl;
-		pamiec.DeleteProcess(thread_manager->gethandle(stoi(komendy[1])));
-		thread_manager->RemoveProcess(stoi(komendy[1]),true);
+		if (komendy.size() == 2)
+		{
+			pamiec.DeleteProcess(thread_manager->gethandle(stoi(komendy[1])));
+			thread_manager->RemoveProcess(stoi(komendy[1]),true);
+		}
+		else
+		{
+			cout << "brak argumentow" << endl;
+		}
 	}
 	else
 	{
@@ -229,34 +324,8 @@ int main()
 
 	vector<string>komendy;
 	
-	vector<vector<int*>>v;
-	int a = 10;
-
-	for (int i = 0; i < 3;i++)
-	{
-		vector <int*> z;
-		v.push_back(z);
-		for (int j = 0; j < 3; j++)
-		{
-			v[i].push_back(&a);
-			
-		}
-	}
-
-	for (int i = 0; i < 3;i++)
-	{
-		for (auto j : v[i])
-		{
-			cout << *j << " " << j << endl;
-		}
-	}
-
 
 	Shell *shell = new Shell();
-	/*shell->thread_manager->CreateProcess("IDLE", 13);
-	shell->thread_manager->AllProc[0]->Priority = 0;
-	shell->thread_manager->AllProc[0]->Process_State = PCB::Proc_Ready;
-	shell->planista.addProcess(shell->thread_manager->gethandle(0));*/
 	while (1)
 	{
 		
