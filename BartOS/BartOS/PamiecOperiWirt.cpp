@@ -181,6 +181,7 @@ void PamiecOperiWirt::save_message(string message)
 			if ((*it)->Process_State == PCB::Proc_Running)
 			{
 				(*it)->memory_messages.push_back(FrameNr);//wrzuc do pcb
+				FIFO.push_back(FrameNr);
 			}
 		}
 
@@ -241,6 +242,7 @@ int PamiecOperiWirt::Get_Free_Frame_Number()
 			return i / 16;//zwroc index pierwszej pustej ramki jeœli puste w ogóle s¹
 		}
 	}//bo jak ich nie ma to realizuj wyrzucanie z OM wg FIFO = zwróc index ramki która by³a najd³u¿ej
+
 	int x = FIFO.front();
 	FIFO.pop_front();
 	return x;
