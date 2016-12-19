@@ -206,7 +206,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 		PCB *tmp = planista.FindReadyThread();
 		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive);
-		parker.Interface(planista.FindReadyThread(), pamiec);
+		parker.Interface(tmp, pamiec);
 
 		planista.tick_processes();
 	}
