@@ -17,17 +17,17 @@ PamiecOperiWirt::PamiecOperiWirt()
 	Beep(277, 150);
 	Beep(247, 600);*/
 
-	/*Beep(207.652, 750);
-	Beep(311.127, 750);
-	Beep(466.164, 250);
-	Beep(415.305, 500);
+	/*Beep(207.652, 700);
+	Beep(311.127, 250);
+	Beep(466.164, 500);
+	Beep(415.305, 750);
 	Beep(622.254, 500);
-	Beep(466.164, 1000);*/
+	Beep(466.164, 900);
 
-	/*Beep(830.609, 270);
+	Beep(830.609, 270);
 	Beep(622.254, 270);
 	Beep(415.305, 270);
-	Beep(466.164, 405);*/
+	Beep(466.164, 400);*/
 
 	OM_Next_Frame_Victim = 0;
 	IndexforWM = 0;
@@ -35,25 +35,6 @@ PamiecOperiWirt::PamiecOperiWirt()
 	{
 		OM[i] = '-';
 	}
-
-	/*cout << "                                                         " << endl;
-	cout << "          _                           _                        " << endl;
-	cout << "         \ /                         \ /                        " << endl;
-	cout << "          \\                         //                     " << endl;
-	cout << "           \\        ______        \//                             " << endl;
-	cout << "            \\ /                    /                       " << endl;
-	cout << "             \     {@}   ||            \                  " << endl;
-	cout << "             /         /  \          \                    " << endl;
-	cout << "            /          \__/           \                       " << endl;
-	cout << "           |      |__#__#__#__#__|     |                                   " << endl;
-	cout << "           |     <  __ __ __ __ __>    |                                    " << endl;
-	cout << "         |  \     |##|##|##|##|##|    /                                   " << endl;
-	cout << "             \                       /                     " << endl;
-	cout << "              \                     /                      " << endl;
-	cout << "               \                   /                        " << endl;
-	cout << "                \_________________/                                          " << endl;*/
-
-
 }
 
 PamiecOperiWirt::~PamiecOperiWirt()
@@ -163,6 +144,10 @@ void PamiecOperiWirt::save_message(string message)
 	for (int i = 0; i < message.length() / framesize + 1; i++)// dla 14 = 1 obieg, dla 20 = 2 obiegi
 	{
 		short FrameNr = Get_Free_Frame_Number();
+		int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
+		int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);// 4 linijki naprawiajace nadpisywanie innym programom tablice stronic
+		if (ID_of_a_process_which_frame_is_being_overriden != -1 && Nr_of_the_page != -1)
+			Update_Overide(ID_of_a_process_which_frame_is_being_overriden, Nr_of_the_page);
 
 		for (int j = 0; j < framesize; j++)//pomocniczy for czyszcz¹cy ramke przed jej wypelnieniem
 		{
@@ -172,7 +157,7 @@ void PamiecOperiWirt::save_message(string message)
 		for (int j = 0; j < framesize; j++)
 		{
 			OM[(FrameNr * framesize) + j] = message[k];//wpisz wiadomosc do pamieci
-			if (k == message.length())return;
+			if (k == message.length()){break;}
 			k++;
 		}
 
@@ -185,15 +170,7 @@ void PamiecOperiWirt::save_message(string message)
 			}
 		}
 
-		int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
-		int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);// 4 linijki naprawiajace nadpisywanie innym programom tablice stronic
-		if (ID_of_a_process_which_frame_is_being_overriden != -1 && Nr_of_the_page != -1)
-			Update_Overide(ID_of_a_process_which_frame_is_being_overriden, Nr_of_the_page);
-
 	}
-
-
-
 
 }
 
