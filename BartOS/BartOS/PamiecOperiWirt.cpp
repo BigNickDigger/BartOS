@@ -116,7 +116,7 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 	{
 		for (int j = 0; j < framesize; j++)
 		{
-			OM[((blok->memory_messages[i] - 1) * 16) + j] = '-';
+			OM[((blok->memory_messages[i]) * 16) + j] = '-';
 		}
 	}
 }
@@ -166,7 +166,7 @@ void PamiecOperiWirt::save_message(string message)
 
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
 	{
-		if ((*it)->Process_ID == PCB::Proc_Running)
+		if ((*it)->Process_State == PCB::Proc_Running)
 		{
 			(*it)->memory_messages.push_back(FrameNr);
 		}

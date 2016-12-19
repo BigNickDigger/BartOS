@@ -4,9 +4,10 @@
 
 using namespace std;
 
-KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
+KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc, PamiecOperiWirt *pamiec)
 {
 	AllProc = AllProcc;  // wskaznik na wszystkie procki
+	Kpamiec = pamiec;
 }
 
 
@@ -80,7 +81,7 @@ void KomunikacjaProcesowa::Receive()
 						x = (*ElementAt)->messages.front();
 						(*ElementAt)->messages.pop();
 						cout << "ODEBRANO: " << x << endl;
-						//FUNKCJAKUBY do Pamieci !!!!!! 
+						Kpamiec->save_message(x);
 					}
 				}
 				else
@@ -90,7 +91,7 @@ void KomunikacjaProcesowa::Receive()
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
 					cout << "ODEBRANO: " << x << endl;
-					//FUNKCJAKUBY do Pamieci !!!!!! 
+					Kpamiec->save_message(x);
 				}
 			}
 		}
