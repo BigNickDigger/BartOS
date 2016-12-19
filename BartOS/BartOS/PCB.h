@@ -32,13 +32,12 @@ public:
 	int RegA, RegB, RegC, RegD;
 	int sopic,//size of program in chars
 		idleTime;
-	int sleep; //potrzebne do wznowienia odbioru.
 
 	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
-	
-	//stronice *pages; UWAGA WBIJAM NA KWADRAT ZE ZMIANAMI
+
+						//stronice *pages; UWAGA WBIJAM NA KWADRAT ZE ZMIANAMI
 	stronice pages[16];//uwa¿am ¿e tablica stronic ma rozmiar WMsize = 48
-	//page str[3];
+					   //page str[3];
 	typedef enum stan//Stany Procesora
 	{
 		Proc_New, Proc_Waiting, Proc_Ready, Proc_Terminated, Proc_Erroneous, Proc_Running
@@ -46,7 +45,7 @@ public:
 	std::queue<std::string>messages;
 	std::vector<PCB*>::iterator ElementAt;
 	Semafor *sem;
-	
+	std::vector <int> memory_messages;
 };
 
 #endif // !PCB_H
