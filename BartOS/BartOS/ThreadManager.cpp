@@ -19,7 +19,7 @@ CThreadManager::~CThreadManager()
 	AllProc.clear();
 
 }
-int CThreadManager::CreateProcess(char*name) {
+int CThreadManager::CreateProcess(string name) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
 	nowy->sem->AllProc = &AllProc;
@@ -33,7 +33,7 @@ int CThreadManager::CreateProcess(char*name) {
 	planista->addProcess(nowy);
 	return (IdentGen-1);
 }
-int CThreadManager::CreateProcess(char*name, int prior) {
+int CThreadManager::CreateProcess(string name, int prior) {
 	 PCB* nowy = new PCB;
 	 nowy->nazwa = name;
 	 nowy->sem->AllProc = &AllProc;
