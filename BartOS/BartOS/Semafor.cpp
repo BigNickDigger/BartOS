@@ -39,7 +39,7 @@ void Semafor::Signal()
 	if (SValue <= 0)
 	{
 		cout << "Semafor: Zmieniam stan procesu "<<KPS.front()<<" na gotowy"<<endl;
-		KPS.front(); // wznawiam pierwszy oczekuj¹cy 
+		//KPS.front(); // wznawiam pierwszy oczekuj¹cy 
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
 			if ((*ElementAt)->Process_ID == KPS.front())

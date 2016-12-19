@@ -22,6 +22,7 @@ CThreadManager::~CThreadManager()
 int CThreadManager::CreateProcess(char*name) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
+	nowy->sem->AllProc = &AllProc;
 	//Memory->Insert_To_Virtual_Memory(nowy);
 	nowy->Process_State = PCB::Proc_Ready;
 	nowy->PriorityDynamic = 0;
@@ -35,6 +36,7 @@ int CThreadManager::CreateProcess(char*name) {
 int CThreadManager::CreateProcess(char*name, int prior) {
 	 PCB* nowy = new PCB;
 	 nowy->nazwa = name;
+	 nowy->sem->AllProc = &AllProc;
 	 //Memory->Insert_To_Virtual_Memory(nowy);
 	 nowy->Process_State = PCB::Proc_Ready;
 	 nowy->PriorityDynamic = 0;

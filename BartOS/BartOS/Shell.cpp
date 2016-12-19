@@ -22,7 +22,7 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	planista = ProcesoPriorytet();*/
 	thread_manager = new CThreadManager(&pamiec, &planista);
 	pamiec.Set_PCB_Vector(thread_manager->AllProc);
-	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc);
+	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc, &pamiec);
 	hard_drive.create_file("p1");
 	hard_drive.write_to_file_from_file("p1", "p1.txt.txt");
 }
@@ -185,7 +185,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		string wiadomosc;
 		cout << "wpisz tresc wiadomosci"<<endl;
-		cin >> wiadomosc;
+		getline(cin, wiadomosc);
 		komuch->Send(stoi(komendy[1]), wiadomosc);
 	}
 	else if (rozkaz == "XR") 
@@ -208,7 +208,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	{
 		//cout << "No hope left *noose tightening* " << endl;
 		pamiec.DeleteProcess(thread_manager->gethandle(stoi(komendy[1])));
-		thread_manager->RemoveProcess(stoi(komendy[1]));
+		thread_manager->RemoveProcess(stoi(komendy[1]),true);
 	}
 	else
 	{

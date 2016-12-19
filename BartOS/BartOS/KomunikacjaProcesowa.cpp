@@ -4,9 +4,10 @@
 
 using namespace std;
 
-KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
+KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc, PamiecOperiWirt *pamiec)
 {
 	AllProc = AllProcc;  // wskaznik na wszystkie procki
+	Kpamiec = pamiec;
 }
 
 
@@ -22,19 +23,22 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 	int id;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
+		if ((*ElementAt)->Process_State == PCB::Proc_Running)
+		{
+			id = (*ElementAt)->Process_ID;
+		}
+	}
+	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
+	{
 		if ((*ElementAt)->Process_ID == Odbiorca)
 		{
-			for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
-			{
-				if ((*ElementAt)->Process_State == PCB::Proc_Running)
-				{
-					id = (*ElementAt)->Process_ID;
-				}
-			}
 			string sid = to_string(id);
 			x = 1;
 			string S;
-			S +=sid.length()+""+to_string(id) + " " + tresc; // nadanie wiadomosci 
+			cout << sid.length() << endl;;
+			S +=to_string(sid.length())+""+sid+ tresc; // nadanie wiadomosci 
+			cout <<"wiadomosc: "<< S << endl;
+			(*ElementAt)->sem->Signal();
 			(*ElementAt)->messages.push(S);
 			break;
 		}
@@ -50,6 +54,7 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 			if ((*ElementAt)->Process_State == PCB::Proc_Running) 
 			{
 				(*ElementAt)->Process_State == PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
+				cout << "Proces terminates: nie znaleziono odbiorcy!" << endl;
 			}
 		}
 	}
@@ -57,34 +62,39 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 
 void KomunikacjaProcesowa::Receive() 
 {
-	bool spi = 1;
 	//szukanie skrzynki
-	int counter = 0;
-	if (spi == 1)
-	{
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
 			if ((*ElementAt)->Process_State == PCB::Proc_Running)
 			{
-				(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
-				if ((*ElementAt)->messages.empty())
+				if ((*ElementAt)->sleep == 0)
 				{
-					return;
+					(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
+					if ((*ElementAt)->messages.empty())
+					{
+						(*ElementAt)->sleep = 0;
+						return;
+					}
+					else
+					{
+						string x;
+						x = (*ElementAt)->messages.front();
+						(*ElementAt)->messages.pop();
+						cout << "ODEBRANO: " << x << endl;
+						Kpamiec->save_message(x);
+					}
 				}
 				else
 				{
+					(*ElementAt)->sleep = 1;
 					string x;
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
-					//FUNKCJAKUBY do Pamieci
+					cout << "ODEBRANO: " << x << endl;
+					Kpamiec->save_message(x);
 				}
 			}
 		}
-	}
-	else
-	{
-
-	}
 	//for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	//{
 	//	if (ElementAt[counter]->Process_ID == Odbiorca)
@@ -109,25 +119,36 @@ void KomunikacjaProcesowa::Receive()
 void KomunikacjaProcesowa::ShowMessages(int id)
 {
 	bool x=0;
-	int counter = 0;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
-		if (ElementAt[counter]->Process_ID == id)
+		if ((*ElementAt)->Process_ID == id)
 		{
 			x = 1;
-			if (ElementAt[counter]->messages.empty())
+			if ((*ElementAt)->messages.empty())
 						{
 							cout << "IPC: Brak wiadomosci w kolejce do procesu o id=" << id << endl;
 							return;
 						}
 			else
 			{
-				//for (int i = 0;i<)
+				int id;
+				string wiad;
+				queue<string> pomoc;
+				pomoc = (*ElementAt)->messages;
+				while (1)
+				{
+					wiad = pomoc.front();
+					id = stoi(wiad.substr(1, wiad[0]));
+					int y;
+					y = wiad.size() - ((int)wiad[0]-48);
+					cout << "Wiadomosc od " << id << ": "<<wiad.substr(((int)wiad[0] - 47),y)<<endl;
+					pomoc.pop();
+					if (pomoc.empty())
+					{
+						break;
+					}
+				}
 			}
-		}
-		else
-		{
-			counter++;
 		}
 	}
 	if (x == 0)
