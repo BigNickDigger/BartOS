@@ -19,7 +19,7 @@ CThreadManager::~CThreadManager()
 	AllProc.clear();
 
 }
-int CThreadManager::CreateProcess(char*name) {
+int CThreadManager::CreateProcess(string name) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
 	nowy->sem->AllProc = &AllProc;
@@ -33,7 +33,7 @@ int CThreadManager::CreateProcess(char*name) {
 	planista->addProcess(nowy);
 	return (IdentGen-1);
 }
-int CThreadManager::CreateProcess(char*name, int prior) {
+int CThreadManager::CreateProcess(string name, int prior) {
 	 PCB* nowy = new PCB;
 	 nowy->nazwa = name;
 	 nowy->sem->AllProc = &AllProc;
@@ -48,8 +48,7 @@ int CThreadManager::CreateProcess(char*name, int prior) {
 	 return (IdentGen - 1);
  }
 void CThreadManager::RemoveProcess(int id) {
-	printf("Shite\n");
-	if (id == 0) { printf("\nNie mozna usunac procesu IDLE\n"); }
+	if (id == 0) { printf("\nNie mozna usunac procesu IDLE\n"); return; }
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id && (*it)->Process_State == PCB::Proc_Terminated) {
 		
@@ -60,16 +59,35 @@ void CThreadManager::RemoveProcess(int id) {
 			return;
 		}
 	}
+	cout << "\t+-----------------------------------+\n";//28
+	cout << "\t|                             |-| |X|\n";
+	cout << "\t+-----------------------------------+\n";
+	cout << "\t| Proces " << id << " nie istnieje w systemie! |\n";
+	cout << "\t|     Lub nie jest TERMINATED       |\n";
+	cout << "\t|                                   |\n";
+	cout << "\t|      |OK|        |No Trudno|      |\n";
+	cout << "\t|                                   |\n";
+	cout << "\t+-----------------------------------+\n";
 }
 void CThreadManager::RemoveProcess(int id, bool flag) {
 	
-	gethandle(id)->Process_State = PCB::Proc_Terminated;
-	RemoveProcess(id);
-/*	auto it = AllProc.begin();
-	(*it)->Process_State = PCB::Proc_Terminated;
-	planista->removeProcess(*it);
-	Memory->DeleteProcess((*it));
-	AllProc.erase(it);*/
+	if (gethandle(id) != NULL) {
+		for (auto it = AllProc.begin(); it != AllProc.end(); ++it) {
+			if ((*it)->Process_ID == id) { AllProc.erase(it); return; }
+		}
+	}
+	else {
+		cout << "\t+-----------------------------------+\n";//28
+		cout << "\t|                             |-| |X|\n";
+		cout << "\t+-----------------------------------+\n";
+		cout << "\t| Proces " << id << " nie istnieje w systemie! |\n";
+		cout << "\t|                                   |\n";
+		cout << "\t|                                   |\n";
+		cout << "\t|      |OK|        |No Trudno|      |\n";
+		cout << "\t|                                   |\n";
+		cout << "\t+-----------------------------------+\n";
+	}
+
 
 }
 
@@ -108,11 +126,12 @@ PCB* CThreadManager::gethandle(int id) {
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id)return (*it);
 	}
+	return NULL;
 }
 void CThreadManager::PrintProcessState(int id, bool flag) {
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id) {
-			printf("\nStan Procesu : %s\n", (*it)->nazwa);
+			printf("\nStan Procesu : %s\n", (*it)->nazwa.c_str());
 			printf("ID\tRegA\tRegB\tRegC\tPC\tStan\n");
 			printf("%d\t%d\t%d\t%d\t%d\t%s\n", (*it)->Process_ID,
 				(*it)->RegA,
@@ -120,6 +139,8 @@ void CThreadManager::PrintProcessState(int id, bool flag) {
 				(*it)->RegC,
 				(*it)->ProgramCounter,
 				getstate((*it)->Process_State));
+			if (!(*it)->messages.empty()) { cout << "Proces " << id << " ma " << (*it)->messages.size() << " wiadomosci.\n"; }
+			else cout << "Proces " << id << " nie ma zadnych wiadomosci\n";
 		}
 	}
 }
