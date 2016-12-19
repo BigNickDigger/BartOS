@@ -157,20 +157,41 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab, int so
 
 void PamiecOperiWirt::save_message(string message)
 {
-	short FrameNr = Get_Free_Frame_Number();//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
-
-	for (int j = 0; j < message.length(); j++)
+	//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
+	if (message.length() > OMsize) { std::cout << "wiadomosc jest wieksza niz rozmiar pamieci operacyjnej\n"; return; }
+	int k = 0;
+	for (int i = 0; i < message.length() / framesize + 1; i++)// dla 14 = 1 obieg, dla 20 = 2 obiegi
 	{
-		OM[(FrameNr * framesize) + j] = message[j];//wpisz wiadomosc do pamieci
-	}
+		short FrameNr = Get_Free_Frame_Number();
 
-	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
-	{
-		if ((*it)->Process_State == PCB::Proc_Running)
+		for (int j = 0; j < framesize; j++)//pomocniczy for czyszcz¹cy ramke przed jej wypelnieniem
 		{
-			(*it)->memory_messages.push_back(FrameNr);
+			OM[(FrameNr * framesize) + j] = '-';
 		}
+
+		for (int j = 0; j < framesize; j++)
+		{
+			OM[(FrameNr * framesize) + j] = message[k];//wpisz wiadomosc do pamieci
+			if (k == message.length())return;
+			k++;
+		}
+
+		for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
+		{
+			if ((*it)->Process_State == PCB::Proc_Running)
+			{
+				(*it)->memory_messages.push_back(FrameNr);//wrzuc do pcb
+			}
+		}
+
+		int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
+		int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);// 4 linijki naprawiajace nadpisywanie innym programom tablice stronic
+		if (ID_of_a_process_which_frame_is_being_overriden != -1 && Nr_of_the_page != -1)
+			Update_Overide(ID_of_a_process_which_frame_is_being_overriden, Nr_of_the_page);
+
 	}
+
+
 
 
 }
