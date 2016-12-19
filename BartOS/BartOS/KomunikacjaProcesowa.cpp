@@ -36,7 +36,9 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 			x = 1;
 			string S;
 			cout << sid.length() << endl;;
-			S +=sid.length()+""+to_string(id) + " " + tresc; // nadanie wiadomosci 
+			S +=to_string(sid.length())+""+sid+ tresc; // nadanie wiadomosci 
+			cout <<"wiadomosc: "<< S << endl;
+			(*ElementAt)->sem->Signal();
 			(*ElementAt)->messages.push(S);
 			break;
 		}
@@ -60,35 +62,39 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 
 void KomunikacjaProcesowa::Receive() 
 {
-	bool spi = 1;
 	//szukanie skrzynki
-	int counter = 0;
-	if (spi == 1)
-	{
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
 			if ((*ElementAt)->Process_State == PCB::Proc_Running)
 			{
-				(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
-				if ((*ElementAt)->messages.empty())
+				if ((*ElementAt)->sleep == 0)
 				{
-					return;
+					(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
+					if ((*ElementAt)->messages.empty())
+					{
+						(*ElementAt)->sleep = 0;
+						return;
+					}
+					else
+					{
+						string x;
+						x = (*ElementAt)->messages.front();
+						(*ElementAt)->messages.pop();
+						cout << "ODEBRANO: " << x << endl;
+						//FUNKCJAKUBY do Pamieci !!!!!! 
+					}
 				}
 				else
 				{
+					(*ElementAt)->sleep = 1;
 					string x;
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
-					cout << x << endl;
+					cout << "ODEBRANO: " << x << endl;
 					//FUNKCJAKUBY do Pamieci !!!!!! 
 				}
 			}
 		}
-	}
-	else
-	{
-
-	}
 	//for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	//{
 	//	if (ElementAt[counter]->Process_ID == Odbiorca)
@@ -112,7 +118,6 @@ void KomunikacjaProcesowa::Receive()
 
 void KomunikacjaProcesowa::ShowMessages(int id)
 {
-	cout <<"ID: "<< id << endl;
 	bool x=0;
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
@@ -129,14 +134,19 @@ void KomunikacjaProcesowa::ShowMessages(int id)
 				int id;
 				string wiad;
 				queue<string> pomoc;
-				cout << (*ElementAt)->messages.size() << endl;;
 				pomoc = (*ElementAt)->messages;
-				while (pomoc.empty() != 0)
+				while (1)
 				{
 					wiad = pomoc.front();
 					id = stoi(wiad.substr(1, wiad[0]));
-					cout << "Wiadomosc od " << id << ": " << wiad.substr(wiad[0], wiad.length() - wiad[0]);
+					int y;
+					y = wiad.size() - ((int)wiad[0]-48);
+					cout << "Wiadomosc od " << id << ": "<<wiad.substr(((int)wiad[0] - 47),y)<<endl;
 					pomoc.pop();
+					if (pomoc.empty())
+					{
+						break;
+					}
 				}
 			}
 		}

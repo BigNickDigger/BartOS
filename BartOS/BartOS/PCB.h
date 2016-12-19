@@ -32,6 +32,7 @@ public:
 	int RegA, RegB, RegC, RegD;
 	int sopic,//size of program in chars
 		idleTime;
+	int sleep; //potrzebne do wznowienia odbioru.
 
 	int orders_realized;//wstawiam, bo potrzebuje do wznawiania przerwanych
 	
