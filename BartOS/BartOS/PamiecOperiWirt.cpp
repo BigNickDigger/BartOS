@@ -111,7 +111,7 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 
 		}
 	}
-	//////////////////////////////////////////////////////////////////ZAKOMENTOWANE ALE MOZE SIE PRZYDAC
+	//////////////////////////////////////////////////////////////////
 	for (int i = 0; i < blok->memory_messages.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
 	{
 		for (int j = 0; j < framesize; j++)
@@ -269,42 +269,33 @@ void PamiecOperiWirt::PrintOM()
 
 void PamiecOperiWirt::PrintVM()
 {
-	//vector<PCB*>AllProcc = *AllProc;
 	if (VM.capacity() == 0)
 	{
 		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
 		return;
 	}
 
-	//cout << VM.capacity() << endl;
-	//cout << VM.size() << endl;
-	//cout << AllProc->capacity() << endl;
-	//cout << AllProc->size() << endl;
-
-	int capacity = VM.capacity();
-	int cnt = 1;
-	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
+	int cnt = 0;
+	auto it = AllProc.begin();
+	it++;//przeskocz idle
+	for (auto it2 = VM.begin(); it2 != VM.end(); it2++)//skacz po zawartosci PAMIECI WIRTUALNEJ
 	{
-		if (cnt == 1)it++;
-		if (VM[cnt - 1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
+		if (VM[cnt]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
 		{
 			cnt++;
 			continue;
 		}
 		else
-			if ((*it)->Process_ID == 0)
-			{
-				continue;
-			}
 		{
 			cout << "PAMIEC WIRTUALNA PROCESU NR " << (*it)->Process_ID << endl;
 			for (int i = 0; i < (*it)->sopic / 16 + 1; i++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
 			{
-				VM[cnt - 1][i].PrintPage();
+				VM[cnt][i].PrintPage();
 			}
 			cout << endl;
 			cnt++;
 		}
+		it++;
 	}
 
 
@@ -379,3 +370,53 @@ int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 	}
 	return -1;//search failed
 }
+
+
+
+
+
+
+
+
+//void PamiecOperiWirt::PrintVM()
+//{
+//	//vector<PCB*>AllProcc = *AllProc;
+//	if (VM.capacity() == 0)
+//	{
+//		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
+//		return;
+//	}
+//
+//	//cout << VM.capacity() << endl;
+//	//cout << VM.size() << endl;
+//	//cout << AllProc->capacity() << endl;
+//	//cout << AllProc->size() << endl;
+//
+//	int capacity = VM.capacity();
+//	int cnt = 1;
+//	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
+//	{
+//		if (cnt == 1)it++;
+//		if (VM[cnt - 1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
+//		{
+//			cnt++;
+//			continue;
+//		}
+//		else
+//			if ((*it)->Process_ID == 0)
+//			{
+//				continue;
+//			}
+//		{
+//			cout << "PAMIEC WIRTUALNA PROCESU NR " << (*it)->Process_ID << endl;
+//			for (int i = 0; i < (*it)->sopic / 16 + 1; i++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
+//			{
+//				VM[cnt - 1][i].PrintPage();
+//			}
+//			cout << endl;
+//			cnt++;
+//		}
+//	}
+//
+//
+//}
