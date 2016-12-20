@@ -9,7 +9,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl)
 	srand(time(NULL));
 	this->Memory = Memory;
 	planista = pl;
-	CreateProcess("IDLE");
+	makeprocess("IDLE");
 	//PrintProcesses();
 }
 
@@ -19,7 +19,7 @@ CThreadManager::~CThreadManager()
 	AllProc.clear();
 
 }
-int CThreadManager::CreateProcess(string name) {
+int CThreadManager::makeprocess(string name) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
 	nowy->sem->AllProc = &AllProc;
@@ -33,7 +33,7 @@ int CThreadManager::CreateProcess(string name) {
 	planista->addProcess(nowy);
 	return (IdentGen-1);
 }
-int CThreadManager::CreateProcess(string name, int prior) {
+int CThreadManager::makeprocess(string name, int prior) {
 	 PCB* nowy = new PCB;
 	 nowy->nazwa = name;
 	 nowy->sem->AllProc = &AllProc;

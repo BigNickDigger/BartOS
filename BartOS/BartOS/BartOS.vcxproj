@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InterPeter.h" />
+    <ClInclude Include="Intro.h" />
     <ClInclude Include="KomunikacjaProcesowa.h" />
     <ClInclude Include="PamiecOperiWirt.h" />
     <ClInclude Include="PCB.h" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="BartOS.cpp" />
     <ClCompile Include="InterPeter.cpp" />
+    <ClCompile Include="Intro.cpp" />
     <ClCompile Include="KomunikacjaProcesowa.cpp" />
     <ClCompile Include="PamiecOperiWirt.cpp" />
     <ClCompile Include="PCB.cpp" />
