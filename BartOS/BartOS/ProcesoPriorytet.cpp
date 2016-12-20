@@ -46,8 +46,10 @@ PCB *ProcesoPriorytet::FindReadyThread()
 					if ((running->Priority + running->PriorityDynamic) < (it->Priority + it->PriorityDynamic)) {
 						//wywlaszczanie
 						cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
-						running->Process_State = PCB::Proc_Ready;
-						running->idleTime = 0;
+						if (running) {
+							running->idleTime = 0;
+							running->Process_State = PCB::Proc_Ready;
+						}
 			
 						running = it;
 						it->Process_State = PCB::Proc_Running;
@@ -55,8 +57,10 @@ PCB *ProcesoPriorytet::FindReadyThread()
 						return it;
 					}	
 				}
-				running->idleTime = 0;
-				running->Process_State = PCB::Proc_Ready;
+				if (running) {
+					running->idleTime = 0;
+					running->Process_State = PCB::Proc_Ready;
+				}
 				running = it;
 				it->idleTime = 0;
 				it->Process_State = PCB::Proc_Running;
