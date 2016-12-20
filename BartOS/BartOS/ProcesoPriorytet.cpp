@@ -38,24 +38,26 @@ PCB *ProcesoPriorytet::FindReadyThread()
 	for (int i = NUMBER_OF_PRIORITIES - 1; i >= 0; i--) {
 		if (KiReadySummary[i] == 0) continue; //pomijamy iteracje, bo dana kolejka jest pusta
 		for (auto it : KiDispatcher[i]) {
-			if (it == running) {
-				return it;
-			}
-			if (it->Process_State == PCB::Proc_Ready) {
-				if (running != NULL) {
-					if ((running->Priority + running->PriorityDynamic) < (it->Priority + it->PriorityDynamic)) {
-						//wywlaszczanie
-						cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
-						running->Process_State = PCB::Proc_Ready;
-						running = it;
-						it->Process_State = PCB::Proc_Running;
-						return it;
-					}
-					else continue;
+			if(it->Process_State == PCB::Proc_Running || it->Process_State == PCB::Proc_Ready){
+				if (it == running) {
+					return it;
 				}
-				it->Process_State = PCB::Proc_Running;
-				running = it;
-				return it; //znaleziono chetny proces - zwracamy go
+				if (it->Process_State == PCB::Proc_Ready) {
+					if (running != NULL) {
+						if ((running->Priority + running->PriorityDynamic) < (it->Priority + it->PriorityDynamic)) {
+							//wywlaszczanie
+							cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
+							running->Process_State = PCB::Proc_Ready;
+							running = it;
+							it->Process_State = PCB::Proc_Running;
+							return it;
+						}
+						else continue;
+					}
+					it->Process_State = PCB::Proc_Running;
+					running = it;
+					return it; //znaleziono chetny proces - zwracamy go
+				}
 			}
 		}
 	}
@@ -115,7 +117,7 @@ void ProcesoPriorytet::throwToBack(PCB *a)
 void ProcesoPriorytet::tick_processes()
 {
 	if (running != NULL) {
-		if ((running->ProgramCounter % NUMBER_OF_TIME_QUANTUM + 1) == 0 && running->ProgramCounter != 0) {
+		if ((running->ProgramCounter % NUMBER_OF_TIME_QUANTUM) == 0 && running->ProgramCounter > 0) {
 			cout << "Proces " << running->nazwa << " wykorzystal kwant czasu." << endl;
 			//round-robin - przenosimy na koniec kolejki
 			throwToBack(running);

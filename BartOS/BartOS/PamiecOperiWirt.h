@@ -62,6 +62,7 @@ public:
 	vector<PCB*> AllProc;
 	vector <PCB*>::iterator iter;
 
+
 	int IndexforWM;
 	int FIFOindex;
 
@@ -75,7 +76,7 @@ public:
 	int WhichPage(short int); //MMU; do przeliczania adresu logicznego na fizyczny
 	int WhatOffset(short int);  //MMU; -||-
 
-
+	void save_message(string message);
 
 	stronice MemRequest();//do obgadania
 	void DeleteProcess(PCB *blok);

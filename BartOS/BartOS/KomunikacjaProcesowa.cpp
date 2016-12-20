@@ -4,9 +4,10 @@
 
 using namespace std;
 
-KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc)
+KomunikacjaProcesowa::KomunikacjaProcesowa(vector<PCB*>*AllProcc, PamiecOperiWirt *pamiec)
 {
 	AllProc = AllProcc;  // wskaznik na wszystkie procki
+	Kpamiec = pamiec;
 }
 
 
@@ -34,7 +35,6 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 			string sid = to_string(id);
 			x = 1;
 			string S;
-			cout << sid.length() << endl;;
 			S +=to_string(sid.length())+""+sid+ tresc; // nadanie wiadomosci 
 			cout <<"wiadomosc: "<< S << endl;
 			(*ElementAt)->sem->Signal();
@@ -80,7 +80,7 @@ void KomunikacjaProcesowa::Receive()
 						x = (*ElementAt)->messages.front();
 						(*ElementAt)->messages.pop();
 						cout << "ODEBRANO: " << x << endl;
-						//FUNKCJAKUBY do Pamieci !!!!!! 
+						Kpamiec->save_message(x);
 					}
 				}
 				else
@@ -90,7 +90,7 @@ void KomunikacjaProcesowa::Receive()
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
 					cout << "ODEBRANO: " << x << endl;
-					//FUNKCJAKUBY do Pamieci !!!!!! 
+					Kpamiec->save_message(x);
 				}
 			}
 		}
@@ -130,6 +130,7 @@ void KomunikacjaProcesowa::ShowMessages(int id)
 						}
 			else
 			{
+				cout<<"IPC: Wiadomosci procesu o id=" << id << endl;
 				int id;
 				string wiad;
 				queue<string> pomoc;
