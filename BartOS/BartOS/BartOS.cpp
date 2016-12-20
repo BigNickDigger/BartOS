@@ -59,11 +59,11 @@ DomestOS
 //	EatShit.AllProc.push_back(new PCB);
 //	EatShit.AllProc[2]->sopic = 35;
 //	EatShit.AllProc[2]->Process_ID = 2;*/
-////ZAMIAST POWYZSZEGO UZYWAC CREATEPROCESS
+////ZAMIAST POWYZSZEGO UZYWAC makeprocess
 //	
-//	EatShit.CreateProcess("shite1", 40);
-//	EatShit.CreateProcess("shite2", 40);
-//	EatShit.CreateProcess("shite3", 35);
+//	EatShit.makeprocess("shite1", 40);
+//	EatShit.makeprocess("shite2", 40);
+//	EatShit.makeprocess("shite3", 35);
 //	
 //	page kod_procesu[3];
 //	for (int i = 0; i < 3; i++)
@@ -145,7 +145,7 @@ DomestOS
 //	PAM.PrintOM();
 //	PAM.PrintVM(EatShit.AllProc);
 //	
-//	EatShit.CreateProcess("poot", 36);
+//	EatShit.makeprocess("poot", 36);
 //	//EatShit.PrintProcesses();
 //	//printf("%d", EatShit.AllProc.size());
 //	//EatShit.gethandle(2)->pages;

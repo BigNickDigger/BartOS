@@ -10,7 +10,7 @@ using namespace std;
 
 Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
-
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),24 );
 //	pamiec = new PamiecOperiWirt();	
 /*	hard_drive = HardDrive();
 	parker = InterPeter();
@@ -197,7 +197,7 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 		if (komendy.size()==3)
 		{
 			//cout << "Dodano proces" << endl;
-			int k = thread_manager->CreateProcess(komendy[2], stoi(komendy[1]));
+			int k = thread_manager->makeprocess(komendy[2], stoi(komendy[1]));
 			pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file(komendy[2]), hard_drive.file_size(komendy[2]));
 		
 		}
@@ -316,8 +316,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
-	//Intro *intro = new Intro();
-	//intro->start();
+	Intro *intro = new Intro();
+	intro->start();
 
 	vector<string>komendy;
 	
