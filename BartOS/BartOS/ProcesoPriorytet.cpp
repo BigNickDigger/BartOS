@@ -38,6 +38,7 @@ PCB *ProcesoPriorytet::FindReadyThread()
 	for (int i = NUMBER_OF_PRIORITIES - 1; i >= 0; i--) {
 		if (KiReadySummary[i] == 0) continue; //pomijamy iteracje, bo dana kolejka jest pusta
 		for (auto it : KiDispatcher[i]) {
+			//cout << it->nazwa << " brany pod uwage" <<endl;
 			if (it->Process_State == PCB::Proc_Waiting) continue;
 		
 			if (it->Process_State == PCB::Proc_Ready) {
@@ -46,14 +47,19 @@ PCB *ProcesoPriorytet::FindReadyThread()
 						//wywlaszczanie
 						cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
 						running->Process_State = PCB::Proc_Ready;
+						running->idleTime = 0;
+			
 						running = it;
 						it->Process_State = PCB::Proc_Running;
+						it->idleTime = 0;
 						return it;
-					}
-					else continue;
+					}	
 				}
-				it->Process_State = PCB::Proc_Running;
+				running->idleTime = 0;
+				running->Process_State = PCB::Proc_Ready;
 				running = it;
+				it->idleTime = 0;
+				it->Process_State = PCB::Proc_Running;
 				return it; //znaleziono chetny proces - zwracamy go
 			}
 			if (it == running && (it->Process_State == PCB::Proc_Running || it->Process_State == PCB::Proc_Ready)) {
