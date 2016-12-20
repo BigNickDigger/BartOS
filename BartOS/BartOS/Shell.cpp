@@ -18,6 +18,12 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	thread_manager = new CThreadManager(&pamiec, &planista);
 	pamiec.Set_PCB_Vector(thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc, &pamiec);
+	
+	hard_drive.create_file("IDLE");
+	hard_drive.write_to_file_from_file("IDLE", "idle.txt");
+	int k = thread_manager->makeprocess("IDLE", 0);
+	pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file("IDLE"), hard_drive.file_size("IDLE"));
+
 	hard_drive.create_file("p1");
 	hard_drive.write_to_file_from_file("p1", "p1.txt");
 	hard_drive.create_file("t2");
@@ -26,6 +32,7 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	hard_drive.write_to_file_from_file("gab", "procesy.txt");
 	hard_drive.create_file("droc2");
 	hard_drive.write_to_file_from_file("droc2", "procesy2.txt");
+	//thread_manager->makeprocess()
 }
 
 
@@ -316,8 +323,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
-	/*Intro *intro = new Intro();
-	intro->start();*/
+	//Intro *intro = new Intro();
+	//intro->start();
 
 	vector<string>komendy;
 	

@@ -9,7 +9,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl)
 	srand(time(NULL));
 	this->Memory = Memory;
 	planista = pl;
-	makeprocess("IDLE");
+	//makeprocess("IDLE");
 	//PrintProcesses();
 }
 

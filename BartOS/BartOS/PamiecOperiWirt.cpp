@@ -60,10 +60,10 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 	while (i != blok->Process_ID)
 	{
 		VMiter++; i++;
-	}VMiter--;
+	}//VMiter--;
 	VM.erase(VMiter);
 	VM.insert(VMiter, new page);
-	VM[i - 1]->abandon = true;
+	VM[i]->abandon = true;
 	/////////////////////////////////////////////////////////////////
 	for (int j = 0; j < blok->sopic / framesize + 1; j++)
 	{
@@ -195,9 +195,19 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 {
 	short FrameNr = Get_Free_Frame_Number();//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
 
-	for (int j = 0; j < framesize; j++)
+	if (blok->Process_ID != 0)
 	{
-		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID - 1][page].tab[j];
+		for (int j = 0; j < framesize; j++)
+		{
+			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID - 1][page].tab[j];
+		}
+	}
+	else
+	{
+		for (int j = 0; j < framesize; j++)
+		{
+			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
+		}
 	}
 
 	int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
@@ -254,7 +264,7 @@ void PamiecOperiWirt::PrintVM()
 
 	int cnt = 0;
 	auto it = AllProc.begin();
-	it++;//przeskocz idle
+	//it++;//przeskocz idle
 	for (auto it2 = VM.begin(); it2 != VM.end(); it2++)//skacz po zawartosci PAMIECI WIRTUALNEJ
 	{
 		if (VM[cnt]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
@@ -295,10 +305,10 @@ void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
 
 int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 {
-	int cnt = 1;
+	int cnt = 0;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		if (cnt == 1)it++;//przeskocz
+		//if (cnt == 1)it++;//przeskocz
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
 			if ((*it)->pages[j].cell == FrameNr)
@@ -330,10 +340,10 @@ int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 	//}
 	//return -1;//search failed TO JEST STARY KOD, MOZLIWE ZE TEZ DZIALA
 
-	int cnt = 1;
+	int cnt = 0;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		if (cnt == 1)it++;//przeskocz idle
+		//if (cnt == 1)it++;//przeskocz idle
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
 			if ((*it)->pages[j].cell == FrameNr)
