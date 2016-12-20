@@ -316,8 +316,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
-	Intro *intro = new Intro();
-	intro->start();
+	/*Intro *intro = new Intro();
+	intro->start();*/
 
 	vector<string>komendy;
 	
