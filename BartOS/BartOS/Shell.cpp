@@ -309,6 +309,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 		//cout << "No hope left *noose tightening* " << endl;
 		if (komendy.size() == 2)
 		{
+			planista.running = NULL;
+			planista.removeProcess(thread_manager->gethandle(stoi(komendy[1])));
 			pamiec.DeleteProcess(thread_manager->gethandle(stoi(komendy[1])));
 			thread_manager->RemoveProcess(stoi(komendy[1]),true);
 		}
