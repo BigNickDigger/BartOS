@@ -105,8 +105,28 @@ bool ProcesoPriorytet::moveProcess(PCB *a)
 		removeProcess(a); //usuwamy z aktualnej listy
 		a->PriorityDynamic++; //zwiekszamy priorytet dynamiczny - maksymalnie 8
 		i = a->Priority + a->PriorityDynamic;
-		//KiDispatcher[i].push_back(a); //dodajemy do nowej kolejki
-		KiDispatcher[i].insert(KiDispatcher[i].begin(), a);
+		KiDispatcher[i].push_back(a); //dodajemy do nowej kolejki
+		//KiDispatcher[i].insert(KiDispatcher[i].begin(), a);
+
+		updateKiReadySummary();
+		return true;
+	}
+	updateKiReadySummary();
+	return false;
+}
+bool ProcesoPriorytet::moveProcessDOWN(PCB *a)
+{
+	int i = a->Priority + a->PriorityDynamic;
+	if (i - 1 == 0) {
+		cout << "Proces " << a->nazwa << " ma juz najnizszy mozliwy priorytet." << endl;
+		return true;
+	}
+	for (auto it : KiDispatcher[i]) {
+		removeProcess(a); //usuwamy z aktualnej listy
+		a->PriorityDynamic--; //zmniejszamy priorytet dynamiczny - maksymalnie 8
+		i = a->Priority + a->PriorityDynamic;
+		KiDispatcher[i].push_back(a); //dodajemy do nowej kolejki
+		//KiDispatcher[i].insert(KiDispatcher[i].begin(), a);
 
 		updateKiReadySummary();
 		return true;
@@ -132,6 +152,7 @@ bool ProcesoPriorytet::tick_processes()
 		if ((running->ProgramCounter % NUMBER_OF_TIME_QUANTUM) == 0 && running->ProgramCounter > 0) {
 			cout << "Proces " << running->nazwa << " wykorzystal kwant czasu." << endl;
 			//round-robin - przenosimy na koniec kolejki
+			if(running->PriorityDynamic) moveProcessDOWN(running);
 			throwToBack(running);
 		}
 	}
