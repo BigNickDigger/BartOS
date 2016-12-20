@@ -371,30 +371,37 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	else if (command == "NF") //new file
 	{
 		//dysk.create_file("PLICZAK.xD");
-		dysk.create_file(line.substr(3));
+	   // cout << line.substr(3, line.length() - 4) << endl;
+		dysk.create_file(line.substr(3, line.length() - 4));
+		//dysk.create_file("plik.txt");
 	}
 	//else if (command == "OF") //open file
 	//{}
 	else if (command == "RF") //read file
 	{
-		cout << dysk.open_file(line.substr(3)) << endl;
+		cout << line.substr(3, line.length() - 4) <<": "<< endl;
+		cout << dysk.open_file(line.substr(3, line.length() - 4)) << endl;
 	}
 	else if (command == "WF") //write file
 	{
 		int z = 3;
 		string write;
-		while (line.at(z) != ' ')
+		while (line.at(z) != ',')
 		{
 			write += line.at(z);
+			z++;
 		}
-
-		dysk.write_to_file(write, line.substr(z + 1));
+		
+		//cout << write << endl;
+		//cout << line.substr(z + 1, line.length() - z - 2) << endl;
+		dysk.write_to_file(write, line.substr(z + 1, line.length() - z - 2));
 	}
     //else if (command == "CF") //close file
 	//{	}
 	else if (command == "DF") //write file
 	{
-		dysk.delete_file(line.substr(3));
+		//cout << line.substr(3, line.length() - 4) << endl;
+		dysk.delete_file(line.substr(3, line.length() - 4));
 	}
 
 	//MEMEory Kuba

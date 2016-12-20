@@ -111,7 +111,7 @@ char* CThreadManager::getstate(int el) {
 	case PCB::Proc_Running:
 		return "Running";
 	case PCB::Proc_Waiting:
-		return "Waiting/Halted";
+		return "Waiting";
 	case PCB::Proc_Ready:
 		return "Ready";
 	case PCB::Proc_Terminated:

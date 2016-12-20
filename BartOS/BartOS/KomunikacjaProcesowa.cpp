@@ -71,11 +71,12 @@ void KomunikacjaProcesowa::Receive()
 					(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
 					if ((*ElementAt)->messages.empty())
 					{
-						(*ElementAt)->sleep = 0;
+						(*ElementAt)->sleep = 1;
 						return;
 					}
 					else
 					{
+						(*ElementAt)->sleep = 0;
 						string x;
 						x = (*ElementAt)->messages.front();
 						(*ElementAt)->messages.pop();
@@ -85,7 +86,7 @@ void KomunikacjaProcesowa::Receive()
 				}
 				else
 				{
-					(*ElementAt)->sleep = 1;
+					(*ElementAt)->sleep = 0;
 					string x;
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();

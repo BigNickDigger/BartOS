@@ -1,1 +1,1 @@
-NF plik.txt;WF plik.txt,Witam!;DF plik.txt,EN;
+NF plik.txt;WF plik.txt,Witam!;RF plik.txt;DF plik.txt;EN;
