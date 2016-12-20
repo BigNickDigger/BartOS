@@ -35,7 +35,6 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 			string sid = to_string(id);
 			x = 1;
 			string S;
-			cout << sid.length() << endl;;
 			S +=to_string(sid.length())+""+sid+ tresc; // nadanie wiadomosci 
 			cout <<"wiadomosc: "<< S << endl;
 			(*ElementAt)->sem->Signal();
@@ -131,6 +130,7 @@ void KomunikacjaProcesowa::ShowMessages(int id)
 						}
 			else
 			{
+				cout<<"IPC: Wiadomosci procesu o id=" << id << endl;
 				int id;
 				string wiad;
 				queue<string> pomoc;
