@@ -33,6 +33,10 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	hard_drive.write_to_file_from_file("gab", "procesy.txt");
 	hard_drive.create_file("droc2");
 	hard_drive.write_to_file_from_file("droc2", "procesy2.txt");
+	hard_drive.create_file("z1");
+	hard_drive.write_to_file_from_file("z1", "zamki.txt");
+	//hard_drive.create_file("z2");
+	//hard_drive.write_to_file_from_file("z2", "zamki2.txt");
 	//thread_manager->makeprocess()
 }
 
@@ -295,8 +299,9 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	else if (rozkaz == "ST")	// step
 	{
 		PCB *tmp = planista.FindReadyThread();
-		parker.Interface(tmp, pamiec);
 		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive, malbork);
+		parker.Interface(tmp, pamiec);
+		
 	//	planista.printMyBeautifulStructurePlease();
 		bool flag = planista.tick_processes();
 		if (flag) {
