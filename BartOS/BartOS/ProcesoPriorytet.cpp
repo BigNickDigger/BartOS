@@ -68,6 +68,8 @@ void ProcesoPriorytet::addProcess(PCB *a)
 	if (a->nazwa == "IDLE") {
 		a->Priority = 0;
 		a->PriorityDynamic = 0;
+		a->Process_State = PCB::Proc_Running;
+		running = a;
 	}
 	else if (!running) {
 		//a->Process_State = PCB::Proc_Running;
@@ -136,7 +138,7 @@ bool ProcesoPriorytet::tick_processes()
 			leave = true; //domyslnie opuszczamy petle, chyba, ze cos zostanie przeniesione
 			for (auto it : KiDispatcher[i]) {
 				if (it->Process_State == PCB::Proc_Terminated) {
-					leave = true;
+					//leave = true;
 					if (running == it) {
 						running = NULL;
 					}

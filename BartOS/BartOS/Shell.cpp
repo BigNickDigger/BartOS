@@ -10,7 +10,7 @@ using namespace std;
 
 Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),31 );
+	
 //	pamiec = new PamiecOperiWirt();	
 /*	hard_drive = HardDrive();
 	parker = InterPeter();
@@ -18,7 +18,8 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	thread_manager = new CThreadManager(&pamiec, &planista);
 	pamiec.Set_PCB_Vector(thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc, &pamiec);
-	
+	malbork = Zamek();
+	malbork.InitZamek(thread_manager);
 	hard_drive.create_file("IDLE");
 	hard_drive.write_to_file_from_file("IDLE", "idle.txt");
 	int k = thread_manager->makeprocess("IDLE", 0);
@@ -293,14 +294,12 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	else if (rozkaz == "ST")	// step
 	{
-
-
 		PCB *tmp = planista.FindReadyThread();
-		std::cout << "CHUJ " << tmp->nazwa << std::endl << "---" << std::endl;
-		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive);
 		parker.Interface(tmp, pamiec);
-		
-		if (planista.tick_processes()) {
+		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive, malbork);
+	//	planista.printMyBeautifulStructurePlease();
+		bool flag = planista.tick_processes();
+		if (flag) {
 			thread_manager->RemoveProcess(tmp->Process_ID);
 		}
 	}
@@ -328,6 +327,8 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 31);
+	system("cls");
 	//Intro *intro = new Intro();
 	//intro->start();
 

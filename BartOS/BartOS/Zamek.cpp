@@ -8,6 +8,7 @@
 Zamek::Zamek()
 {
 	zvalue = 0;
+
 }
 
 Zamek::~Zamek()

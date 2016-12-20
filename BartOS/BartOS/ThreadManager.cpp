@@ -99,7 +99,7 @@ void CThreadManager::PrintProcesses() {
 			cout << (*it)->Process_ID << "\t";
 			cout << (*it)->nazwa << "\t";
 			cout << getstate((*it)->Process_State) << "\t";
-			cout << (*it)->Priority << "\n";
+			cout << (*it)->Priority + (*it)->PriorityDynamic << "\n";
 		}
 	}
 	else printf("Cos poszlo nie tak, nie ma procesu IDLE\n");

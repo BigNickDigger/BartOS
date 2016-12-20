@@ -25,6 +25,7 @@ public:
 	InterPeter parker;
 	KomunikacjaProcesowa * komuch;
 	ProcesoPriorytet planista;
+	Zamek malbork;
 	Shell();
 	~Shell();
 	void WykonujRozkaz(std::string rozkaz, std::vector<std::string> komendy);

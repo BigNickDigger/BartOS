@@ -38,7 +38,7 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	Adr = block->MAR;
 }
 
-void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa *kom, HardDrive &dysk)
+void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa *kom, HardDrive &dysk, Zamek lock)
 {
 	LoadState(block);
 
@@ -420,15 +420,43 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 
 	else if (command == "XR") //read
 	{
-		kom->Receive();
-		//  if fail
-		//Adr-=line.length();
-		//PC--;
+		
+		if (!kom->Receive())
+		{
+			Adr-=line.length();
+			PC--;
+		}
+		
 	}
 	else if (command == "XS") //send
 	{
-		kom->Send(69, "inferno_spaghetti");
+		int z = 3;
+		string write;
+		while (line.at(z) != ',')
+		{
+			write += line.at(z);
+			z++;
+		}
+		cout << stoi(write) << endl;
+		cout << line.substr(z + 1, line.length() - z - 2) << endl;
+		kom->Send(stoi(write), line.substr(z + 1, line.length() - z - 2));//"inferno_spaghetti");
 	}
+	else if (command == "CL") //send
+	{
+
+	}
+	else if (command == "LL") //send
+	{
+		lock.lock(block->Process_ID);
+	}
+	else if (command == "UL") //send
+	{
+		lock.unlock(stoi(line.substr(3, line.length() - 4)));
+	}
+	
+
+
+
 	
 	//PROCESS Dareg
 

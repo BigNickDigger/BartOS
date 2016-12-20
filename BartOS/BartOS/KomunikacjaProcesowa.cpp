@@ -21,10 +21,12 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 	//szukanie skrzynki
 	bool x=0;
 	int id;
+
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
 		if ((*ElementAt)->Process_State == PCB::Proc_Running)
 		{
+			if ((*ElementAt)->nazwa == "IDLE") continue;
 			id = (*ElementAt)->Process_ID;
 		}
 	}
@@ -52,7 +54,7 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 		{
 			if ((*ElementAt)->Process_State == PCB::Proc_Running) 
 			{
-				(*ElementAt)->Process_State == PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
+				(*ElementAt)->Process_State = PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
 				cout << "Proces terminates: nie znaleziono odbiorcy!" << endl;
 			}
 		}
