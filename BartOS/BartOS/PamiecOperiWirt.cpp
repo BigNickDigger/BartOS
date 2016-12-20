@@ -75,21 +75,25 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 	}
 	////////////////////////////////////////////////////////////////
 	int pom = 0;
-	for (int i = 0; i < 16; i++)//skacz po tablicy stronic dla usuwanego procesu
+	if (FIFO.size() != 0)
 	{
-		pom = 0;
-		if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
+		for (int i = 0; i < 16; i++)//skacz po tablicy stronic dla usuwanego procesu
 		{
-			for (int j = 0; j < OMsize / 16; j++)//wykonaj siê o iloœæ ramek w OM
+			pom = 0;
+			if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
 			{
-				if (FIFO[j] == blok->pages[i].cell)
+				for (int j = 0; j < OMsize / 16; j++)//wykonaj siê o iloœæ ramek w OM
 				{
-					FIFO.erase(FIFO.begin() + pom);
-					break; // dla ka¿dego i jest tylko jedna taka operacja, mo¿na œmia³o break
-				}
-				pom++;
-			}
 
+					if (FIFO[j] == blok->pages[i].cell)
+					{
+						FIFO.erase(FIFO.begin() + pom);
+						break; // dla ka¿dego i jest tylko jedna taka operacja, mo¿na œmia³o break
+					}
+					pom++;
+				}
+
+			}
 		}
 	}
 	//////////////////////////////////////////////////////////////////
