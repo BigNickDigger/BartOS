@@ -82,15 +82,13 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 			pom = 0;
 			if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
 			{
-				for (int j = 0; j < OMsize / 16; j++)//wykonaj siê o iloœæ ramek w OM
+				for (int j = 0; j < FIFO.size(); j++, pom++)//wykonaj siê o iloœæ ramek w OM
 				{
-
 					if (FIFO[j] == blok->pages[i].cell)
 					{
 						FIFO.erase(FIFO.begin() + pom);
 						break; // dla ka¿dego i jest tylko jedna taka operacja, mo¿na œmia³o break
 					}
-					pom++;
 				}
 
 			}
@@ -200,24 +198,14 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 	short FrameNr = Get_Free_Frame_Number();//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
 
 	for (int j = 0; j < framesize; j++)
+	{
+		OM[(FrameNr * framesize) + j] = '-';//wyczysc ramke przed jej nadpisaniem
+	}
+	for (int j = 0; j < framesize; j++)
 		{
 			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
 		}
 
-	//if (blok->Process_ID != 0)
-	//{
-	//	for (int j = 0; j < framesize; j++)
-	//	{
-	//		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID - 1][page].tab[j];
-	//	}
-	//}
-	//else
-	//{
-	//	for (int j = 0; j < framesize; j++)
-	//	{
-	//		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
-	//	}
-	//}
 
 	int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
 	int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);
@@ -261,6 +249,12 @@ void PamiecOperiWirt::PrintOM()
 		}
 		cout << endl;
 	}
+	std::cout << "FIFO ";
+	for (auto it = FIFO.begin(); it != FIFO.end(); it++)
+	{
+		std::cout << (*it) << " ";
+	}
+	std::cout << std::endl;
 }
 
 void PamiecOperiWirt::PrintVM()
@@ -299,12 +293,8 @@ void PamiecOperiWirt::PrintVM()
 
 void PamiecOperiWirt::Update_Overide(int PCBnumber, int Pagenr)
 {
-	//vector <PCB*>::iterator iter;
 	iter = this->AllProc.begin();
 	iter[PCBnumber]->pages[Pagenr].Valid = false;
-	//AllPCBs[PCBnumber]->pages[Pagenr].Valid = false;
-
-
 }
 
 void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
@@ -334,21 +324,6 @@ int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 
 int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 {
-	//iter = AllProc.begin();
-	//int cap = AllProc.capacity();
-	//for (int i = 0; i < cap; i++)
-	//{
-	//	for (int j = 0; j < iter[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
-	//	{
-	//		if (iter[i]->pages[j].cell == FrameNr)
-	//		{
-	//			return j;//search succeeded
-	//		}
-	//	}
-
-	//}
-	//return -1;//search failed TO JEST STARY KOD, MOZLIWE ZE TEZ DZIALA
-
 	int cnt = 0;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
@@ -362,57 +337,6 @@ int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 
 		}
 		cnt++;
-
 	}
 	return -1;//search failed
 }
-
-
-
-
-
-
-
-
-//void PamiecOperiWirt::PrintVM()
-//{
-//	//vector<PCB*>AllProcc = *AllProc;
-//	if (VM.capacity() == 0)
-//	{
-//		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
-//		return;
-//	}
-//
-//	//cout << VM.capacity() << endl;
-//	//cout << VM.size() << endl;
-//	//cout << AllProc->capacity() << endl;
-//	//cout << AllProc->size() << endl;
-//
-//	int capacity = VM.capacity();
-//	int cnt = 1;
-//	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
-//	{
-//		if (cnt == 1)it++;
-//		if (VM[cnt - 1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
-//		{
-//			cnt++;
-//			continue;
-//		}
-//		else
-//			if ((*it)->Process_ID == 0)
-//			{
-//				continue;
-//			}
-//		{
-//			cout << "PAMIEC WIRTUALNA PROCESU NR " << (*it)->Process_ID << endl;
-//			for (int i = 0; i < (*it)->sopic / 16 + 1; i++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
-//			{
-//				VM[cnt - 1][i].PrintPage();
-//			}
-//			cout << endl;
-//			cnt++;
-//		}
-//	}
-//
-//
-//}
