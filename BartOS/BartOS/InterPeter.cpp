@@ -26,6 +26,7 @@ void InterPeter::SaveState(PCB* block) //Dareg
 	block->RegB = regB;
 	block->RegC = regC;
 	block->ProgramCounter = PC;
+	block->MAR = Adr;
 }
 
 void InterPeter::LoadState(PCB* block) //Dareg
@@ -34,6 +35,7 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	regB = block->RegB;
 	regC = block->RegC;
 	PC = block->ProgramCounter;
+	Adr = block->MAR;
 }
 
 void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa *kom, HardDrive &dysk)
@@ -43,7 +45,8 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	string line;
 	string command;
 
-	line = LoadCommand(PC, 0, block, pam);
+	line = LoadCommand(Adr, 0, block, pam);
+	PC++;
 	
 	command += line.at(0);
 	command += line.at(1);
@@ -250,13 +253,13 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 
 	else if (command == "JP") // jump
 	{
-		PC = std::stoi(line.substr(3));
+		Adr = std::stoi(line.substr(3));
 	}
 	else if (command == "JN") //jump not zero
 	{
 		if (regA != 0)
 		{
-			PC = std::stoi(line.substr(3));
+			Adr = std::stoi(line.substr(3));
 		}
 
 	}
@@ -375,8 +378,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		dysk.create_file(line.substr(3, line.length() - 4));
 		//dysk.create_file("plik.txt");
 	}
-	//else if (command == "OF") //open file
-	//{}
+	//else if (command == "OF") //open file //{}
 	else if (command == "RF") //read file
 	{
 		cout << line.substr(3, line.length() - 4) <<": "<< endl;
@@ -396,8 +398,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		//cout << line.substr(z + 1, line.length() - z - 2) << endl;
 		dysk.write_to_file(write, line.substr(z + 1, line.length() - z - 2));
 	}
-    //else if (command == "CF") //close file
-	//{	}
+    //else if (command == "CF") //close file //{	}
 	else if (command == "DF") //write file
 	{
 		//cout << line.substr(3, line.length() - 4) << endl;
@@ -421,7 +422,8 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	{
 		kom->Receive();
 		//  if fail
-		//PC-=line.length();
+		//Adr-=line.length();
+		//PC--;
 	}
 	else if (command == "XS") //send
 	{
@@ -436,7 +438,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	}
 	else if (command == "HP") //halt - hammer Zeit
 	{
-		block->Process_State = PCB::Proc_Ready;
+		block->Process_State = PCB::Proc_Waiting;
 	}
 	else if (command == "KP") //kill
 	{
@@ -452,7 +454,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		//return to BarKar
 	}
 	
-	//PC++;
+	
 	SaveState(block);
 }
 
@@ -483,20 +485,25 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 void InterPeter::RegisterDisplay()
 {
 	cout << " Register State " << endl;
-	cout << "A  : " << regA << endl;
-	cout << "B  : " << regB << endl;
-	cout << "C  : " << regC << endl;
-	cout << "PC : " << PC << endl;
+	cout << "A   : " << regA << endl;
+	cout << "B   : " << regB << endl;
+	cout << "C   : " << regC << endl;
+	cout << "PC  : " << PC << endl;
+	cout << "ADR : " << Adr << endl;
 }
 
 void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt &pam)
 {
 	cout << " Commands" << endl;
-	cout << block->sopic << endl;
+	//cout << block->sopic << endl;
 	//cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
-	if (PC < block->sopic)
+	if (Adr < block->sopic)
 	{
-		cout << "NEXT : " << LoadCommand(PC, 1, block, pam) << endl;
+		cout << "NEXT : " << LoadCommand(Adr, 1, block, pam) << endl;
+	}
+	else
+	{
+		cout << "The program has ended" << endl;
 	}
 	
 

@@ -81,6 +81,7 @@ void ProcesoPriorytet::addProcess(PCB *a)
 void ProcesoPriorytet::removeProcess(PCB * a)
 {
 	int i = a->Priority + a->PriorityDynamic;
+
 	KiDispatcher[i].erase(std::remove(KiDispatcher[i].begin(), KiDispatcher[i].end(), a), KiDispatcher[i].end());	//funkcja usuwajaca konkretny element z wektora
 	if (KiDispatcher[i].empty()) KiReadySummary[i] = 0;
 }
@@ -116,6 +117,7 @@ void ProcesoPriorytet::throwToBack(PCB *a)
 
 void ProcesoPriorytet::tick_processes()
 {
+	updateKiReadySummary();
 	if (running != NULL) {
 		if ((running->ProgramCounter % NUMBER_OF_TIME_QUANTUM) == 0 && running->ProgramCounter > 0) {
 			cout << "Proces " << running->nazwa << " wykorzystal kwant czasu." << endl;
@@ -131,7 +133,16 @@ void ProcesoPriorytet::tick_processes()
 		while (!leave) {
 			leave = true; //domyslnie opuszczamy petle, chyba, ze cos zostanie przeniesione
 			for (auto it : KiDispatcher[i]) {
+				if (it->Process_State == PCB::Proc_Terminated) {
+					leave = true;
+					if (running == it) {
+						running = NULL;
+					}
+					removeProcess(it);
+					break;
+				}
 				if (it->Process_State == PCB::Proc_Ready) {
+				
 					it->idleTime++; //znaleziono kogos kto czekal -> zwiekszamy wartosc 'czekania'
 					if (it->idleTime >= NUMBER_OF_HUNGER) {
 						//proces czekal bardzo dlugo - pora go nagrodzic i podwyzszyc priorytet
