@@ -10,7 +10,7 @@ using namespace std;
 
 Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),24 );
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),31 );
 //	pamiec = new PamiecOperiWirt();	
 /*	hard_drive = HardDrive();
 	parker = InterPeter();
