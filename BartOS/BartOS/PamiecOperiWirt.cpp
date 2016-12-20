@@ -195,20 +195,25 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 {
 	short FrameNr = Get_Free_Frame_Number();//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
 
-	if (blok->Process_ID != 0)
-	{
-		for (int j = 0; j < framesize; j++)
-		{
-			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID - 1][page].tab[j];
-		}
-	}
-	else
-	{
-		for (int j = 0; j < framesize; j++)
+	for (int j = 0; j < framesize; j++)
 		{
 			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
 		}
-	}
+
+	//if (blok->Process_ID != 0)
+	//{
+	//	for (int j = 0; j < framesize; j++)
+	//	{
+	//		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID - 1][page].tab[j];
+	//	}
+	//}
+	//else
+	//{
+	//	for (int j = 0; j < framesize; j++)
+	//	{
+	//		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
+	//	}
+	//}
 
 	int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
 	int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);
