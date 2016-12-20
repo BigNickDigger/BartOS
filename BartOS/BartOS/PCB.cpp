@@ -5,7 +5,7 @@
 PCB::PCB()
 {
 	sleep = 0;
-	RegA = RegB = RegC = RegD = ProgramCounter = 0;
+	RegA = RegB = RegC = RegD = ProgramCounter = MAR = 0;
 	sem = new Semafor(0);
 	orders_realized = 0;
 	idleTime = 0;
