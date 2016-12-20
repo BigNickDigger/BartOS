@@ -492,22 +492,27 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 	char p;
 	int a = adress;
 	
-	if (pam.Get_Char_From_OM(block, a) == ';')
+	if (adress < block->sopic)
+	{
+		if (pam.Get_Char_From_OM(block, a) == ';')
 			a++;
-	do
-	{
-		p = pam.Get_Char_From_OM(block, a);
-		line += p;
-		a++;
-	} while (p != ';');
+		do
+		{
+			p = pam.Get_Char_From_OM(block, a);
+			line += p;
+			a++;
+		} while (p != ';');
 
-	if (!f)
-	{
-		AdrPREV = adress;
-		adress = a;
+		if (!f)
+		{
+			AdrPREV = adress;
+			adress = a;
+		}
+		//Adr = a;
+		return line;
 	}
-	//Adr = a;
-	return line;
+	else
+		return "jajca";
 }
 
 void InterPeter::RegisterDisplay()
