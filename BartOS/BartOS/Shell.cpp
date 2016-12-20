@@ -296,10 +296,13 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 
 		PCB *tmp = planista.FindReadyThread();
+		std::cout << "CHUJ " << tmp->nazwa << std::endl << "---" << std::endl;
 		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive);
 		parker.Interface(tmp, pamiec);
-
-		planista.tick_processes();
+		
+		if (planista.tick_processes()) {
+			thread_manager->RemoveProcess(tmp->Process_ID);
+		}
 	}
 	else if (rozkaz == "DP")	// help
 	{

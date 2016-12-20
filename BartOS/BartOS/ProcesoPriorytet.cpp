@@ -38,26 +38,26 @@ PCB *ProcesoPriorytet::FindReadyThread()
 	for (int i = NUMBER_OF_PRIORITIES - 1; i >= 0; i--) {
 		if (KiReadySummary[i] == 0) continue; //pomijamy iteracje, bo dana kolejka jest pusta
 		for (auto it : KiDispatcher[i]) {
-			if(it->Process_State == PCB::Proc_Running || it->Process_State == PCB::Proc_Ready){
-				if (it == running) {
-					return it;
-				}
-				if (it->Process_State == PCB::Proc_Ready) {
-					if (running != NULL) {
-						if ((running->Priority + running->PriorityDynamic) < (it->Priority + it->PriorityDynamic)) {
-							//wywlaszczanie
-							cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
-							running->Process_State = PCB::Proc_Ready;
-							running = it;
-							it->Process_State = PCB::Proc_Running;
-							return it;
-						}
-						else continue;
+			if (it->Process_State == PCB::Proc_Waiting) continue;
+		
+			if (it->Process_State == PCB::Proc_Ready) {
+				if (running != NULL && running->Process_State != PCB::Proc_Waiting) {
+					if ((running->Priority + running->PriorityDynamic) < (it->Priority + it->PriorityDynamic)) {
+						//wywlaszczanie
+						cout << "Wyzszy priorytet! " << running->nazwa << " oddaje procesor." << endl;
+						running->Process_State = PCB::Proc_Ready;
+						running = it;
+						it->Process_State = PCB::Proc_Running;
+						return it;
 					}
-					it->Process_State = PCB::Proc_Running;
-					running = it;
-					return it; //znaleziono chetny proces - zwracamy go
+					else continue;
 				}
+				it->Process_State = PCB::Proc_Running;
+				running = it;
+				return it; //znaleziono chetny proces - zwracamy go
+			}
+			if (it == running && (it->Process_State == PCB::Proc_Running || it->Process_State == PCB::Proc_Ready)) {
+				return it;
 			}
 		}
 	}
@@ -70,8 +70,8 @@ void ProcesoPriorytet::addProcess(PCB *a)
 		a->PriorityDynamic = 0;
 	}
 	else if (!running) {
-		a->Process_State = PCB::Proc_Running;
-		running = a;
+		//a->Process_State = PCB::Proc_Running;
+		//running = a;
 	}
 	int i = a->Priority + a->PriorityDynamic;
 
@@ -97,7 +97,8 @@ bool ProcesoPriorytet::moveProcess(PCB *a)
 		removeProcess(a); //usuwamy z aktualnej listy
 		a->PriorityDynamic++; //zwiekszamy priorytet dynamiczny - maksymalnie 8
 		i = a->Priority + a->PriorityDynamic;
-		KiDispatcher[i].push_back(a); //dodajemy do nowej kolejki
+		//KiDispatcher[i].push_back(a); //dodajemy do nowej kolejki
+		KiDispatcher[i].insert(KiDispatcher[i].begin(), a);
 
 		updateKiReadySummary();
 		return true;
@@ -115,8 +116,9 @@ void ProcesoPriorytet::throwToBack(PCB *a)
 }
 
 
-void ProcesoPriorytet::tick_processes()
+bool ProcesoPriorytet::tick_processes()
 {
+	bool usunieto = false;
 	updateKiReadySummary();
 	if (running != NULL) {
 		if ((running->ProgramCounter % NUMBER_OF_TIME_QUANTUM) == 0 && running->ProgramCounter > 0) {
@@ -139,6 +141,7 @@ void ProcesoPriorytet::tick_processes()
 						running = NULL;
 					}
 					removeProcess(it);
+					usunieto = true;
 					break;
 				}
 				if (it->Process_State == PCB::Proc_Ready) {
@@ -151,13 +154,15 @@ void ProcesoPriorytet::tick_processes()
 						flag = moveProcess(it); //przenosimy tylko, jezeli proces nie jest w najwyzszej kolejce
 						if (flag) {
 							leave = false; //przenieslismy proces z jednej kolejki do drugiej - nalezy ponownie przeiterowac nizsza kolejke
+							
 							break;
 						}
 					}
 				}
 			}
 		}
-	}
+	}	
+	return usunieto;
 }
 
 

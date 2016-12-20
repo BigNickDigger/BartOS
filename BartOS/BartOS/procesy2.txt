@@ -1,1 +1,1 @@
-XS gab dzien_dobry;EN;
+XS 1 dzien_dobry; XS 50 hallo; EN;
