@@ -66,7 +66,6 @@ vector<string> Shell::ZczytajRozkaz()
 	string delimiter = " ";
 	size_t pozycja = 0;
 	
-	//cout.flush();
 	while ((pozycja = linia.find(delimiter)) != string::npos) 
 	{
 		rozkaz = linia.substr(0, pozycja);
@@ -308,6 +307,21 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 			thread_manager->RemoveProcess(tmp->Process_ID);
 		}
 	}
+
+	else if (rozkaz == "SUPERST")	// step
+	{
+		for (int i = 0; i < 300; i++)
+		{
+			PCB *tmp = planista.FindReadyThread();
+			parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive, malbork);
+			parker.Interface(tmp, pamiec);
+			bool flag = planista.tick_processes();
+			if (flag) {
+				thread_manager->RemoveProcess(tmp->Process_ID);
+			}
+		}
+	}
+
 	else if (rozkaz == "DP")	// help
 	{
 		//cout << "No hope left *noose tightening* " << endl;
@@ -335,7 +349,7 @@ int main()
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 31);
 	system("cls");
 	Intro *intro = new Intro();
-	intro->start();
+	//intro->start();
 
 	vector<string>komendy;
 	

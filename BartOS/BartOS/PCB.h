@@ -47,6 +47,7 @@ public:
 	std::vector<PCB*>::iterator ElementAt;
 	Semafor *sem;
 	std::vector <int> memory_messages;
+	std::vector <std::string> allmessagesever;
 };
 
 #endif // !PCB_H

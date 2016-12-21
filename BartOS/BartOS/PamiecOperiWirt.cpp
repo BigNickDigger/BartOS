@@ -95,24 +95,43 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 		}
 	}
 	//////////////////////////////////////////////////////////////////
-	for (int i = 0; i < blok->memory_messages.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
+
+	string s;
+	for (int i = 0; i < blok->allmessagesever.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
 	{
-		for (int j = 0; j < framesize; j++)
+		s = blok->allmessagesever.front();
+		if (message_is_in_OM(s))
 		{
-			OM[((blok->memory_messages[i]) * 16) + j] = '-';
+			for (int j = 0; j < framesize; j++)
+			{
+				OM[((blok->memory_messages[i]) * 16) + j] = '-';
+			}
 		}
 	}
+
+	//for (int i = 0; i < blok->memory_messages.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
+	//{
+	//	for (int j = 0; j < framesize; j++)
+	//	{
+	//		OM[((blok->memory_messages[i]) * 16) + j] = '-';
+	//	}
+	//}
 }
-//Dodalem Ci funkcje hehe XD
-// Wez ja wypelnij jakos ladnie
-stronice PamiecOperiWirt::MemRequest()
+bool PamiecOperiWirt::message_is_in_OM(string s)
 {
-	int ErrCode;
-	if (true)//Jest wolne miejsce dla alokacji pliku w 
-		throw ErrCode = 1; //podmien true na wypelniona stronice
-	else //Nie ma miejsca na plik
-		throw ErrCode = 0;
+	string line;
+	for (int i = 0; i < OMsize / 16; i++)
+	{
+		for (int j = 0; j < 16; j++)
+		{
+			line += OM[(i * 16) + j];
+		}
+		if (line.find(s) != std::string::npos)
+			return true;
+	}
+	return false;
 }
+
 
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab, int sopic)
@@ -140,7 +159,6 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab, int so
 
 void PamiecOperiWirt::save_message(string message)
 {
-	//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
 	if (message.length() > OMsize) { std::cout << "wiadomosc jest wieksza niz rozmiar pamieci operacyjnej\n"; return; }
 	int k = 0;
 	for (int i = 0; i < message.length() / framesize + 1; i++)// dla 14 = 1 obieg, dla 20 = 2 obiegi
@@ -169,6 +187,7 @@ void PamiecOperiWirt::save_message(string message)
 			{
 				(*it)->memory_messages.push_back(FrameNr);//wrzuc do pcb
 				FIFO.push_back(FrameNr);
+				(*it)->allmessagesever.push_back(message);
 			}
 		}
 
