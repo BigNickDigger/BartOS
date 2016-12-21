@@ -100,14 +100,6 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 			}
 		}
 	}
-
-	//for (int i = 0; i < blok->memory_messages.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
-	//{
-	//	for (int j = 0; j < framesize; j++)
-	//	{
-	//		OM[((blok->memory_messages[i]) * 16) + j] = '-';
-	//	}
-	//}
 }
 bool PamiecOperiWirt::message_is_in_OM(string s)
 {
@@ -244,7 +236,38 @@ int PamiecOperiWirt::Get_Free_Frame_Number()
 
 }
 
+void PamiecOperiWirt::Print_Page_Table(int ID)
+{
+	bool found = false;
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)
+	{
+		if ((*it)->Process_ID == ID)
+		{
+			found = true;
+			break;
+		}
+	}
+	if (found == true)
+	{
+		std::cout << "Tablica stronic procesu o ID " << ID << std::endl << std::endl;
+		std::cout << "FrameNr     Valid" << std::endl;
+		for (auto it = AllProc.begin(); it != AllProc.end(); it++)
+		{
+			if ((*it)->Process_ID == ID)
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					if ((*it)->pages[i].cell != -1)
+						std::cout << "   " << (*it)->pages[i].cell << "     |    " << (*it)->pages[i].Valid << std::endl;
 
+				}
+				std::cout << std::endl;
+			}
+		}
+	}
+	else
+	std::cout << "Proces o takim ID nie istnieje" << std::endl;
+}
 
 void PamiecOperiWirt::PrintOM()
 {
@@ -252,7 +275,7 @@ void PamiecOperiWirt::PrintOM()
 	cout << "AKTUALNY STAN PAMIECI OPERACYJNEJ" << endl;
 	for (int i = 0; i < OMsize / framesize; i++)
 	{
-		cout << "Frame nr " << i + 1 << "  ";
+		cout << "Frame nr " << i << "  ";
 		for (int j = 0; j < framesize; j++)
 		{
 			cout << OM[counter] << " ";
@@ -316,7 +339,7 @@ void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
 int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 {
 	int cnt = 0;
-	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci AllProca
 	{
 		//if (cnt == 1)it++;//przeskocz
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow

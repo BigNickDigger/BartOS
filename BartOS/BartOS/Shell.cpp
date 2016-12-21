@@ -301,6 +301,11 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 		komuch->Receive();
 
 	}
+	else if (rozkaz == "TS")
+	{
+		pamiec.Print_Page_Table(stoi(komendy[1]));
+
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	else if (rozkaz == "ST")	// step
 	{
