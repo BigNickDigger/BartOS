@@ -78,13 +78,14 @@ public:
 
 	void save_message(string message);
 
-	stronice MemRequest();//do obgadania
 	void DeleteProcess(PCB *blok);
 	void PrintOM();
 	void PrintVM();//do wypisania pamieci wirtualnej potrzebna jest lista przechowujaca wszystkie procesy
 	void Update_Overide(int, int);
 	void Set_PCB_Vector(vector<PCB*> &AllProc);
+	void Print_Page_Table(int ID);
 
+	bool message_is_in_OM(string);
 };
 
 #endif // !PAMIECPOERIWIRT_H

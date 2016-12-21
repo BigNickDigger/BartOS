@@ -3,14 +3,12 @@
 
 
 
-
 using namespace std;
 
 
 
 Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
-	
 //	pamiec = new PamiecOperiWirt();	
 /*	hard_drive = HardDrive();
 	parker = InterPeter();
@@ -38,12 +36,21 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	//hard_drive.create_file("z2");
 	//hard_drive.write_to_file_from_file("z2", "zamki2.txt");
 	//thread_manager->makeprocess()
+	Beep(207.652, 650);
+	Beep(311.127, 220);
+	Beep(466.164, 440);
+	Beep(415.305, 650);
+	Beep(622.254, 440);
+	Beep(466.164, 800);
 }
 
 
 Shell::~Shell()
 {
-	
+	Beep(830.609, 270);
+	Beep(622.254, 270);
+	Beep(415.305, 270);
+	Beep(466.164, 400);
 }
 void Shell::UtworzZmiennaSrodowiskowa()
 {
@@ -66,7 +73,6 @@ vector<string> Shell::ZczytajRozkaz()
 	string delimiter = " ";
 	size_t pozycja = 0;
 	
-	//cout.flush();
 	while ((pozycja = linia.find(delimiter)) != string::npos) 
 	{
 		rozkaz = linia.substr(0, pozycja);
@@ -295,6 +301,11 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 		komuch->Receive();
 
 	}
+	else if (rozkaz == "TS")
+	{
+		pamiec.Print_Page_Table(stoi(komendy[1]));
+
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	else if (rozkaz == "ST")	// step
 	{
@@ -308,6 +319,21 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 			thread_manager->RemoveProcess(tmp->Process_ID);
 		}
 	}
+
+	else if (rozkaz == "SUPERST")	// step
+	{
+		for (int i = 0; i < 300; i++)
+		{
+			PCB *tmp = planista.FindReadyThread();
+			parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive, malbork);
+			parker.Interface(tmp, pamiec);
+			bool flag = planista.tick_processes();
+			if (flag) {
+				thread_manager->RemoveProcess(tmp->Process_ID);
+			}
+		}
+	}
+
 	else if (rozkaz == "DP")	// help
 	{
 		//cout << "No hope left *noose tightening* " << endl;
@@ -334,7 +360,7 @@ int main()
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 31);
 	system("cls");
-	//Intro *intro = new Intro();
+	Intro *intro = new Intro();
 	//intro->start();
 
 	vector<string>komendy;
@@ -352,7 +378,7 @@ int main()
 		komendy.clear();
 	}
 	cout << "Shutting down...";
-	
+	delete shell;
 	return 0;
 }
 

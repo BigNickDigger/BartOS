@@ -17,12 +17,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 	Beep(277, 150);
 	Beep(247, 600);*/
 
-	Beep(207.652, 650);
-	Beep(311.127, 220);
-	Beep(466.164, 440);
-	Beep(415.305, 650);
-	Beep(622.254, 440);
-	Beep(466.164, 800);
+	
 
 	
 
@@ -36,10 +31,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
-	Beep(830.609, 270);
-	Beep(622.254, 270);
-	Beep(415.305, 270);
-	Beep(466.164, 400);
+	
 }
 
 int PamiecOperiWirt::WhichPage(short int x)
@@ -95,24 +87,35 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 		}
 	}
 	//////////////////////////////////////////////////////////////////
-	for (int i = 0; i < blok->memory_messages.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
+
+	string s;
+	for (int i = 0; i < blok->allmessagesever.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
 	{
-		for (int j = 0; j < framesize; j++)
+		s = blok->allmessagesever.front();
+		if (message_is_in_OM(s))
 		{
-			OM[((blok->memory_messages[i]) * 16) + j] = '-';
+			for (int j = 0; j < framesize; j++)
+			{
+				OM[((blok->memory_messages[i]) * 16) + j] = '-';
+			}
 		}
 	}
 }
-//Dodalem Ci funkcje hehe XD
-// Wez ja wypelnij jakos ladnie
-stronice PamiecOperiWirt::MemRequest()
+bool PamiecOperiWirt::message_is_in_OM(string s)
 {
-	int ErrCode;
-	if (true)//Jest wolne miejsce dla alokacji pliku w 
-		throw ErrCode = 1; //podmien true na wypelniona stronice
-	else //Nie ma miejsca na plik
-		throw ErrCode = 0;
+	string line;
+	for (int i = 0; i < OMsize / 16; i++)
+	{
+		for (int j = 0; j < 16; j++)
+		{
+			line += OM[(i * 16) + j];
+		}
+		if (line.find(s) != std::string::npos)
+			return true;
+	}
+	return false;
 }
+
 
 
 void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab, int sopic)
@@ -140,7 +143,6 @@ void PamiecOperiWirt::Insert_To_Virtual_Memory(PCB *blok, char *disc_tab, int so
 
 void PamiecOperiWirt::save_message(string message)
 {
-	//szukaj indeksu wolnej ramki, jak nie ma to wg FIFO
 	if (message.length() > OMsize) { std::cout << "wiadomosc jest wieksza niz rozmiar pamieci operacyjnej\n"; return; }
 	int k = 0;
 	for (int i = 0; i < message.length() / framesize + 1; i++)// dla 14 = 1 obieg, dla 20 = 2 obiegi
@@ -169,6 +171,7 @@ void PamiecOperiWirt::save_message(string message)
 			{
 				(*it)->memory_messages.push_back(FrameNr);//wrzuc do pcb
 				FIFO.push_back(FrameNr);
+				(*it)->allmessagesever.push_back(message);
 			}
 		}
 
@@ -233,7 +236,38 @@ int PamiecOperiWirt::Get_Free_Frame_Number()
 
 }
 
+void PamiecOperiWirt::Print_Page_Table(int ID)
+{
+	bool found = false;
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)
+	{
+		if ((*it)->Process_ID == ID)
+		{
+			found = true;
+			break;
+		}
+	}
+	if (found == true)
+	{
+		std::cout << "Tablica stronic procesu o ID " << ID << std::endl << std::endl;
+		std::cout << "FrameNr     Valid" << std::endl;
+		for (auto it = AllProc.begin(); it != AllProc.end(); it++)
+		{
+			if ((*it)->Process_ID == ID)
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					if ((*it)->pages[i].cell != -1)
+						std::cout << "   " << (*it)->pages[i].cell << "     |    " << (*it)->pages[i].Valid << std::endl;
 
+				}
+				std::cout << std::endl;
+			}
+		}
+	}
+	else
+	std::cout << "Proces o takim ID nie istnieje" << std::endl;
+}
 
 void PamiecOperiWirt::PrintOM()
 {
@@ -241,7 +275,7 @@ void PamiecOperiWirt::PrintOM()
 	cout << "AKTUALNY STAN PAMIECI OPERACYJNEJ" << endl;
 	for (int i = 0; i < OMsize / framesize; i++)
 	{
-		cout << "Frame nr " << i + 1 << "  ";
+		cout << "Frame nr " << i << "  ";
 		for (int j = 0; j < framesize; j++)
 		{
 			cout << OM[counter] << " ";
@@ -305,7 +339,7 @@ void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
 int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 {
 	int cnt = 0;
-	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
+	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci AllProca
 	{
 		//if (cnt == 1)it++;//przeskocz
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
