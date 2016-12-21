@@ -38,7 +38,7 @@ void InterPeter::LoadState(PCB* block) //Dareg
 	Adr = block->MAR;
 }
 
-void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa *kom, HardDrive &dysk, Zamek lock)
+void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa *kom, HardDrive &dysk, Zamek &lock)
 {
 	LoadState(block);
 
@@ -441,17 +441,17 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		cout << line.substr(z + 1, line.length() - z - 2) << endl;
 		kom->Send(stoi(write), line.substr(z + 1, line.length() - z - 2));//"inferno_spaghetti");
 	}
-	else if (command == "CL") //send
-	{
+	//else if (command == "CL") //send
+	//{
 
-	}
+	//}
 	else if (command == "LL") //send
 	{
 		lock.lock(block->Process_ID);
 	}
 	else if (command == "UL") //send
 	{
-		lock.unlock(stoi(line.substr(3, line.length() - 4)));
+		lock.unlock(block->Process_ID);
 	}
 	
 
@@ -492,22 +492,27 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 	char p;
 	int a = adress;
 	
-	if (pam.Get_Char_From_OM(block, a) == ';')
+	if (adress < block->sopic)
+	{
+		if (pam.Get_Char_From_OM(block, a) == ';')
 			a++;
-	do
-	{
-		p = pam.Get_Char_From_OM(block, a);
-		line += p;
-		a++;
-	} while (p != ';');
+		do
+		{
+			p = pam.Get_Char_From_OM(block, a);
+			line += p;
+			a++;
+		} while (p != ';');
 
-	if (!f)
-	{
-		AdrPREV = adress;
-		adress = a;
+		if (!f)
+		{
+			AdrPREV = adress;
+			adress = a;
+		}
+		//Adr = a;
+		return line;
 	}
-	//Adr = a;
-	return line;
+	else
+		return "jajca";
 }
 
 void InterPeter::RegisterDisplay()

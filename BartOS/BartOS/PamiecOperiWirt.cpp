@@ -17,17 +17,14 @@ PamiecOperiWirt::PamiecOperiWirt()
 	Beep(277, 150);
 	Beep(247, 600);*/
 
-	/*Beep(207.652, 700);
-	Beep(311.127, 250);
-	Beep(466.164, 500);
-	Beep(415.305, 750);
-	Beep(622.254, 500);
-	Beep(466.164, 900);
+	Beep(207.652, 650);
+	Beep(311.127, 220);
+	Beep(466.164, 440);
+	Beep(415.305, 650);
+	Beep(622.254, 440);
+	Beep(466.164, 800);
 
-	Beep(830.609, 270);
-	Beep(622.254, 270);
-	Beep(415.305, 270);
-	Beep(466.164, 400);*/
+	
 
 	OM_Next_Frame_Victim = 0;
 	IndexforWM = 0;
@@ -39,7 +36,10 @@ PamiecOperiWirt::PamiecOperiWirt()
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
-
+	Beep(830.609, 270);
+	Beep(622.254, 270);
+	Beep(415.305, 270);
+	Beep(466.164, 400);
 }
 
 int PamiecOperiWirt::WhichPage(short int x)
@@ -310,7 +310,7 @@ int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 		//if (cnt == 1)it++;//przeskocz
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
-			if ((*it)->pages[j].cell == FrameNr)
+			if ((*it)->pages[j].cell == FrameNr && (*it)->pages[j].Valid == true)
 			{
 				return cnt;//search succeeded
 			}
@@ -330,7 +330,7 @@ int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 		//if (cnt == 1)it++;//przeskocz idle
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
-			if ((*it)->pages[j].cell == FrameNr)
+			if ((*it)->pages[j].cell == FrameNr && (*it)->pages[j].Valid == true)
 			{
 				return j;//search succeeded
 			}

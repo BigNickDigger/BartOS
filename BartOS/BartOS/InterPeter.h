@@ -24,7 +24,7 @@ public:
 	~InterPeter();
 	void SaveState(PCB* block);
 	void LoadState(PCB* block);
-	void ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa * kom, HardDrive &dysk, Zamek lock);
+	void ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaProcesowa * kom, HardDrive &dysk, Zamek &lock);
 	std::string LoadCommand(int &adress, int f, PCB *block, PamiecOperiWirt &pam);
 	//std::string LoadCommand(short int &adress, int f, PCB *block, PamiecOperiWirt &pam);
 	void Interface(PCB *block, PamiecOperiWirt &pam);
