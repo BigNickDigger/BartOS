@@ -18,7 +18,7 @@ public:
 	KomunikacjaProcesowa(vector<PCB*>*AllProcc,PamiecOperiWirt *pamiec);
 	~KomunikacjaProcesowa();
 	void Send(int, string);  //Wyslij (do id, wiadomosc)
-	void Receive();  //Odbierz wiad z queue
+	int Receive();  //Odbierz wiad z queue
 	void ShowMessages(int);  //Pokaz wiadomosci w Queue procesi o (id)
 	vector<PCB*>*AllProc;
 	vector<PCB*>::iterator ElementAt;

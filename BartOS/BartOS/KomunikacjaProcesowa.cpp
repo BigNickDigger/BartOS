@@ -21,10 +21,12 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 	//szukanie skrzynki
 	bool x=0;
 	int id;
+
 	for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 	{
 		if ((*ElementAt)->Process_State == PCB::Proc_Running)
 		{
+			if ((*ElementAt)->nazwa == "IDLE") continue;
 			id = (*ElementAt)->Process_ID;
 		}
 	}
@@ -52,45 +54,49 @@ void KomunikacjaProcesowa::Send(int Odbiorca, string tresc)
 		{
 			if ((*ElementAt)->Process_State == PCB::Proc_Running) 
 			{
-				(*ElementAt)->Process_State == PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
+				(*ElementAt)->Process_State = PCB::Proc_Terminated; // znalezienie aktualnego procesu i zmiana jego stanu na terminated jezeli odbiorca nie istnieje
 				cout << "Proces terminates: nie znaleziono odbiorcy!" << endl;
 			}
 		}
 	}
 }
 
-void KomunikacjaProcesowa::Receive() 
+int KomunikacjaProcesowa::Receive() 
 {
 	//szukanie skrzynki
 		for (ElementAt = AllProc->begin(); ElementAt != AllProc->end(); ElementAt++)
 		{
 			if ((*ElementAt)->Process_State == PCB::Proc_Running)
 			{
+				if ((*ElementAt)->nazwa == "IDLE") continue;
 				if ((*ElementAt)->sleep == 0)
 				{
 					(*ElementAt)->sem->Wait((*ElementAt)->Process_ID);
 					if ((*ElementAt)->messages.empty())
 					{
-						(*ElementAt)->sleep = 0;
-						return;
+						(*ElementAt)->sleep = 1;
+						return 0;
 					}
 					else
 					{
+						(*ElementAt)->sleep = 0;
 						string x;
 						x = (*ElementAt)->messages.front();
 						(*ElementAt)->messages.pop();
 						cout << "ODEBRANO: " << x << endl;
 						Kpamiec->save_message(x);
+						return 1;
 					}
 				}
 				else
 				{
-					(*ElementAt)->sleep = 1;
+					(*ElementAt)->sleep = 0;
 					string x;
 					x = (*ElementAt)->messages.front();
 					(*ElementAt)->messages.pop();
 					cout << "ODEBRANO: " << x << endl;
 					Kpamiec->save_message(x);
+					return 1;
 				}
 			}
 		}

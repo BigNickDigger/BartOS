@@ -10,7 +10,7 @@ using namespace std;
 
 Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),24 );
+	
 //	pamiec = new PamiecOperiWirt();	
 /*	hard_drive = HardDrive();
 	parker = InterPeter();
@@ -18,6 +18,13 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	thread_manager = new CThreadManager(&pamiec, &planista);
 	pamiec.Set_PCB_Vector(thread_manager->AllProc);
 	komuch = new KomunikacjaProcesowa(&thread_manager->AllProc, &pamiec);
+	malbork = Zamek();
+	malbork.InitZamek(thread_manager);
+	hard_drive.create_file("IDLE");
+	hard_drive.write_to_file_from_file("IDLE", "idle.txt");
+	int k = thread_manager->makeprocess("IDLE", 0);
+	pamiec.Insert_To_Virtual_Memory(thread_manager->gethandle(k), hard_drive.open_file("IDLE"), hard_drive.file_size("IDLE"));
+
 	hard_drive.create_file("p1");
 	hard_drive.write_to_file_from_file("p1", "p1.txt");
 	hard_drive.create_file("t2");
@@ -26,6 +33,11 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	hard_drive.write_to_file_from_file("gab", "procesy.txt");
 	hard_drive.create_file("droc2");
 	hard_drive.write_to_file_from_file("droc2", "procesy2.txt");
+	hard_drive.create_file("z1");
+	hard_drive.write_to_file_from_file("z1", "zamki.txt");
+	//hard_drive.create_file("z2");
+	//hard_drive.write_to_file_from_file("z2", "zamki2.txt");
+	//thread_manager->makeprocess()
 }
 
 
@@ -286,19 +298,23 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	else if (rozkaz == "ST")	// step
 	{
-
-
 		PCB *tmp = planista.FindReadyThread();
-		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive);
+		parker.ExecuteCommand(tmp, pamiec, komuch, hard_drive, malbork);
 		parker.Interface(tmp, pamiec);
-
-		planista.tick_processes();
+		
+	//	planista.printMyBeautifulStructurePlease();
+		bool flag = planista.tick_processes();
+		if (flag) {
+			thread_manager->RemoveProcess(tmp->Process_ID);
+		}
 	}
 	else if (rozkaz == "DP")	// help
 	{
 		//cout << "No hope left *noose tightening* " << endl;
 		if (komendy.size() == 2)
 		{
+			planista.running = NULL;
+			planista.removeProcess(thread_manager->gethandle(stoi(komendy[1])));
 			pamiec.DeleteProcess(thread_manager->gethandle(stoi(komendy[1])));
 			thread_manager->RemoveProcess(stoi(komendy[1]),true);
 		}
@@ -316,8 +332,10 @@ void Shell::WykonujRozkaz(string rozkaz, vector<string> komendy)
 
 int main()
 {
-	Intro *intro = new Intro();
-	intro->start();
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 31);
+	system("cls");
+	//Intro *intro = new Intro();
+	//intro->start();
 
 	vector<string>komendy;
 	
