@@ -17,12 +17,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 	Beep(277, 150);
 	Beep(247, 600);*/
 
-	Beep(207.652, 650);
-	Beep(311.127, 220);
-	Beep(466.164, 440);
-	Beep(415.305, 650);
-	Beep(622.254, 440);
-	Beep(466.164, 800);
+	
 
 	
 
@@ -36,10 +31,7 @@ PamiecOperiWirt::PamiecOperiWirt()
 
 PamiecOperiWirt::~PamiecOperiWirt()
 {
-	Beep(830.609, 270);
-	Beep(622.254, 270);
-	Beep(415.305, 270);
-	Beep(466.164, 400);
+	
 }
 
 int PamiecOperiWirt::WhichPage(short int x)

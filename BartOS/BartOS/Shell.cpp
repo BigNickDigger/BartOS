@@ -3,14 +3,12 @@
 
 
 
-
 using namespace std;
 
 
 
 Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 {
-	
 //	pamiec = new PamiecOperiWirt();	
 /*	hard_drive = HardDrive();
 	parker = InterPeter();
@@ -38,12 +36,21 @@ Shell::Shell()	:hard_drive(),parker(),planista(),pamiec()
 	//hard_drive.create_file("z2");
 	//hard_drive.write_to_file_from_file("z2", "zamki2.txt");
 	//thread_manager->makeprocess()
+	Beep(207.652, 650);
+	Beep(311.127, 220);
+	Beep(466.164, 440);
+	Beep(415.305, 650);
+	Beep(622.254, 440);
+	Beep(466.164, 800);
 }
 
 
 Shell::~Shell()
 {
-	
+	Beep(830.609, 270);
+	Beep(622.254, 270);
+	Beep(415.305, 270);
+	Beep(466.164, 400);
 }
 void Shell::UtworzZmiennaSrodowiskowa()
 {
@@ -366,7 +373,7 @@ int main()
 		komendy.clear();
 	}
 	cout << "Shutting down...";
-	
+	delete shell;
 	return 0;
 }
 
