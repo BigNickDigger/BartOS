@@ -361,6 +361,9 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		
 			}
 			break;
+		default:
+			cout << "Bledne argumenty" << endl;
+			break;
 		}
 	}
 
@@ -373,12 +376,9 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 
 	else if (command == "NF") //new file
 	{
-		//dysk.create_file("PLICZAK.xD");
 	   // cout << line.substr(3, line.length() - 4) << endl;
 		dysk.create_file(line.substr(3, line.length() - 4));
-		//dysk.create_file("plik.txt");
 	}
-	//else if (command == "OF") //open file //{}
 	else if (command == "RF") //read file
 	{
 		cout << line.substr(3, line.length() - 4) <<": "<< endl;
@@ -398,22 +398,10 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		//cout << line.substr(z + 1, line.length() - z - 2) << endl;
 		dysk.write_to_file(write, line.substr(z + 1, line.length() - z - 2));
 	}
-    //else if (command == "CF") //close file //{	}
-	else if (command == "DF") //write file
+	else if (command == "DF") //delete file
 	{
 		//cout << line.substr(3, line.length() - 4) << endl;
 		dysk.delete_file(line.substr(3, line.length() - 4));
-	}
-
-	//MEMEory Kuba
-
-	else if (command == "MR") //meme read
-	{
-
-	}
-	else if (command == "MW") //meme write
-	{
-		
 	}
 
 	//MESSAGE Krzysiu
@@ -437,14 +425,13 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 			write += line.at(z);
 			z++;
 		}
-		cout << stoi(write) << endl;
-		cout << line.substr(z + 1, line.length() - z - 2) << endl;
-		kom->Send(stoi(write), line.substr(z + 1, line.length() - z - 2));//"inferno_spaghetti");
+		//cout << stoi(write) << endl;
+		//cout << line.substr(z + 1, line.length() - z - 2) << endl;
+		kom->Send(stoi(write), line.substr(z + 1, line.length() - z - 2));
 	}
-	//else if (command == "CL") //send
-	//{
 
-	//}
+
+	//Lock
 	else if (command == "LL") //send
 	{
 		lock.lock(block->Process_ID);
@@ -481,6 +468,11 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 		block->Process_State = PCB::Proc_Terminated;
 		//return to BarKar
 	}
+	else
+	{
+		cout << "Niepoprawny rozkaz" << endl;
+		//block->Process_State = PCB::Proc_Terminated;
+	}
 	
 	
 	SaveState(block);
@@ -512,7 +504,7 @@ std::string InterPeter::LoadCommand(int &adress, int f, PCB *block, PamiecOperiW
 		return line;
 	}
 	else
-		return "jajca";
+		return "Nope";
 }
 
 void InterPeter::RegisterDisplay()
@@ -527,7 +519,7 @@ void InterPeter::RegisterDisplay()
 
 void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt &pam)
 {
-	cout << " Commands" << endl;
+	//cout << " Commands" << endl;
 	//cout << block->sopic << endl;
 	//cout << "PREV : " << LoadCommand(AdrPREV, 1, block, pam) << endl;
 	if (Adr < block->sopic)
@@ -536,9 +528,9 @@ void InterPeter::CommandDisplay(PCB *block, PamiecOperiWirt &pam)
 	}
 	else
 	{
-		cout << "The program has ended" << endl;
+		cout << "NEXT : Program has ended" << endl;
 	}
-	
+	cout << endl;
 
 }
 
