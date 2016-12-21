@@ -471,7 +471,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	else
 	{
 		cout << "Niepoprawny rozkaz" << endl;
-		//block->Process_State = PCB::Proc_Terminated;
+		block->Process_State = PCB::Proc_Terminated;
 	}
 	
 	
