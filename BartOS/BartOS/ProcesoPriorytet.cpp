@@ -35,6 +35,11 @@ PCB *ProcesoPriorytet::FindReadyThread()
 {
 	updateKiReadySummary();
 	//szukanie zaczynamy od najwyzszej mozliwej kolejki
+	if (running) {
+		if (running->Process_State == PCB::Proc_Waiting) {
+			running = NULL;
+		}
+	}
 	for (int i = NUMBER_OF_PRIORITIES - 1; i >= 0; i--) {
 		if (KiReadySummary[i] == 0) continue; //pomijamy iteracje, bo dana kolejka jest pusta
 		for (auto it : KiDispatcher[i]) {
