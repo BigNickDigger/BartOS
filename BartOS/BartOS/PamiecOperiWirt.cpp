@@ -17,17 +17,17 @@ PamiecOperiWirt::PamiecOperiWirt()
 	Beep(277, 150);
 	Beep(247, 600);*/
 
-	/*Beep(207.652, 750);
-	Beep(311.127, 750);
-	Beep(466.164, 250);
-	Beep(415.305, 500);
+	/*Beep(207.652, 700);
+	Beep(311.127, 250);
+	Beep(466.164, 500);
+	Beep(415.305, 750);
 	Beep(622.254, 500);
-	Beep(466.164, 1000);*/
+	Beep(466.164, 900);
 
-	/*Beep(830.609, 270);
+	Beep(830.609, 270);
 	Beep(622.254, 270);
 	Beep(415.305, 270);
-	Beep(466.164, 405);*/
+	Beep(466.164, 400);*/
 
 	OM_Next_Frame_Victim = 0;
 	IndexforWM = 0;
@@ -35,25 +35,6 @@ PamiecOperiWirt::PamiecOperiWirt()
 	{
 		OM[i] = '-';
 	}
-
-	/*cout << "                                                         " << endl;
-	cout << "          _                           _                        " << endl;
-	cout << "         \ /                         \ /                        " << endl;
-	cout << "          \\                         //                     " << endl;
-	cout << "           \\        ______        \//                             " << endl;
-	cout << "            \\ /                    /                       " << endl;
-	cout << "             \     {@}   ||            \                  " << endl;
-	cout << "             /         /  \          \                    " << endl;
-	cout << "            /          \__/           \                       " << endl;
-	cout << "           |      |__#__#__#__#__|     |                                   " << endl;
-	cout << "           |     <  __ __ __ __ __>    |                                    " << endl;
-	cout << "         |  \     |##|##|##|##|##|    /                                   " << endl;
-	cout << "             \                       /                     " << endl;
-	cout << "              \                     /                      " << endl;
-	cout << "               \                   /                        " << endl;
-	cout << "                \_________________/                                          " << endl;*/
-
-
 }
 
 PamiecOperiWirt::~PamiecOperiWirt()
@@ -79,10 +60,10 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 	while (i != blok->Process_ID)
 	{
 		VMiter++; i++;
-	}VMiter--;
+	}//VMiter--;
 	VM.erase(VMiter);
 	VM.insert(VMiter, new page);
-	VM[i - 1]->abandon = true;
+	VM[i]->abandon = true;
 	/////////////////////////////////////////////////////////////////
 	for (int j = 0; j < blok->sopic / framesize + 1; j++)
 	{
@@ -94,24 +75,26 @@ void PamiecOperiWirt::DeleteProcess(PCB *blok)
 	}
 	////////////////////////////////////////////////////////////////
 	int pom = 0;
-	for (int i = 0; i < 16; i++)//skacz po tablicy stronic dla usuwanego procesu
+	if (FIFO.size() != 0)
 	{
-		pom = 0;
-		if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
+		for (int i = 0; i < 16; i++)//skacz po tablicy stronic dla usuwanego procesu
 		{
-			for (int j = 0; j < OMsize / 16; j++)//wykonaj siê o iloœæ ramek w OM
+			pom = 0;
+			if (blok->pages[i].Valid == true)//jak cos wsadzil do fifo
 			{
-				if (FIFO[j] == blok->pages[i].cell)
+				for (int j = 0; j < FIFO.size(); j++, pom++)//wykonaj siê o iloœæ ramek w OM
 				{
-					FIFO.erase(FIFO.begin() + pom);
-					break; // dla ka¿dego i jest tylko jedna taka operacja, mo¿na œmia³o break
+					if (FIFO[j] == blok->pages[i].cell)
+					{
+						FIFO.erase(FIFO.begin() + pom);
+						break; // dla ka¿dego i jest tylko jedna taka operacja, mo¿na œmia³o break
+					}
 				}
-				pom++;
-			}
 
+			}
 		}
 	}
-	//////////////////////////////////////////////////////////////////ZAKOMENTOWANE ALE MOZE SIE PRZYDAC
+	//////////////////////////////////////////////////////////////////
 	for (int i = 0; i < blok->memory_messages.size(); i++)//skacz po ilosci wiadomosci w pamieci, wyrzucimy je wszystkie z OM
 	{
 		for (int j = 0; j < framesize; j++)
@@ -163,6 +146,10 @@ void PamiecOperiWirt::save_message(string message)
 	for (int i = 0; i < message.length() / framesize + 1; i++)// dla 14 = 1 obieg, dla 20 = 2 obiegi
 	{
 		short FrameNr = Get_Free_Frame_Number();
+		int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
+		int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);// 4 linijki naprawiajace nadpisywanie innym programom tablice stronic
+		if (ID_of_a_process_which_frame_is_being_overriden != -1 && Nr_of_the_page != -1)
+			Update_Overide(ID_of_a_process_which_frame_is_being_overriden, Nr_of_the_page);
 
 		for (int j = 0; j < framesize; j++)//pomocniczy for czyszcz¹cy ramke przed jej wypelnieniem
 		{
@@ -172,7 +159,7 @@ void PamiecOperiWirt::save_message(string message)
 		for (int j = 0; j < framesize; j++)
 		{
 			OM[(FrameNr * framesize) + j] = message[k];//wpisz wiadomosc do pamieci
-			if (k == message.length())return;
+			if (k == message.length()){break;}
 			k++;
 		}
 
@@ -181,18 +168,11 @@ void PamiecOperiWirt::save_message(string message)
 			if ((*it)->Process_State == PCB::Proc_Running)
 			{
 				(*it)->memory_messages.push_back(FrameNr);//wrzuc do pcb
+				FIFO.push_back(FrameNr);
 			}
 		}
 
-		int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
-		int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);// 4 linijki naprawiajace nadpisywanie innym programom tablice stronic
-		if (ID_of_a_process_which_frame_is_being_overriden != -1 && Nr_of_the_page != -1)
-			Update_Overide(ID_of_a_process_which_frame_is_being_overriden, Nr_of_the_page);
-
 	}
-
-
-
 
 }
 
@@ -219,8 +199,13 @@ void PamiecOperiWirt::Get_Page_From_WM(PCB *blok, int page)
 
 	for (int j = 0; j < framesize; j++)
 	{
-		OM[(FrameNr * framesize) + j] = VM[blok->Process_ID - 1][page].tab[j];
+		OM[(FrameNr * framesize) + j] = '-';//wyczysc ramke przed jej nadpisaniem
 	}
+	for (int j = 0; j < framesize; j++)
+		{
+			OM[(FrameNr * framesize) + j] = VM[blok->Process_ID][page].tab[j];
+		}
+
 
 	int ID_of_a_process_which_frame_is_being_overriden = Return_ID_of_a_Process_using_this_frame(FrameNr);
 	int Nr_of_the_page = Return_nr_of_a_page_using_this_frame(FrameNr);
@@ -241,6 +226,7 @@ int PamiecOperiWirt::Get_Free_Frame_Number()
 			return i / 16;//zwroc index pierwszej pustej ramki jeœli puste w ogóle s¹
 		}
 	}//bo jak ich nie ma to realizuj wyrzucanie z OM wg FIFO = zwróc index ramki która by³a najd³u¿ej
+
 	int x = FIFO.front();
 	FIFO.pop_front();
 	return x;
@@ -263,46 +249,43 @@ void PamiecOperiWirt::PrintOM()
 		}
 		cout << endl;
 	}
+	std::cout << "FIFO ";
+	for (auto it = FIFO.begin(); it != FIFO.end(); it++)
+	{
+		std::cout << (*it) << " ";
+	}
+	std::cout << std::endl;
 }
 
 void PamiecOperiWirt::PrintVM()
 {
-	//vector<PCB*>AllProcc = *AllProc;
 	if (VM.capacity() == 0)
 	{
 		cout << "PAMIEC WIRTUALNA JEST PUSTA" << endl;
 		return;
 	}
 
-	//cout << VM.capacity() << endl;
-	//cout << VM.size() << endl;
-	//cout << AllProc->capacity() << endl;
-	//cout << AllProc->size() << endl;
-
-	int capacity = VM.capacity();
-	int cnt = 1;
-	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci allproca
+	int cnt = 0;
+	auto it = AllProc.begin();
+	//it++;//przeskocz idle
+	for (auto it2 = VM.begin(); it2 != VM.end(); it2++)//skacz po zawartosci PAMIECI WIRTUALNEJ
 	{
-		if (cnt == 1)it++;
-		if (VM[cnt - 1]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
+		if (VM[cnt]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
 		{
 			cnt++;
 			continue;
 		}
 		else
-			if ((*it)->Process_ID == 0)
-			{
-				continue;
-			}
 		{
 			cout << "PAMIEC WIRTUALNA PROCESU NR " << (*it)->Process_ID << endl;
 			for (int i = 0; i < (*it)->sopic / 16 + 1; i++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
 			{
-				VM[cnt - 1][i].PrintPage();
+				VM[cnt][i].PrintPage();
 			}
 			cout << endl;
 			cnt++;
 		}
+		it++;
 	}
 
 
@@ -310,12 +293,8 @@ void PamiecOperiWirt::PrintVM()
 
 void PamiecOperiWirt::Update_Overide(int PCBnumber, int Pagenr)
 {
-	//vector <PCB*>::iterator iter;
 	iter = this->AllProc.begin();
 	iter[PCBnumber]->pages[Pagenr].Valid = false;
-	//AllPCBs[PCBnumber]->pages[Pagenr].Valid = false;
-
-
 }
 
 void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
@@ -325,10 +304,10 @@ void PamiecOperiWirt::Set_PCB_Vector(vector<PCB*> &AllProc)
 
 int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 {
-	int cnt = 1;
+	int cnt = 0;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		if (cnt == 1)it++;//przeskocz
+		//if (cnt == 1)it++;//przeskocz
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
 			if ((*it)->pages[j].cell == FrameNr)
@@ -345,25 +324,10 @@ int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 
 int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 {
-	//iter = AllProc.begin();
-	//int cap = AllProc.capacity();
-	//for (int i = 0; i < cap; i++)
-	//{
-	//	for (int j = 0; j < iter[i]->sopic / 16 + 1; j++)//przeskocz po wszystkich stronach procesu np dla sopic równego 40 mamy 3
-	//	{
-	//		if (iter[i]->pages[j].cell == FrameNr)
-	//		{
-	//			return j;//search succeeded
-	//		}
-	//	}
-
-	//}
-	//return -1;//search failed TO JEST STARY KOD, MOZLIWE ZE TEZ DZIALA
-
-	int cnt = 1;
+	int cnt = 0;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci VM
 	{
-		if (cnt == 1)it++;//przeskocz idle
+		//if (cnt == 1)it++;//przeskocz idle
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
 			if ((*it)->pages[j].cell == FrameNr)
@@ -373,7 +337,6 @@ int PamiecOperiWirt::Return_nr_of_a_page_using_this_frame(int FrameNr)
 
 		}
 		cnt++;
-
 	}
 	return -1;//search failed
 }

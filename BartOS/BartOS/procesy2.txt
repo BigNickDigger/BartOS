@@ -1,1 +1,1 @@
-XS 1 witam;EN;
+XS 1,dzien_dobry;XS 50,hallo;EN;

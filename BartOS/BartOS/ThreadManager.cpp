@@ -9,7 +9,7 @@ CThreadManager::CThreadManager(PamiecOperiWirt* Memory, ProcesoPriorytet *pl)
 	srand(time(NULL));
 	this->Memory = Memory;
 	planista = pl;
-	CreateProcess("IDLE");
+	//makeprocess("IDLE");
 	//PrintProcesses();
 }
 
@@ -19,7 +19,7 @@ CThreadManager::~CThreadManager()
 	AllProc.clear();
 
 }
-int CThreadManager::CreateProcess(string name) {
+int CThreadManager::makeprocess(string name) {
 	PCB* nowy = new PCB;
 	nowy->nazwa = name;
 	nowy->sem->AllProc = &AllProc;
@@ -33,7 +33,7 @@ int CThreadManager::CreateProcess(string name) {
 	planista->addProcess(nowy);
 	return (IdentGen-1);
 }
-int CThreadManager::CreateProcess(string name, int prior) {
+int CThreadManager::makeprocess(string name, int prior) {
 	 PCB* nowy = new PCB;
 	 nowy->nazwa = name;
 	 nowy->sem->AllProc = &AllProc;
@@ -52,8 +52,8 @@ void CThreadManager::RemoveProcess(int id) {
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++) {
 		if ((*it)->Process_ID == id && (*it)->Process_State == PCB::Proc_Terminated) {
 		
-			//Memory->DeleteProcess((*it));// ZEPSUTE
-			planista->removeProcess(*it);
+			Memory->DeleteProcess((*it));// ZEPSUTE
+			//planista->removeProcess(*it);
 			AllProc.erase(it); 
 			
 			return;
@@ -99,7 +99,7 @@ void CThreadManager::PrintProcesses() {
 			cout << (*it)->Process_ID << "\t";
 			cout << (*it)->nazwa << "\t";
 			cout << getstate((*it)->Process_State) << "\t";
-			cout << (*it)->Priority << "\n";
+			cout << (*it)->Priority + (*it)->PriorityDynamic << "\n";
 		}
 	}
 	else printf("Cos poszlo nie tak, nie ma procesu IDLE\n");
@@ -111,7 +111,7 @@ char* CThreadManager::getstate(int el) {
 	case PCB::Proc_Running:
 		return "Running";
 	case PCB::Proc_Waiting:
-		return "Waiting/Halted";
+		return "Waiting";
 	case PCB::Proc_Ready:
 		return "Ready";
 	case PCB::Proc_Terminated:

@@ -27,7 +27,7 @@ public:
 	void addProcess(PCB *a);	//dodawanie procesu do mojej struktury danych
 	void removeProcess(PCB *a); //usuwanie procesu z mojej struktury
 	bool moveProcess(PCB *a);	//przeniesienie procesu miedzy kolejkami
-	void tick_processes();		//podnosimy idleTime procesom gotowym
+	bool tick_processes();		//podnosimy idleTime procesom gotowym
 	void throwToBack(PCB *a);	//wyrzuc na koniec kolejki dany proces
 
 	void printMyBeautifulStructurePlease(); //drukowanie

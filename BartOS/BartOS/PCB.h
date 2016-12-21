@@ -30,6 +30,7 @@ public:
 	short int Priority,
 		ProgramCounter;
 	int RegA, RegB, RegC, RegD;
+	int MAR; //Memory adress register
 	int sopic,//size of program in chars
 		idleTime;
 	int sleep;
