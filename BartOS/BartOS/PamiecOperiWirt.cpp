@@ -301,7 +301,6 @@ void PamiecOperiWirt::PrintVM()
 
 	int cnt = 0;
 	auto it = AllProc.begin();
-	//it++;//przeskocz idle
 	for (auto it2 = VM.begin(); it2 != VM.end(); it2++)//skacz po zawartosci PAMIECI WIRTUALNEJ
 	{
 		if (VM[cnt]->abandon == true)//je¿eli znaleziona strona jest stron¹ zombie, leæ dalej
@@ -341,7 +340,6 @@ int PamiecOperiWirt::Return_ID_of_a_Process_using_this_frame(int FrameNr)
 	int cnt = 0;
 	for (auto it = AllProc.begin(); it != AllProc.end(); it++)//skacz po zawartosci AllProca
 	{
-		//if (cnt == 1)it++;//przeskocz
 		for (int j = 0; j < 16; j++)//skacz po tablicy stronic ktora ma 16 indeksow
 		{
 			if ((*it)->pages[j].cell == FrameNr && (*it)->pages[j].Valid == true)

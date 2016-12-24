@@ -382,6 +382,14 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	else if (command == "RF") //read file
 	{
 		cout << line.substr(3, line.length() - 4) <<": "<< endl;
+		
+		/*char* file = new char[dysk.file_size(line.substr(3, line.length() - 4))];
+		file = dysk.open_file(line.substr(3, line.length() - 4));
+		for (int i = 0;i < dysk.file_size(line.substr(3, line.length() - 4));i++) {
+			cout << file[i];
+		}
+		cout << endl;*/
+
 		cout << dysk.open_file(line.substr(3, line.length() - 4)) << endl;
 	}
 	else if (command == "WF") //write file
@@ -471,7 +479,7 @@ void InterPeter::ExecuteCommand(PCB* block, PamiecOperiWirt &pam, KomunikacjaPro
 	else
 	{
 		cout << "Niepoprawny rozkaz" << endl;
-		//block->Process_State = PCB::Proc_Terminated;
+		block->Process_State = PCB::Proc_Terminated;
 	}
 	
 	

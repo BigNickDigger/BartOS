@@ -361,7 +361,8 @@ int main()
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 31);
 	system("cls");
 	Intro *intro = new Intro();
-	//intro->start();
+	intro->start();
+	system("cls");
 
 	vector<string>komendy;
 	
